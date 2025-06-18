@@ -1,0 +1,76 @@
+# MoodifyMe .htaccess file
+
+# Enable rewrite engine
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteBase /
+
+    # Redirect to HTTPS (uncomment in production)
+    # RewriteCond %{HTTPS} off
+    # RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+    # Prevent direct access to sensitive files
+    RewriteRule ^config\.php$ - [F,L]
+    RewriteRule ^includes/ - [F,L]
+    RewriteRule ^database/ - [F,L]
+    RewriteRule ^models/ - [F,L]
+
+    # Allow direct access to assets, api, and pages
+    RewriteRule ^(assets|api|pages)/ - [L]
+
+    # Prevent directory listing
+    Options -Indexes
+
+    # Handle 404 errors
+    ErrorDocument 404 /pages/404.php
+</IfModule>
+
+# Set default character set
+<IfModule mod_charset.c>
+    CharsetDefault UTF-8
+    CharsetSourceEnc UTF-8
+</IfModule>
+
+# PHP settings
+<IfModule mod_php7.c>
+    # Security settings
+    php_flag display_errors off
+    php_flag log_errors on
+    php_value error_log logs/php_errors.log
+    
+    # Session security
+    php_flag session.cookie_httponly on
+    php_flag session.use_only_cookies on
+    
+    # File uploads
+    php_value upload_max_filesize 10M
+    php_value post_max_size 10M
+    php_value max_execution_time 300
+    php_value max_input_time 300
+</IfModule>
+
+# Cache control for static assets
+<IfModule mod_expires.c>
+    ExpiresActive On
+    
+    # Images
+    ExpiresByType image/jpeg "access plus 1 year"
+    ExpiresByType image/png "access plus 1 year"
+    ExpiresByType image/gif "access plus 1 year"
+    ExpiresByType image/svg+xml "access plus 1 year"
+    
+    # CSS and JavaScript
+    ExpiresByType text/css "access plus 1 month"
+    ExpiresByType text/javascript "access plus 1 month"
+    ExpiresByType application/javascript "access plus 1 month"
+    
+    # Fonts
+    ExpiresByType application/font-woff "access plus 1 year"
+    ExpiresByType application/font-woff2 "access plus 1 year"
+    ExpiresByType application/vnd.ms-fontobject "access plus 1 year"
+    ExpiresByType application/x-font-ttf "access plus 1 year"
+    ExpiresByType font/opentype "access plus 1 year"
+</IfModule>
+
+# Disable server signature
+ServerSignature Off

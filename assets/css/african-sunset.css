@@ -1,0 +1,1370 @@
+/**
+ * MoodifyMe - African Sunset Color Palette
+ * Global color overrides for the African Sunset theme
+ */
+
+/* African Sunset Color Variables */
+:root {
+    /* Primary Colors - African Sunset Palette */
+    --primary-color: #E55100 !important;       /* Burnt Orange - Main brand color */
+    --primary-light: #FF8F00 !important;       /* Amber */
+    --primary-dark: #D32F2F !important;        /* Deep Red */
+
+    /* Secondary Colors - Golden/Warm Palette */
+    --secondary-color: #FFC107 !important;     /* Golden Yellow - Secondary brand color */
+    --secondary-light: #FFD54F !important;     /* Light Golden */
+    --secondary-dark: #FF8F00 !important;      /* Amber */
+
+    /* Accent Colors */
+    --accent-1: #8D6E63 !important;            /* Earth Brown */
+    --accent-2: #FF8F00 !important;            /* Amber */
+    --accent-3: #FFC107 !important;            /* Golden Yellow */
+
+    /* Bootstrap Color Overrides */
+    --bs-primary: #E55100 !important;
+    --bs-primary-rgb: 229, 81, 0 !important;
+    --bs-secondary: #FFC107 !important;
+    --bs-secondary-rgb: 255, 193, 7 !important;
+    --bs-success: #28a745 !important;
+    --bs-info: #17a2b8 !important;
+    --bs-warning: #FFC107 !important;
+    --bs-danger: #dc3545 !important;
+}
+
+/* Global Button Overrides - High Specificity */
+.btn.btn-primary,
+.btn-primary,
+button.btn-primary,
+a.btn-primary,
+input.btn-primary {
+    background: linear-gradient(135deg, #E55100, #D32F2F) !important;
+    border-color: #E55100 !important;
+    color: white !important;
+    font-weight: 600 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.5px !important;
+    transition: all 0.3s ease !important;
+    border: none !important;
+    box-shadow: 0 4px 12px rgba(229, 81, 0, 0.3) !important;
+}
+
+.btn.btn-primary:hover,
+.btn-primary:hover,
+button.btn-primary:hover,
+a.btn-primary:hover,
+input.btn-primary:hover,
+.btn.btn-primary:focus,
+.btn-primary:focus,
+button.btn-primary:focus,
+a.btn-primary:focus,
+input.btn-primary:focus {
+    background: linear-gradient(135deg, #FF8F00, #E55100) !important;
+    border-color: #D32F2F !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 6px 15px rgba(229, 81, 0, 0.4) !important;
+    color: white !important;
+}
+
+.btn.btn-primary:active,
+.btn-primary:active,
+button.btn-primary:active,
+a.btn-primary:active,
+input.btn-primary:active {
+    transform: translateY(0) !important;
+    box-shadow: 0 2px 8px rgba(229, 81, 0, 0.3) !important;
+    background: linear-gradient(135deg, #D32F2F, #E55100) !important;
+    color: white !important;
+}
+
+.btn.btn-outline-primary,
+.btn-outline-primary,
+button.btn-outline-primary,
+a.btn-outline-primary,
+input.btn-outline-primary {
+    color: #E55100 !important;
+    border-color: #E55100 !important;
+    background: transparent !important;
+    font-weight: 600 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.5px !important;
+    transition: all 0.3s ease !important;
+    border: 2px solid #E55100 !important;
+}
+
+.btn.btn-outline-primary:hover,
+.btn-outline-primary:hover,
+button.btn-outline-primary:hover,
+a.btn-outline-primary:hover,
+input.btn-outline-primary:hover,
+.btn.btn-outline-primary:focus,
+.btn-outline-primary:focus,
+button.btn-outline-primary:focus,
+a.btn-outline-primary:focus,
+input.btn-outline-primary:focus {
+    background: linear-gradient(135deg, #E55100, #D32F2F) !important;
+    border-color: #E55100 !important;
+    color: white !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 4px 12px rgba(229, 81, 0, 0.3) !important;
+}
+
+.btn.btn-secondary,
+.btn-secondary,
+button.btn-secondary,
+a.btn-secondary,
+input.btn-secondary {
+    background: linear-gradient(135deg, #FFC107, #FF8F00) !important;
+    border-color: #FFC107 !important;
+    color: #333 !important;
+    font-weight: 600 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.5px !important;
+    transition: all 0.3s ease !important;
+    border: none !important;
+    box-shadow: 0 4px 12px rgba(255, 193, 7, 0.3) !important;
+}
+
+.btn.btn-secondary:hover,
+.btn-secondary:hover,
+button.btn-secondary:hover,
+a.btn-secondary:hover,
+input.btn-secondary:hover,
+.btn.btn-secondary:focus,
+.btn-secondary:focus,
+button.btn-secondary:focus,
+a.btn-secondary:focus,
+input.btn-secondary:focus {
+    background: linear-gradient(135deg, #FFD54F, #FFC107) !important;
+    border-color: #FF8F00 !important;
+    color: #333 !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 6px 15px rgba(255, 193, 7, 0.4) !important;
+}
+
+.btn-outline-secondary {
+    color: #FFC107 !important;
+    border-color: #FFC107 !important;
+    background: transparent !important;
+    font-weight: 600 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.5px !important;
+    transition: all 0.3s ease !important;
+}
+
+.btn-outline-secondary:hover {
+    background: linear-gradient(135deg, #FFC107, #FF8F00) !important;
+    border-color: #FFC107 !important;
+    color: #333 !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 4px 12px rgba(255, 193, 7, 0.3) !important;
+}
+
+/* Additional Button Variants with African Sunset Theme */
+.btn-success {
+    background: linear-gradient(135deg, #8D6E63, #A1887F) !important;
+    border-color: #8D6E63 !important;
+    color: white !important;
+    font-weight: 600 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.5px !important;
+    transition: all 0.3s ease !important;
+}
+
+.btn-success:hover {
+    background: linear-gradient(135deg, #A1887F, #BCAAA4) !important;
+    border-color: #8D6E63 !important;
+    color: white !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 4px 12px rgba(141, 110, 99, 0.3) !important;
+}
+
+.btn-info {
+    background: linear-gradient(135deg, #FF8F00, #FFC107) !important;
+    border-color: #FF8F00 !important;
+    color: #333 !important;
+    font-weight: 600 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.5px !important;
+    transition: all 0.3s ease !important;
+}
+
+.btn-info:hover {
+    background: linear-gradient(135deg, #FFC107, #FFD54F) !important;
+    border-color: #FF8F00 !important;
+    color: #333 !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 4px 12px rgba(255, 143, 0, 0.3) !important;
+}
+
+.btn-warning {
+    background: linear-gradient(135deg, #FFC107, #FFD54F) !important;
+    border-color: #FFC107 !important;
+    color: #333 !important;
+    font-weight: 600 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.5px !important;
+    transition: all 0.3s ease !important;
+}
+
+.btn-warning:hover {
+    background: linear-gradient(135deg, #FFD54F, #FFECB3) !important;
+    border-color: #FFC107 !important;
+    color: #333 !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 4px 12px rgba(255, 193, 7, 0.3) !important;
+}
+
+.btn-danger {
+    background: linear-gradient(135deg, #D32F2F, #E55100) !important;
+    border-color: #D32F2F !important;
+    color: white !important;
+    font-weight: 600 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.5px !important;
+    transition: all 0.3s ease !important;
+}
+
+.btn-danger:hover {
+    background: linear-gradient(135deg, #E55100, #FF8F00) !important;
+    border-color: #D32F2F !important;
+    color: white !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 4px 12px rgba(211, 47, 47, 0.3) !important;
+}
+
+/* Light Button Variants */
+.btn-light {
+    background: linear-gradient(135deg, #FFD54F, #FFECB3) !important;
+    border-color: #FFD54F !important;
+    color: #8D6E63 !important;
+    font-weight: 600 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.5px !important;
+    transition: all 0.3s ease !important;
+}
+
+.btn-light:hover {
+    background: linear-gradient(135deg, #FFC107, #FFD54F) !important;
+    border-color: #FFC107 !important;
+    color: #8D6E63 !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 4px 12px rgba(255, 213, 79, 0.3) !important;
+}
+
+.btn-outline-light {
+    color: #FFD54F !important;
+    border-color: #FFD54F !important;
+    background: transparent !important;
+    font-weight: 600 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.5px !important;
+    transition: all 0.3s ease !important;
+}
+
+.btn-outline-light:hover {
+    background: linear-gradient(135deg, #FFD54F, #FFECB3) !important;
+    border-color: #FFD54F !important;
+    color: #8D6E63 !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 4px 12px rgba(255, 213, 79, 0.3) !important;
+}
+
+/* Badge Overrides */
+.badge.bg-primary {
+    background: linear-gradient(135deg, #E55100, #D32F2F) !important;
+    color: white !important;
+}
+
+.badge.bg-secondary {
+    background: linear-gradient(135deg, #FFC107, #FF8F00) !important;
+    color: #333 !important;
+}
+
+.badge.bg-success {
+    background: linear-gradient(135deg, #8D6E63, #A1887F) !important;
+    color: white !important;
+}
+
+.badge.bg-info {
+    background: linear-gradient(135deg, #FF8F00, #FFC107) !important;
+    color: #333 !important;
+}
+
+.badge.bg-warning {
+    background: linear-gradient(135deg, #FFC107, #FFD54F) !important;
+    color: #333 !important;
+}
+
+.badge.bg-danger {
+    background: linear-gradient(135deg, #D32F2F, #E55100) !important;
+    color: white !important;
+}
+
+/* Text Color Overrides */
+.text-primary {
+    color: #E55100 !important;
+}
+
+.text-secondary {
+    color: #FFC107 !important;
+}
+
+/* Background Color Overrides - High Specificity */
+html body .bg-primary,
+body .bg-primary,
+.bg-primary,
+nav.bg-primary,
+.navbar.bg-primary {
+    background: linear-gradient(135deg, #E55100, #D32F2F) !important;
+    background-color: #E55100 !important;
+}
+
+html body .bg-secondary,
+body .bg-secondary,
+.bg-secondary {
+    background: linear-gradient(135deg, #FFC107, #FF8F00) !important;
+    background-color: #FFC107 !important;
+}
+
+/* Theme Toggle Button Styling */
+.theme-toggle {
+    background: transparent !important;
+    border: 2px solid rgba(255, 255, 255, 0.3) !important;
+    border-radius: 50% !important;
+    width: 50px !important;
+    height: 50px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    transition: all 0.3s ease !important;
+    position: relative !important;
+    overflow: hidden !important;
+    margin: 0 0.5rem !important;
+}
+
+.theme-toggle:hover {
+    border-color: rgba(255, 193, 7, 0.6) !important;
+    background: linear-gradient(135deg, rgba(255, 193, 7, 0.2), rgba(255, 143, 0, 0.2)) !important;
+    transform: scale(1.1) !important;
+    box-shadow: 0 4px 12px rgba(255, 193, 7, 0.3) !important;
+}
+
+.theme-toggle i {
+    color: rgba(255, 255, 255, 0.9) !important;
+    font-size: 1.3rem !important;
+    transition: all 0.3s ease !important;
+}
+
+.theme-toggle:hover i {
+    color: white !important;
+    transform: rotate(15deg) !important;
+}
+
+/* Enhanced Card Header Overrides - High Specificity */
+.card .card-header,
+.card-header,
+div.card-header {
+    background: linear-gradient(135deg, #E55100 0%, #D32F2F 50%, #FF8F00 100%) !important;
+    color: white !important;
+    border-bottom: 2px solid rgba(255, 193, 7, 0.3) !important;
+    padding: 1.5rem 2rem !important;
+    font-weight: 600 !important;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2) !important;
+}
+
+.card .card-header.bg-primary,
+.card-header.bg-primary,
+div.card-header.bg-primary {
+    background: linear-gradient(135deg, #E55100 0%, #D32F2F 50%, #FF8F00 100%) !important;
+    color: white !important;
+}
+
+.card-header h1,
+.card-header h2,
+.card-header h3,
+.card-header h4,
+.card-header h5,
+.card-header h6,
+.card-header .card-title {
+    color: white !important;
+    margin-bottom: 0.5rem !important;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2) !important;
+}
+
+/* Page Headers */
+.page-header {
+    background: linear-gradient(135deg, #E55100 0%, #D32F2F 30%, #FF8F00 70%, #FFC107 100%) !important;
+    color: white !important;
+    padding: 3rem 0 !important;
+    margin-bottom: 2rem !important;
+    border-radius: 0 0 20px 20px !important;
+    box-shadow: 0 8px 25px rgba(229, 81, 0, 0.2) !important;
+}
+
+.page-header h1,
+.page-header h2,
+.page-header h3 {
+    color: white !important;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3) !important;
+    margin-bottom: 1rem !important;
+}
+
+.page-header p {
+    color: rgba(255, 255, 255, 0.9) !important;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2) !important;
+}
+
+/* Link Overrides */
+a {
+    color: #E55100 !important;
+}
+
+a:hover {
+    color: #D32F2F !important;
+}
+
+/* Enhanced Form Control Styling */
+.form-control {
+    border: 2px solid rgba(229, 81, 0, 0.2) !important;
+    border-radius: 8px !important;
+    padding: 0.75rem 1rem !important;
+    transition: all 0.3s ease !important;
+    background-color: rgba(255, 255, 255, 0.9) !important;
+}
+
+.form-control:focus {
+    border-color: #E55100 !important;
+    box-shadow: 0 0 0 0.25rem rgba(229, 81, 0, 0.25) !important;
+    background-color: white !important;
+    transform: translateY(-1px) !important;
+}
+
+.form-control:hover {
+    border-color: rgba(229, 81, 0, 0.4) !important;
+}
+
+.form-label {
+    color: #8D6E63 !important;
+    font-weight: 600 !important;
+    margin-bottom: 0.75rem !important;
+}
+
+.form-select {
+    border: 2px solid rgba(229, 81, 0, 0.2) !important;
+    border-radius: 8px !important;
+    padding: 0.75rem 1rem !important;
+    transition: all 0.3s ease !important;
+    background-color: rgba(255, 255, 255, 0.9) !important;
+}
+
+.form-select:focus {
+    border-color: #E55100 !important;
+    box-shadow: 0 0 0 0.25rem rgba(229, 81, 0, 0.25) !important;
+    background-color: white !important;
+}
+
+.form-check-input:checked {
+    background-color: #E55100 !important;
+    border-color: #E55100 !important;
+}
+
+.form-check-input:focus {
+    box-shadow: 0 0 0 0.25rem rgba(229, 81, 0, 0.25) !important;
+}
+
+/* Enhanced Navbar Overrides with African Sunset Theme - Medium Size */
+nav.navbar.navbar-dark.bg-primary,
+.navbar.navbar-dark.bg-primary,
+.navbar-dark.bg-primary {
+    background: linear-gradient(135deg, #E55100 0%, #D32F2F 50%, #FF8F00 100%) !important;
+    box-shadow: 0 4px 15px rgba(229, 81, 0, 0.3), 0 2px 8px rgba(255, 193, 7, 0.15) !important;
+    backdrop-filter: blur(10px) !important;
+    border-bottom: 2px solid rgba(255, 193, 7, 0.2) !important;
+    padding: 1rem 0 !important;
+    min-height: 65px !important;
+    position: relative !important;
+}
+
+/* Add a subtle glow effect to the larger navbar */
+nav.navbar.navbar-dark.bg-primary::before,
+.navbar.navbar-dark.bg-primary::before,
+.navbar-dark.bg-primary::before {
+    content: '' !important;
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    background: linear-gradient(135deg, rgba(255, 193, 7, 0.1) 0%, rgba(229, 81, 0, 0.05) 50%, rgba(255, 143, 0, 0.1) 100%) !important;
+    pointer-events: none !important;
+    z-index: 1 !important;
+}
+
+/* Ensure navbar content is above the glow effect */
+.navbar .container,
+.navbar .navbar-brand,
+.navbar .navbar-nav,
+.navbar .nav-link,
+.navbar .nav-item,
+.navbar .dropdown-menu {
+    position: relative !important;
+    z-index: 10 !important;
+    pointer-events: auto !important;
+}
+
+.navbar-dark .navbar-brand {
+    color: white !important;
+    font-weight: 700 !important;
+    font-size: 1.5rem !important;
+    letter-spacing: 0.5px !important;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3) !important;
+    transition: all 0.3s ease !important;
+    padding: 0.5rem 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    text-decoration: none !important;
+}
+
+.navbar-dark .navbar-brand:hover {
+    color: #FFD54F !important;
+    transform: translateY(-1px) !important;
+    text-shadow: 0 4px 8px rgba(0, 0, 0, 0.4) !important;
+}
+
+.navbar-dark .navbar-brand span {
+    color: white !important;
+}
+
+.navbar-brand img {
+    height: 35px !important;
+    width: auto !important;
+    margin-right: 0.5rem !important;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3)) !important;
+    transition: all 0.3s ease !important;
+    border-radius: 6px !important;
+    background: rgba(255, 255, 255, 0.1) !important;
+    padding: 3px !important;
+    backdrop-filter: blur(5px) !important;
+    display: inline-block !important;
+    vertical-align: middle !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    max-width: none !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+}
+
+.navbar-brand img:hover {
+    transform: scale(1.05) !important;
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.4)) !important;
+    background: rgba(255, 255, 255, 0.15) !important;
+}
+
+/* Fallback styling if logo doesn't load */
+.navbar-brand img[alt]:empty::before,
+.navbar-brand img[alt]:not([src])::before {
+    content: "🌅" !important;
+    font-size: 2rem !important;
+    display: inline-block !important;
+    margin-right: 0.5rem !important;
+}
+
+/* Ensure logo is visible on all backgrounds */
+.navbar-brand img,
+.navbar-logo {
+    object-fit: contain !important;
+    max-width: none !important;
+}
+
+/* Specific styling for navbar logo */
+.navbar-logo {
+    height: 35px !important;
+    width: auto !important;
+    margin-right: 0.5rem !important;
+    display: inline-block !important;
+    vertical-align: middle !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    background: rgba(255, 255, 255, 0.1) !important;
+    padding: 3px !important;
+    border-radius: 6px !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3)) !important;
+}
+
+/* Add a subtle sunset glow to the logo */
+.navbar-brand:hover img {
+    box-shadow: 0 0 15px rgba(255, 193, 7, 0.4), 0 0 25px rgba(229, 81, 0, 0.2) !important;
+}
+
+/* Logo animation on page load */
+@keyframes logoFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.navbar-brand img {
+    animation: logoFadeIn 0.8s ease-out !important;
+}
+
+.navbar-dark .navbar-nav .nav-link {
+    color: rgba(255, 255, 255, 0.95) !important;
+    font-weight: 500 !important;
+    font-size: 1rem !important;
+    padding: 0.75rem 1rem !important;
+    border-radius: 6px !important;
+    transition: all 0.3s ease !important;
+    margin: 0 0.2rem !important;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2) !important;
+    text-decoration: none !important;
+    cursor: pointer !important;
+    pointer-events: auto !important;
+    position: relative !important;
+    z-index: 15 !important;
+}
+
+.navbar-dark .navbar-nav .nav-link:hover,
+.navbar-dark .navbar-nav .nav-link:focus {
+    color: white !important;
+    background-color: rgba(255, 255, 255, 0.15) !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2) !important;
+}
+
+.navbar-dark .navbar-nav .nav-link.active {
+    color: white !important;
+    background: linear-gradient(135deg, rgba(255, 193, 7, 0.3), rgba(255, 143, 0, 0.3)) !important;
+    font-weight: 600 !important;
+    border: 1px solid rgba(255, 193, 7, 0.4) !important;
+    box-shadow: 0 2px 8px rgba(255, 193, 7, 0.3) !important;
+}
+
+.navbar-dark .navbar-toggler {
+    border: 2px solid rgba(255, 255, 255, 0.3) !important;
+    border-radius: 8px !important;
+    padding: 0.75rem !important;
+    transition: all 0.3s ease !important;
+    font-size: 1.2rem !important;
+}
+
+.navbar-dark .navbar-toggler:hover {
+    border-color: rgba(255, 193, 7, 0.6) !important;
+    background-color: rgba(255, 193, 7, 0.1) !important;
+}
+
+.navbar-dark .navbar-toggler-icon {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28255, 255, 255, 0.95%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e") !important;
+}
+
+.navbar-dark .navbar-text {
+    color: rgba(255, 255, 255, 0.9) !important;
+}
+
+/* Specific fixes for login/register links */
+.navbar-nav .nav-item .nav-link[href*="login"],
+.navbar-nav .nav-item .nav-link[href*="register"] {
+    pointer-events: auto !important;
+    cursor: pointer !important;
+    z-index: 20 !important;
+    position: relative !important;
+    display: block !important;
+}
+
+/* Ensure all navbar links are clickable */
+.navbar a,
+.navbar .nav-link,
+.navbar .navbar-brand {
+    pointer-events: auto !important;
+    cursor: pointer !important;
+    z-index: 15 !important;
+    position: relative !important;
+}
+
+/* Progress Bar Overrides */
+.progress-bar {
+    background-color: #E55100 !important;
+}
+
+/* Enhanced Alert Overrides */
+.alert {
+    border-radius: 12px !important;
+    border: none !important;
+    padding: 1.25rem 1.5rem !important;
+    font-weight: 500 !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1) !important;
+}
+
+.alert-primary {
+    color: #8B2500 !important;
+    background: linear-gradient(135deg, rgba(229, 81, 0, 0.1), rgba(255, 193, 7, 0.05)) !important;
+    border-left: 4px solid #E55100 !important;
+}
+
+.alert-secondary {
+    color: #8B6914 !important;
+    background: linear-gradient(135deg, rgba(255, 193, 7, 0.1), rgba(255, 213, 79, 0.05)) !important;
+    border-left: 4px solid #FFC107 !important;
+}
+
+.alert-success {
+    color: #5D4E37 !important;
+    background: linear-gradient(135deg, rgba(141, 110, 99, 0.1), rgba(161, 136, 127, 0.05)) !important;
+    border-left: 4px solid #8D6E63 !important;
+}
+
+.alert-info {
+    color: #8B5A00 !important;
+    background: linear-gradient(135deg, rgba(255, 143, 0, 0.1), rgba(255, 193, 7, 0.05)) !important;
+    border-left: 4px solid #FF8F00 !important;
+}
+
+.alert-warning {
+    color: #8B6914 !important;
+    background: linear-gradient(135deg, rgba(255, 193, 7, 0.15), rgba(255, 213, 79, 0.1)) !important;
+    border-left: 4px solid #FFC107 !important;
+}
+
+.alert-danger {
+    color: #8B1538 !important;
+    background: linear-gradient(135deg, rgba(211, 47, 47, 0.1), rgba(229, 81, 0, 0.05)) !important;
+    border-left: 4px solid #D32F2F !important;
+}
+
+/* Spinner Overrides */
+.spinner-border.text-primary {
+    color: #E55100 !important;
+}
+
+/* Custom African Sunset Gradients */
+.gradient-sunset {
+    background: linear-gradient(135deg, #E55100 0%, #D32F2F 30%, #FF8F00 70%, #FFC107 100%) !important;
+}
+
+.gradient-warm {
+    background: linear-gradient(135deg, #FF8F00, #FFC107) !important;
+}
+
+.gradient-earth {
+    background: linear-gradient(135deg, #8D6E63, #E55100) !important;
+}
+
+/* Icon Colors */
+.text-warning {
+    color: #FFC107 !important;
+}
+
+/* Table Overrides */
+.table-primary {
+    background-color: rgba(229, 81, 0, 0.1) !important;
+}
+
+/* List Group Overrides */
+.list-group-item.active {
+    background-color: #E55100 !important;
+    border-color: #E55100 !important;
+}
+
+/* Pagination Overrides */
+.page-link {
+    color: #E55100 !important;
+}
+
+.page-item.active .page-link {
+    background-color: #E55100 !important;
+    border-color: #E55100 !important;
+}
+
+/* Enhanced Dropdown Overrides */
+.dropdown-menu {
+    border: none !important;
+    border-radius: 12px !important;
+    box-shadow: 0 10px 30px rgba(229, 81, 0, 0.15) !important;
+    background: white !important;
+    padding: 0.5rem 0 !important;
+    margin-top: 0.5rem !important;
+    z-index: 1050 !important;
+    position: absolute !important;
+    min-width: 200px !important;
+    top: 100% !important;
+    right: 0 !important;
+    left: auto !important;
+}
+
+.dropdown-menu.show,
+.dropdown-menu[style*="display: block"] {
+    display: block !important;
+}
+
+.dropdown-toggle {
+    pointer-events: auto !important;
+    cursor: pointer !important;
+}
+
+.dropdown-toggle::after {
+    display: inline-block !important;
+    margin-left: 0.5rem !important;
+    vertical-align: 0.125em !important;
+    content: "" !important;
+    border-top: 0.3em solid !important;
+    border-right: 0.3em solid transparent !important;
+    border-bottom: 0 !important;
+    border-left: 0.3em solid transparent !important;
+}
+
+.dropdown-item {
+    color: #333 !important;
+    padding: 0.75rem 1.5rem !important;
+    font-weight: 500 !important;
+    transition: all 0.2s ease !important;
+    border-radius: 8px !important;
+    display: block !important;
+    width: calc(100% - 1rem) !important;
+    margin: 0.25rem 0.5rem !important;
+    clear: both !important;
+    text-decoration: none !important;
+    white-space: nowrap !important;
+    position: relative !important;
+    overflow: hidden !important;
+}
+
+.dropdown-item:hover,
+.dropdown-item:focus {
+    background: linear-gradient(135deg, rgba(229, 81, 0, 0.08), rgba(255, 193, 7, 0.08)) !important;
+    color: #E55100 !important;
+    transform: translateX(3px) !important;
+    text-decoration: none !important;
+    box-shadow: 0 2px 8px rgba(229, 81, 0, 0.1) !important;
+}
+
+/* Add subtle hover effect */
+.dropdown-item::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(229, 81, 0, 0.1), transparent);
+    transition: left 0.5s ease;
+}
+
+.dropdown-item:hover::before {
+    left: 100%;
+}
+
+.dropdown-item.active {
+    background: linear-gradient(135deg, #E55100, #D32F2F) !important;
+    color: white !important;
+}
+
+.dropdown-item i {
+    margin-right: 0.75rem !important;
+    width: 16px !important;
+    text-align: center !important;
+}
+
+.dropdown-divider {
+    border-top: 1px solid rgba(229, 81, 0, 0.2) !important;
+    margin: 0.5rem 0 !important;
+}
+
+/* Ensure navbar dropdown works properly */
+.navbar .dropdown {
+    position: relative !important;
+}
+
+.navbar .dropdown-menu {
+    position: absolute !important;
+    top: 100% !important;
+    left: auto !important;
+    right: 0 !important;
+    transform: none !important;
+}
+
+/* Fix any potential z-index issues */
+.navbar-nav .dropdown-menu {
+    z-index: 1050 !important;
+}
+
+/* User dropdown container */
+.user-dropdown {
+    position: relative !important;
+    display: inline-block !important;
+    z-index: 2147483647 !important;
+    transform: translateZ(0) !important;
+}
+
+/* Ensure dropdown toggle is clickable */
+.navbar .dropdown-toggle {
+    background: none !important;
+    border: none !important;
+    outline: none !important;
+}
+
+.navbar .dropdown-toggle:focus {
+    box-shadow: none !important;
+}
+
+/* Ensure navbar doesn't interfere with dropdown */
+.navbar {
+    z-index: 1030 !important;
+}
+
+/* Force dropdown to appear above everything */
+#userDropdownMenu,
+.user-dropdown #userDropdownMenu {
+    position: fixed !important;
+    z-index: 2147483647 !important;
+    transform: translateZ(999px) !important;
+}
+
+/* Custom dropdown implementation styles */
+.nav-item.dropdown {
+    position: relative !important;
+}
+
+#userDropdownMenu {
+    position: fixed !important;
+    top: 70px !important;
+    right: 20px !important;
+    z-index: 2147483647 !important;
+    min-width: 200px !important;
+    border: none !important;
+    border-radius: 12px !important;
+    box-shadow: 0 10px 30px rgba(229, 81, 0, 0.25), 0 4px 15px rgba(0, 0, 0, 0.1) !important;
+    background: white !important;
+    padding: 0.75rem 0 !important;
+    list-style: none !important;
+    margin: 0 !important;
+    overflow: hidden !important;
+    transform: translateZ(0) !important;
+}
+
+/* Ensure dropdown is visible when shown */
+#userDropdownMenu[style*="display: block"] {
+    display: block !important;
+}
+
+/* Animation for dropdown */
+#userDropdownMenu {
+    opacity: 0;
+    transform: translateY(-15px) scale(0.95);
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    pointer-events: none;
+    visibility: hidden;
+}
+
+#userDropdownMenu[style*="display: block"] {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    pointer-events: auto;
+    visibility: visible;
+}
+
+/* Responsive positioning for smaller screens */
+@media (max-width: 768px) {
+    #userDropdownMenu {
+        right: 10px !important;
+        top: 65px !important;
+        min-width: 180px !important;
+    }
+}
+
+/* Add a subtle backdrop blur effect */
+#userDropdownMenu::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border-radius: 12px;
+    z-index: -1;
+}
+
+/* Add dropdown arrow pointer */
+#userDropdownMenu::after {
+    content: '';
+    position: absolute;
+    top: -8px;
+    right: 20px;
+    width: 0;
+    height: 0;
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-bottom: 8px solid white;
+    filter: drop-shadow(0 -2px 4px rgba(229, 81, 0, 0.1));
+}
+
+/* Ensure the arrow is visible */
+#userDropdownMenu[style*="display: block"]::after {
+    display: block;
+}
+
+/* Enhanced Modal Overrides */
+.modal-header {
+    background: linear-gradient(135deg, #E55100 0%, #D32F2F 50%, #FF8F00 100%) !important;
+    color: white !important;
+    border-bottom: 2px solid rgba(255, 193, 7, 0.3) !important;
+    border-radius: 12px 12px 0 0 !important;
+    padding: 1.5rem 2rem !important;
+}
+
+.modal-header .modal-title {
+    color: white !important;
+    font-weight: 600 !important;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2) !important;
+}
+
+.modal-header .btn-close {
+    background: rgba(255, 255, 255, 0.2) !important;
+    border-radius: 50% !important;
+    opacity: 0.8 !important;
+    transition: all 0.3s ease !important;
+}
+
+.modal-header .btn-close:hover {
+    background: rgba(255, 255, 255, 0.3) !important;
+    opacity: 1 !important;
+    transform: scale(1.1) !important;
+}
+
+.modal-content {
+    border: none !important;
+    border-radius: 12px !important;
+    box-shadow: 0 20px 40px rgba(229, 81, 0, 0.2) !important;
+}
+
+.modal-footer {
+    border-top: 1px solid rgba(229, 81, 0, 0.2) !important;
+    padding: 1.5rem 2rem !important;
+}
+
+/* Tab Overrides */
+.nav-tabs .nav-link.active {
+    color: #E55100 !important;
+    border-color: #E55100 #E55100 #fff !important;
+}
+
+.nav-pills .nav-link.active {
+    background-color: #E55100 !important;
+}
+
+/* Accordion Overrides */
+.accordion-button:not(.collapsed) {
+    color: #E55100 !important;
+    background-color: rgba(229, 81, 0, 0.1) !important;
+}
+
+/* Enhanced Toast Overrides */
+.toast {
+    border: none !important;
+    border-radius: 12px !important;
+    box-shadow: 0 8px 25px rgba(229, 81, 0, 0.15) !important;
+    overflow: hidden !important;
+}
+
+.toast-header {
+    background: linear-gradient(135deg, rgba(229, 81, 0, 0.1), rgba(255, 193, 7, 0.05)) !important;
+    border-bottom: 2px solid rgba(229, 81, 0, 0.2) !important;
+    color: #8D6E63 !important;
+    font-weight: 600 !important;
+}
+
+.toast-body {
+    background-color: white !important;
+    color: #333 !important;
+}
+
+/* Enhanced Offcanvas Overrides */
+.offcanvas-header {
+    background: linear-gradient(135deg, #E55100 0%, #D32F2F 50%, #FF8F00 100%) !important;
+    color: white !important;
+    border-bottom: 2px solid rgba(255, 193, 7, 0.3) !important;
+    padding: 1.5rem 2rem !important;
+}
+
+.offcanvas-title {
+    color: white !important;
+    font-weight: 600 !important;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2) !important;
+}
+
+.offcanvas .btn-close {
+    background: rgba(255, 255, 255, 0.2) !important;
+    border-radius: 50% !important;
+    opacity: 0.8 !important;
+    transition: all 0.3s ease !important;
+}
+
+.offcanvas .btn-close:hover {
+    background: rgba(255, 255, 255, 0.3) !important;
+    opacity: 1 !important;
+    transform: scale(1.1) !important;
+}
+
+/* Special African Sunset Components */
+.sunset-gradient-text {
+    background: linear-gradient(135deg, #E55100 0%, #D32F2F 30%, #FF8F00 70%, #FFC107 100%) !important;
+    -webkit-background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+    background-clip: text !important;
+    font-weight: 700 !important;
+}
+
+.sunset-border {
+    border: 3px solid transparent !important;
+    background: linear-gradient(white, white) padding-box,
+                linear-gradient(135deg, #E55100, #D32F2F, #FF8F00, #FFC107) border-box !important;
+    border-radius: 12px !important;
+}
+
+.sunset-shadow {
+    box-shadow: 0 10px 30px rgba(229, 81, 0, 0.2) !important;
+}
+
+.sunset-glow {
+    box-shadow: 0 0 20px rgba(229, 81, 0, 0.3), 0 0 40px rgba(255, 193, 7, 0.2) !important;
+}
+
+/* FINAL OVERRIDE - Ensure African Sunset Theme Takes Precedence */
+/* This section ensures all buttons and headers use the sunset theme regardless of other CSS */
+
+/* Ultimate Button Override */
+body .btn-primary,
+body button.btn-primary,
+body a.btn-primary,
+body input[type="submit"].btn-primary,
+body .btn.btn-primary {
+    background: linear-gradient(135deg, #E55100, #D32F2F) !important;
+    border: none !important;
+    color: white !important;
+    box-shadow: 0 4px 12px rgba(229, 81, 0, 0.3) !important;
+}
+
+body .btn-primary:hover,
+body button.btn-primary:hover,
+body a.btn-primary:hover,
+body input[type="submit"].btn-primary:hover,
+body .btn.btn-primary:hover {
+    background: linear-gradient(135deg, #FF8F00, #E55100) !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 6px 15px rgba(229, 81, 0, 0.4) !important;
+    color: white !important;
+}
+
+body .btn-secondary,
+body button.btn-secondary,
+body a.btn-secondary,
+body .btn.btn-secondary {
+    background: linear-gradient(135deg, #FFC107, #FF8F00) !important;
+    border: none !important;
+    color: #333 !important;
+    box-shadow: 0 4px 12px rgba(255, 193, 7, 0.3) !important;
+}
+
+body .btn-secondary:hover,
+body button.btn-secondary:hover,
+body a.btn-secondary:hover,
+body .btn.btn-secondary:hover {
+    background: linear-gradient(135deg, #FFD54F, #FFC107) !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 6px 15px rgba(255, 193, 7, 0.4) !important;
+    color: #333 !important;
+}
+
+/* Ultimate Navbar Override - Maximum Specificity */
+html body .navbar-dark.bg-primary,
+html body nav.navbar.navbar-dark.bg-primary,
+html body .navbar.navbar-expand-lg.navbar-dark.bg-primary,
+body .navbar-dark.bg-primary,
+body nav.navbar.navbar-dark.bg-primary,
+body .navbar.navbar-expand-lg.navbar-dark.bg-primary,
+.navbar-dark.bg-primary,
+nav.navbar.navbar-dark.bg-primary,
+.navbar.navbar-expand-lg.navbar-dark.bg-primary {
+    background: linear-gradient(135deg, #E55100 0%, #D32F2F 50%, #FF8F00 100%) !important;
+    background-color: #E55100 !important;
+    box-shadow: 0 4px 20px rgba(229, 81, 0, 0.3) !important;
+    border-bottom: 2px solid rgba(255, 193, 7, 0.2) !important;
+}
+
+/* Ultimate Card Header Override */
+body .card-header,
+body .card .card-header,
+body div.card-header {
+    background: linear-gradient(135deg, #E55100 0%, #D32F2F 50%, #FF8F00 100%) !important;
+    color: white !important;
+    border-bottom: 2px solid rgba(255, 193, 7, 0.3) !important;
+}
+
+/* CRITICAL OVERRIDE - Force Navbar Colors */
+/* This is the most specific override possible for the navbar */
+* .navbar-dark.bg-primary,
+* nav.navbar-dark.bg-primary,
+* .navbar.navbar-dark.bg-primary,
+html * .navbar-dark.bg-primary,
+html * nav.navbar-dark.bg-primary,
+html * .navbar.navbar-dark.bg-primary {
+    background: linear-gradient(135deg, #E55100 0%, #D32F2F 50%, #FF8F00 100%) !important;
+    background-color: #E55100 !important;
+    background-image: linear-gradient(135deg, #E55100 0%, #D32F2F 50%, #FF8F00 100%) !important;
+}
+
+/* Force override Bootstrap's bg-primary utility class */
+* .bg-primary,
+html * .bg-primary,
+body * .bg-primary {
+    background: linear-gradient(135deg, #E55100, #D32F2F) !important;
+    background-color: #E55100 !important;
+    background-image: linear-gradient(135deg, #E55100, #D32F2F) !important;
+}
+
+/* NUCLEAR OPTION - Override everything with African Sunset */
+/* This will force the navbar to use sunset colors no matter what */
+.navbar[class*="bg-primary"],
+nav[class*="bg-primary"],
+[class*="navbar"][class*="bg-primary"] {
+    background: linear-gradient(135deg, #E55100 0%, #D32F2F 50%, #FF8F00 100%) !important;
+    background-color: #E55100 !important;
+    background-image: linear-gradient(135deg, #E55100 0%, #D32F2F 50%, #FF8F00 100%) !important;
+}
+
+/* Responsive adjustments for larger header */
+@media (max-width: 991.98px) {
+    .navbar-dark.bg-primary {
+        padding: 1rem 0 !important;
+        min-height: 70px !important;
+    }
+
+    .navbar-brand {
+        font-size: 1.75rem !important;
+        padding: 0.5rem 0 !important;
+    }
+
+    .navbar-brand img {
+        height: 35px !important;
+    }
+
+    .navbar-nav .nav-link {
+        font-size: 1.1rem !important;
+        padding: 0.75rem 1rem !important;
+    }
+
+    .theme-toggle {
+        width: 45px !important;
+        height: 45px !important;
+    }
+}
+
+@media (max-width: 575.98px) {
+    .navbar-dark.bg-primary {
+        padding: 0.75rem 0 !important;
+        min-height: 60px !important;
+    }
+
+    .navbar-brand {
+        font-size: 1.5rem !important;
+    }
+
+    .navbar-brand img {
+        height: 30px !important;
+    }
+
+    .theme-toggle {
+        width: 40px !important;
+        height: 40px !important;
+    }
+}
+
+
+
+/* Custom Emotion Colors with African Sunset Theme */
+.emotion-badge.happy {
+    background: linear-gradient(135deg, #FFC107, #FFD54F) !important;
+    color: #333 !important;
+}
+
+.emotion-badge.excited {
+    background: linear-gradient(135deg, #FF8F00, #FFC107) !important;
+    color: #333 !important;
+}
+
+.emotion-badge.energetic {
+    background: linear-gradient(135deg, #E55100, #FF8F00) !important;
+    color: white !important;
+}
+
+.emotion-badge.calm {
+    background: linear-gradient(135deg, #8D6E63, #A1887F) !important;
+    color: white !important;
+}
+
+.emotion-badge.relaxed {
+    background: linear-gradient(135deg, #8D6E63, #BCAAA4) !important;
+    color: white !important;
+}
+
+.emotion-badge.focused {
+    background: linear-gradient(135deg, #D32F2F, #E55100) !important;
+    color: white !important;
+}
+
+.emotion-badge.inspired {
+    background: linear-gradient(135deg, #FFC107, #E55100) !important;
+    color: white !important;
+}
+
+/* Feature Icons with African Sunset Colors */
+.feature-icon {
+    background: linear-gradient(135deg, rgba(229, 81, 0, 0.1), rgba(255, 193, 7, 0.1)) !important;
+}
+
+.feature-icon i {
+    color: #E55100 !important;
+}
+
+/* Card Hover Effects */
+.card:hover {
+    box-shadow: 0 8px 25px rgba(229, 81, 0, 0.15) !important;
+}
+
+/* Custom African-themed Elements */
+.african-pattern {
+    background-image:
+        radial-gradient(circle at 25% 25%, rgba(229, 81, 0, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 75% 75%, rgba(255, 193, 7, 0.1) 0%, transparent 50%);
+    background-size: 60px 60px;
+}
+
+/* Recommendation Cards */
+.recommendation-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(229, 81, 0, 0.2) !important;
+}
+
+/* Loading Spinners */
+.loading-spinner {
+    border-top-color: #E55100 !important;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar-thumb {
+    background: linear-gradient(135deg, #E55100, #D32F2F) !important;
+}
+
+/* Selection Color */
+::selection {
+    background-color: rgba(229, 81, 0, 0.3) !important;
+}
+
+::-moz-selection {
+    background-color: rgba(229, 81, 0, 0.3) !important;
+}

@@ -1,0 +1,80 @@
+/**
+ * MoodifyMe - Responsive Stylesheet
+ */
+
+/* Extra small devices (phones, less than 576px) */
+@media (max-width: 575.98px) {
+    .main-container {
+        padding: 1rem 0.5rem;
+    }
+    
+    .welcome-section,
+    .mood-detection-section {
+        padding: 1.5rem 1rem;
+    }
+    
+    .cta-buttons .btn {
+        margin: 0.5rem;
+        display: block;
+        width: 100%;
+    }
+    
+    .mood-input-options {
+        flex-direction: column;
+    }
+    
+    .input-option {
+        margin: 0.5rem 0;
+    }
+    
+    #video {
+        width: 100%;
+        height: auto;
+    }
+    
+    .auth-form {
+        padding: 1.5rem 1rem;
+    }
+}
+
+/* Small devices (landscape phones, 576px and up) */
+@media (min-width: 576px) and (max-width: 767.98px) {
+    .welcome-section,
+    .mood-detection-section {
+        padding: 1.75rem 1.5rem;
+    }
+    
+    .mood-input-options {
+        flex-wrap: wrap;
+    }
+    
+    .input-option {
+        margin: 0.5rem;
+    }
+}
+
+/* Medium devices (tablets, 768px and up) */
+@media (min-width: 768px) and (max-width: 991.98px) {
+    .recommendation-card .card-img-top {
+        height: 160px;
+    }
+}
+
+/* Large devices (desktops, 992px and up) */
+@media (min-width: 992px) {
+    .main-container {
+        padding: 3rem 1rem;
+    }
+    
+    .welcome-section,
+    .mood-detection-section {
+        padding: 3rem;
+    }
+}
+
+/* Extra large devices (large desktops, 1200px and up) */
+@media (min-width: 1200px) {
+    .container {
+        max-width: 1140px;
+    }
+}

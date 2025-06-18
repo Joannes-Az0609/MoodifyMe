@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Joke Functionality</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .test-container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        button {
+            background: #6366f1;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            cursor: pointer;
+            margin: 10px;
+            font-size: 16px;
+        }
+        button:hover {
+            background: #5855eb;
+        }
+        .response {
+            background: #f0f9ff;
+            border: 1px solid #0ea5e9;
+            border-radius: 6px;
+            padding: 15px;
+            margin: 15px 0;
+            white-space: pre-wrap;
+        }
+        .error {
+            background: #fef2f2;
+            border: 1px solid #ef4444;
+            color: #dc2626;
+        }
+        .loading {
+            background: #fffbeb;
+            border: 1px solid #f59e0b;
+            color: #d97706;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1>🧪 MoodifyMe Joke Test</h1>
+        <p>This page tests the joke functionality directly.</p>
+        
+        <div>
+            <button onclick="testJokeEndpoint()">Test /api/chat/joke Endpoint</button>
+            <button onclick="testChatWithJoke()">Test /api/chat/message with requestJoke</button>
+            <button onclick="testChatNaturalJoke()">Test Natural Joke Request</button>
+            <button onclick="testHealthCheck()">Test Health Check</button>
+        </div>
+        
+        <div id="results"></div>
+    </div>
+
+    <script>
+        const apiUrl = window.location.origin;
+        const resultsDiv = document.getElementById('results');
+
+        function addResult(title, content, isError = false) {
+            const div = document.createElement('div');
+            div.className = `response ${isError ? 'error' : ''}`;
+            div.innerHTML = `<strong>${title}</strong><br>${content}`;
+            resultsDiv.appendChild(div);
+        }
+
+        function addLoading(title) {
+            const div = document.createElement('div');
+            div.className = 'response loading';
+            div.innerHTML = `<strong>${title}</strong><br>Loading...`;
+            div.id = 'loading-' + Date.now();
+            resultsDiv.appendChild(div);
+            return div.id;
+        }
+
+        function updateLoading(id, title, content, isError = false) {
+            const div = document.getElementById(id);
+            if (div) {
+                div.className = `response ${isError ? 'error' : ''}`;
+                div.innerHTML = `<strong>${title}</strong><br>${content}`;
+            }
+        }
+
+        async function testHealthCheck() {
+            const loadingId = addLoading('Health Check');
+            try {
+                const response = await fetch(`${apiUrl}/api/health`);
+                const data = await response.json();
+                updateLoading(loadingId, '✅ Health Check', JSON.stringify(data, null, 2));
+            } catch (error) {
+                updateLoading(loadingId, '❌ Health Check Failed', error.message, true);
+            }
+        }
+
+        async function testJokeEndpoint() {
+            const loadingId = addLoading('Direct Joke Endpoint Test');
+            try {
+                const response = await fetch(`${apiUrl}/api/chat/joke`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        mood: 'neutral',
+                        context: 'testing'
+                    })
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+                
+                const data = await response.json();
+                updateLoading(loadingId, '✅ Direct Joke Endpoint', 
+                    `Joke: ${data.data.joke}\nCategory: ${data.data.category}\nMood: ${data.data.mood}`);
+            } catch (error) {
+                updateLoading(loadingId, '❌ Direct Joke Endpoint Failed', error.message, true);
+            }
+        }
+
+        async function testChatWithJoke() {
+            const loadingId = addLoading('Chat Message with requestJoke=true');
+            try {
+                const response = await fetch(`${apiUrl}/api/chat/message`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        message: 'Tell me a joke',
+                        requestJoke: true,
+                        conversationId: 'test-' + Date.now()
+                    })
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+                
+                const data = await response.json();
+                updateLoading(loadingId, '✅ Chat with requestJoke=true', 
+                    `Response: ${data.data.response}\nType: ${data.data.type}\nMood: ${data.data.mood.mood} (${Math.round(data.data.mood.confidence * 100)}%)`);
+            } catch (error) {
+                updateLoading(loadingId, '❌ Chat with requestJoke Failed', error.message, true);
+            }
+        }
+
+        async function testChatNaturalJoke() {
+            const loadingId = addLoading('Natural Joke Request');
+            try {
+                const response = await fetch(`${apiUrl}/api/chat/message`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        message: 'Can you tell me a funny joke please?',
+                        conversationId: 'test-natural-' + Date.now()
+                    })
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+                
+                const data = await response.json();
+                updateLoading(loadingId, '✅ Natural Joke Request', 
+                    `Response: ${data.data.response}\nType: ${data.data.type}\nMood: ${data.data.mood.mood} (${Math.round(data.data.mood.confidence * 100)}%)`);
+            } catch (error) {
+                updateLoading(loadingId, '❌ Natural Joke Request Failed', error.message, true);
+            }
+        }
+
+        // Auto-run health check on page load
+        window.addEventListener('load', () => {
+            testHealthCheck();
+        });
+    </script>
+</body>
+</html>

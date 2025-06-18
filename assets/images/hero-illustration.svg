@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="800px" height="600px" viewBox="0 0 800 600" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <defs>
+        <linearGradient x1="0%" y1="0%" x2="100%" y2="100%" id="linearGradient-1">
+            <stop stop-color="#FFFFFF" stop-opacity="0.2" offset="0%"></stop>
+            <stop stop-color="#FFFFFF" stop-opacity="0.1" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="0%" y1="0%" x2="100%" y2="100%" id="linearGradient-2">
+            <stop stop-color="#FFFFFF" offset="0%"></stop>
+            <stop stop-color="#F5F5F5" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="0%" y1="0%" x2="100%" y2="100%" id="linearGradient-3">
+            <stop stop-color="#F39C12" offset="0%"></stop>
+            <stop stop-color="#E74C3C" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="0%" y1="0%" x2="100%" y2="100%" id="linearGradient-4">
+            <stop stop-color="#3498DB" offset="0%"></stop>
+            <stop stop-color="#8E44AD" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="0%" y1="0%" x2="100%" y2="100%" id="linearGradient-5">
+            <stop stop-color="#1ABC9C" offset="0%"></stop>
+            <stop stop-color="#16A085" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="Hero-Illustration" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <!-- Background Circles -->
+        <circle id="Circle-1" fill="url(#linearGradient-1)" cx="400" cy="300" r="250"></circle>
+        <circle id="Circle-2" fill="url(#linearGradient-1)" cx="400" cy="300" r="200"></circle>
+        <circle id="Circle-3" fill="url(#linearGradient-1)" cx="400" cy="300" r="150"></circle>
+        
+        <!-- Central Elements -->
+        <g id="Central-Elements" transform="translate(250, 150)">
+            <!-- Brain Icon -->
+            <path d="M150,50 C183.137,50 210,76.8629 210,110 C210,143.137 183.137,170 150,170 C116.863,170 90,143.137 90,110 C90,76.8629 116.863,50 150,50 Z" id="Brain-Background" fill="url(#linearGradient-2)"></path>
+            <path d="M150,70 C172.091,70 190,87.9086 190,110 C190,132.091 172.091,150 150,150 C127.909,150 110,132.091 110,110 C110,87.9086 127.909,70 150,70 Z" id="Brain-Inner" fill="white"></path>
+            <path d="M150,80 C166.569,80 180,93.4315 180,110 C180,126.569 166.569,140 150,140 C133.431,140 120,126.569 120,110 C120,93.4315 133.431,80 150,80 Z" id="Brain-Core" fill="url(#linearGradient-4)"></path>
+            
+            <!-- Emotion Icons -->
+            <g id="Emotion-Icons" transform="translate(0, 0)">
+                <!-- Happy -->
+                <circle id="Happy-Background" fill="url(#linearGradient-3)" cx="70" cy="60" r="30"></circle>
+                <path d="M70,50 C75.5228,50 80,54.4772 80,60 C80,65.5228 75.5228,70 70,70 C64.4772,70 60,65.5228 60,60 C60,54.4772 64.4772,50 70,50 Z" id="Happy-Face" fill="white"></path>
+                <path d="M65,55 C66.1046,55 67,55.8954 67,57 C67,58.1046 66.1046,59 65,59 C63.8954,59 63,58.1046 63,57 C63,55.8954 63.8954,55 65,55 Z" id="Happy-Eye-Left" fill="#333333"></path>
+                <path d="M75,55 C76.1046,55 77,55.8954 77,57 C77,58.1046 76.1046,59 75,59 C73.8954,59 73,58.1046 73,57 C73,55.8954 73.8954,55 75,55 Z" id="Happy-Eye-Right" fill="#333333"></path>
+                <path d="M65,63 C65,63 67.5,66 70,66 C72.5,66 75,63 75,63" id="Happy-Smile" stroke="#333333" stroke-width="2" stroke-linecap="round"></path>
+                
+                <!-- Sad -->
+                <circle id="Sad-Background" fill="url(#linearGradient-4)" cx="230" cy="60" r="30"></circle>
+                <path d="M230,50 C235.523,50 240,54.4772 240,60 C240,65.5228 235.523,70 230,70 C224.477,70 220,65.5228 220,60 C220,54.4772 224.477,50 230,50 Z" id="Sad-Face" fill="white"></path>
+                <path d="M225,55 C226.105,55 227,55.8954 227,57 C227,58.1046 226.105,59 225,59 C223.895,59 223,58.1046 223,57 C223,55.8954 223.895,55 225,55 Z" id="Sad-Eye-Left" fill="#333333"></path>
+                <path d="M235,55 C236.105,55 237,55.8954 237,57 C237,58.1046 236.105,59 235,59 C233.895,59 233,58.1046 233,57 C233,55.8954 233.895,55 235,55 Z" id="Sad-Eye-Right" fill="#333333"></path>
+                <path d="M225,66 C225,66 227.5,63 230,63 C232.5,63 235,66 235,66" id="Sad-Frown" stroke="#333333" stroke-width="2" stroke-linecap="round"></path>
+                
+                <!-- Calm -->
+                <circle id="Calm-Background" fill="url(#linearGradient-5)" cx="70" cy="160" r="30"></circle>
+                <path d="M70,150 C75.5228,150 80,154.477 80,160 C80,165.523 75.5228,170 70,170 C64.4772,170 60,165.523 60,160 C60,154.477 64.4772,150 70,150 Z" id="Calm-Face" fill="white"></path>
+                <path d="M65,155 C66.1046,155 67,155.895 67,157 C67,158.105 66.1046,159 65,159 C63.8954,159 63,158.105 63,157 C63,155.895 63.8954,155 65,155 Z" id="Calm-Eye-Left" fill="#333333"></path>
+                <path d="M75,155 C76.1046,155 77,155.895 77,157 C77,158.105 76.1046,159 75,159 C73.8954,159 73,158.105 73,157 C73,155.895 73.8954,155 75,155 Z" id="Calm-Eye-Right" fill="#333333"></path>
+                <path d="M65,163 L75,163" id="Calm-Mouth" stroke="#333333" stroke-width="2" stroke-linecap="round"></path>
+                
+                <!-- Excited -->
+                <circle id="Excited-Background" fill="url(#linearGradient-3)" cx="230" cy="160" r="30"></circle>
+                <path d="M230,150 C235.523,150 240,154.477 240,160 C240,165.523 235.523,170 230,170 C224.477,170 220,165.523 220,160 C220,154.477 224.477,150 230,150 Z" id="Excited-Face" fill="white"></path>
+                <path d="M225,155 C226.105,155 227,155.895 227,157 C227,158.105 226.105,159 225,159 C223.895,159 223,158.105 223,157 C223,155.895 223.895,155 225,155 Z" id="Excited-Eye-Left" fill="#333333"></path>
+                <path d="M235,155 C236.105,155 237,155.895 237,157 C237,158.105 236.105,159 235,159 C233.895,159 233,158.105 233,157 C233,155.895 233.895,155 235,155 Z" id="Excited-Eye-Right" fill="#333333"></path>
+                <path d="M225,163 C225,163 227.5,166 230,166 C232.5,166 235,163 235,163" id="Excited-Smile" stroke="#333333" stroke-width="2" stroke-linecap="round"></path>
+                <path d="M230,145 L230,140 M220,150 L215,145 M240,150 L245,145 M220,170 L215,175 M240,170 L245,175" id="Excited-Sparkles" stroke="#F39C12" stroke-width="2" stroke-linecap="round"></path>
+            </g>
+            
+            <!-- Connection Lines -->
+            <path d="M100,60 L120,110 M200,60 L180,110 M100,160 L120,110 M200,160 L180,110" id="Connection-Lines" stroke="url(#linearGradient-1)" stroke-width="3" stroke-linecap="round" stroke-dasharray="5,5"></path>
+        </g>
+        
+        <!-- Decorative Elements -->
+        <g id="Decorative-Elements">
+            <circle id="Dot-1" fill="#F39C12" cx="150" cy="100" r="5"></circle>
+            <circle id="Dot-2" fill="#E74C3C" cx="650" cy="100" r="5"></circle>
+            <circle id="Dot-3" fill="#3498DB" cx="150" cy="500" r="5"></circle>
+            <circle id="Dot-4" fill="#1ABC9C" cx="650" cy="500" r="5"></circle>
+            
+            <path d="M150,100 C150,100 250,50 400,50 C550,50 650,100 650,100" id="Curve-Top" stroke="url(#linearGradient-3)" stroke-width="2" stroke-linecap="round" stroke-dasharray="5,5"></path>
+            <path d="M150,500 C150,500 250,550 400,550 C550,550 650,500 650,500" id="Curve-Bottom" stroke="url(#linearGradient-5)" stroke-width="2" stroke-linecap="round" stroke-dasharray="5,5"></path>
+            <path d="M150,100 C150,100 100,250 100,300 C100,350 150,500 150,500" id="Curve-Left" stroke="url(#linearGradient-4)" stroke-width="2" stroke-linecap="round" stroke-dasharray="5,5"></path>
+            <path d="M650,100 C650,100 700,250 700,300 C700,350 650,500 650,500" id="Curve-Right" stroke="url(#linearGradient-4)" stroke-width="2" stroke-linecap="round" stroke-dasharray="5,5"></path>
+        </g>
+        
+        <!-- Music Notes -->
+        <g id="Music-Notes" transform="translate(100, 200)">
+            <path d="M50,50 L50,80 C50,80 40,75 30,80 C20,85 20,100 30,105 C40,110 50,105 50,95 L50,50 L60,45 L60,75 C60,75 70,70 80,75 C90,80 90,95 80,100 C70,105 60,100 60,90 L60,40 L50,50 Z" id="Music-Note" fill="url(#linearGradient-3)" opacity="0.7"></path>
+        </g>
+        
+        <!-- Movie Icon -->
+        <g id="Movie-Icon" transform="translate(600, 200)">
+            <rect id="Movie-Frame" fill="url(#linearGradient-4)" x="0" y="0" width="80" height="60" rx="5"></rect>
+            <rect id="Movie-Screen" fill="white" x="10" y="10" width="60" height="40" rx="2"></rect>
+            <path d="M30,25 L50,30 L30,35 Z" id="Movie-Play" fill="url(#linearGradient-4)"></path>
+        </g>
+    </g>
+</svg>
