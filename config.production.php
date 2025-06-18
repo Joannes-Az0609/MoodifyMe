@@ -5,9 +5,11 @@
  */
 
 // Detect environment
-$isProduction = isset($_ENV['RAILWAY_ENVIRONMENT']) || 
-                isset($_ENV['VERCEL_ENV']) || 
+$isProduction = isset($_ENV['RAILWAY_ENVIRONMENT']) ||
+                isset($_ENV['VERCEL_ENV']) ||
                 isset($_ENV['HEROKU_APP_NAME']) ||
+                isset($_ENV['RENDER']) ||
+                strpos($_SERVER['HTTP_HOST'], '.onrender.com') !== false ||
                 $_SERVER['HTTP_HOST'] !== 'localhost';
 
 // Database Configuration - Use environment variables

@@ -1,0 +1,34 @@
+# Exclude Node.js AI Assistant directory from PHP Docker build
+MoodifyMe Assistant/
+
+# Exclude version control
+.git
+.gitignore
+
+# Exclude documentation
+*.md
+docs/
+
+# Exclude development files
+.env
+.env.local
+.env.example
+
+# Exclude logs and cache
+logs/
+cache/
+uploads/
+
+# Exclude OS files
+.DS_Store
+Thumbs.db
+
+# Exclude IDE files
+.vscode/
+.idea/
+
+# Exclude build files
+build.sh
+start.sh
+railway.toml
+vercel.json

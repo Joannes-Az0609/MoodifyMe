@@ -5,7 +5,12 @@
  */
 
 // Include configuration and functions
-require_once 'config.php';
+// Use production config if in production environment
+if (isset($_ENV['RENDER']) || strpos($_SERVER['HTTP_HOST'], '.onrender.com') !== false || $_SERVER['HTTP_HOST'] !== 'localhost') {
+    require_once 'config.production.php';
+} else {
+    require_once 'config.php';
+}
 require_once 'includes/functions.php';
 require_once 'includes/db_connect.php';
 
