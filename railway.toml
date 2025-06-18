@@ -1,0 +1,11 @@
+[build]
+builder = "nixpacks"
+
+[deploy]
+healthcheckPath = "/"
+healthcheckTimeout = 100
+restartPolicyType = "never"
+
+[environments.production.variables]
+PHP_VERSION = "8.1"
+NODE_VERSION = "18"
