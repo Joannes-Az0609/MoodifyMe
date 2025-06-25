@@ -15,6 +15,8 @@ const chatService = require('./services/chatService');
 // Import routes
 const chatRoutes = require('./routes/chat');
 const healthRoutes = require('./routes/health');
+const crisisRoutes = require('./routes/crisis');
+const crisisRoutes = require('./routes/crisis');
 
 // Import middleware
 const { errorHandler, notFoundHandler } = require('./middleware/errorHandler');
@@ -101,18 +103,26 @@ class App {
     // API routes
     this.app.use('/api/chat', chatRoutes);
     this.app.use('/api/health', healthRoutes);
+    this.app.use('/api/crisis', crisisRoutes);
 
     // Root endpoint
     this.app.get('/', (req, res) => {
       res.json({
-        name: 'Mood RAG Chatbot API',
+        name: 'MoodifyMe AI Assistant API',
         version: '1.0.0',
-        description: 'A RAG-powered chatbot that improves mood and tells jokes',
+        description: 'AI-powered emotional wellness assistant with crisis intervention',
         endpoints: {
           chat: '/api/chat',
           health: '/api/health',
+          crisis: '/api/crisis',
           ping: '/ping'
         },
+        features: [
+          'Mood analysis and therapeutic support',
+          'Crisis detection and intervention',
+          'Emergency resource connection',
+          'Personalized coping strategies'
+        ],
         status: this.isInitialized ? 'ready' : 'initializing'
       });
     });

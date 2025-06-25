@@ -6,6 +6,10 @@ const geminiConfig = require('../config/gemini');
 const logger = require('../utils/logger');
 const { v4: uuidv4 } = require('uuid');
 
+// Enhanced Crisis Intervention System
+const crisisDetection = require('./crisisDetection');
+const crisisIntervention = require('./crisisIntervention');
+
 class ChatService {
   constructor() {
     this.conversations = new Map(); // In-memory storage for conversations
@@ -80,13 +84,17 @@ class ChatService {
         mood: moodAnalysis
       });
 
-      // Check for crisis situations first
-      const crisisDetected = this.detectCrisis(message, moodAnalysis);
+      // Enhanced crisis detection and intervention
+      const crisisAssessment = await crisisDetection.assessCrisisRisk(
+        message,
+        conversationId,
+        conversation.messages || []
+      );
 
       // Determine response type based on crisis, options and mood
       let response;
-      if (crisisDetected) {
-        response = await this.generateCrisisResponse(message, moodAnalysis, conversation, crisisDetected);
+      if (crisisAssessment.riskLevel >= 3) {
+        response = await this.generateEnhancedCrisisResponse(message, moodAnalysis, conversation, crisisAssessment);
       } else if (options.requestJoke || this.shouldTellJoke(message, moodAnalysis)) {
         response = await this.generateJokeResponse(message, moodAnalysis, conversation);
       } else {
@@ -728,21 +736,23 @@ Respond as Chat-Tevez, your therapeutic AI assistant, with professional warmth a
     }).slice(0, 5); // Keep max 5 important messages
   }
 
-  // Crisis detection system for therapeutic safety
+  // Legacy crisis detection - kept for backward compatibility
+  // The new system uses crisisDetection.assessCrisisRisk() instead
   detectCrisis(message, moodAnalysis) {
-    const crisisKeywords = {
-      suicide: ['kill myself', 'end my life', 'suicide', 'want to die', 'better off dead', 'not worth living', 'end it all', 'take my own life'],
-      selfHarm: ['cut myself', 'hurt myself', 'self harm', 'self-harm', 'cutting', 'burning myself', 'harm myself'],
-      violence: ['hurt someone', 'kill someone', 'violent thoughts', 'want to hurt others', 'harm others'],
-      severe: ['can\'t go on', 'hopeless', 'no point', 'give up', 'nothing matters', 'no way out']
-    };
+    // This method is now primarily used as a fallback
+    // The main crisis detection is handled by the enhanced crisisDetection service
 
+    const basicKeywords = ['kill myself', 'end my life', 'suicide', 'want to die', 'hurt myself'];
     const lowerMessage = message.toLowerCase();
 
-    for (const [type, keywords] of Object.entries(crisisKeywords)) {
-      if (keywords.some(keyword => lowerMessage.includes(keyword))) {
-        return { type, severity: type === 'suicide' ? 'critical' : type === 'selfHarm' ? 'high' : 'medium' };
-      }
+    const hasCrisisKeywords = basicKeywords.some(keyword => lowerMessage.includes(keyword));
+
+    if (hasCrisisKeywords) {
+      return {
+        type: 'crisis_detected',
+        severity: 'high',
+        note: 'Basic detection - enhanced system should be used'
+      };
     }
 
     // Check mood-based crisis indicators
@@ -753,33 +763,106 @@ Respond as Chat-Tevez, your therapeutic AI assistant, with professional warmth a
     return null;
   }
 
-  // Crisis intervention response with professional resources
-  async generateCrisisResponse(message, moodAnalysis, conversation, crisisInfo) {
-    const crisisResources = {
-      suicide: {
-        message: "🚨 **IMMEDIATE CRISIS SUPPORT NEEDED** 🚨\n\nI'm very concerned about what you've shared. Your life has value and meaning. Please reach out for immediate professional help:\n\n**IMMEDIATE RESOURCES:**\n• **National Suicide Prevention Lifeline: 988** (24/7)\n• **Crisis Text Line: Text HOME to 741741**\n• **Emergency Services: 911**\n\n**International:**\n• International Association for Suicide Prevention: https://www.iasp.info/resources/Crisis_Centres/\n\nYou don't have to face this alone. Professional counselors are available right now to help you through this crisis. Please reach out immediately.",
-        urgency: "critical"
-      },
-      selfHarm: {
-        message: "🚨 **CRISIS SUPPORT NEEDED** 🚨\n\nI'm concerned about your safety and the pain you're experiencing. Self-harm is often a way of coping with overwhelming emotions, but there are safer alternatives. Please consider immediate support:\n\n**RESOURCES:**\n• **Crisis Text Line: Text HOME to 741741**\n• **National Suicide Prevention Lifeline: 988**\n• **Self-Injury Outreach & Support: sioutreach.org**\n\nYour feelings are completely valid, and there are healthier ways to manage this intense emotional pain. Professional help is available.",
-        urgency: "high"
-      },
-      severe_depression: {
-        message: "💙 **THERAPEUTIC SUPPORT RECOMMENDED** 💙\n\nI can sense you're experiencing significant emotional distress. Depression can make everything feel overwhelming and hopeless, but these feelings can improve with proper therapeutic support.\n\n**RECOMMENDED RESOURCES:**\n• **National Alliance on Mental Illness: 1-800-950-NAMI**\n• **Psychology Today Therapist Directory: psychologytoday.com**\n• **Your primary care physician for referrals**\n\nYou deserve professional therapeutic support during this difficult time. These feelings can change with proper care.",
-        urgency: "moderate"
-      },
-      violence: {
-        message: "🚨 **IMMEDIATE PROFESSIONAL HELP NEEDED** 🚨\n\nI'm concerned about the thoughts you're experiencing. Having thoughts about harming others requires immediate professional intervention:\n\n**IMMEDIATE ACTION:**\n• **Call 911 or go to your nearest emergency room**\n• **National Crisis Line: 988**\n• **Crisis Text Line: Text HOME to 741741**\n\nThese thoughts are a sign that you need professional support right now. Please reach out immediately for everyone's safety.",
-        urgency: "critical"
-      }
-    };
+  // Enhanced crisis intervention response
+  async generateEnhancedCrisisResponse(message, moodAnalysis, conversation, crisisAssessment) {
+    try {
+      // Execute comprehensive crisis intervention
+      const intervention = await crisisIntervention.executeIntervention(
+        crisisAssessment,
+        conversation.id,
+        message,
+        {
+          mood: moodAnalysis,
+          conversationHistory: conversation.messages,
+          personalDetails: conversation.personalDetails
+        }
+      );
 
-    const response = crisisResources[crisisInfo.type] || crisisResources.severe_depression;
+      // Create enhanced response with intervention guidance
+      const responseContent = this.formatCrisisInterventionResponse(intervention, crisisAssessment);
 
-    // Log crisis intervention for safety monitoring
-    logger.error(`CRISIS INTERVENTION TRIGGERED: ${crisisInfo.type} (${crisisInfo.severity} severity) - User message: ${message.substring(0, 100)}...`);
+      return {
+        content: responseContent,
+        type: 'crisis_intervention',
+        intervention: intervention,
+        crisisLevel: crisisAssessment.riskLevel,
+        sources: [],
+        requiresFollowUp: intervention.followUp?.immediate || false
+      };
+    } catch (error) {
+      logger.error('Error in enhanced crisis response:', error);
 
-    return response.message;
+      // Fallback to basic crisis response
+      return {
+        content: this.getEmergencyCrisisResponse(crisisAssessment),
+        type: 'crisis_fallback',
+        crisisLevel: crisisAssessment.riskLevel,
+        sources: []
+      };
+    }
+  }
+
+  formatCrisisInterventionResponse(intervention, crisisAssessment) {
+    let response = intervention.message;
+
+    // Add coping strategies if available
+    if (intervention.copingStrategies && intervention.copingStrategies.length > 0) {
+      response += `\n\n**🧠 IMMEDIATE COPING STRATEGIES:**\n`;
+      intervention.copingStrategies.slice(0, 3).forEach((strategy, index) => {
+        response += `${index + 1}. ${strategy}\n`;
+      });
+    }
+
+    // Add follow-up information for non-critical cases
+    if (intervention.level !== 'CRITICAL' && intervention.followUp) {
+      response += `\n\n💙 **I'M HERE FOR YOU:**\nI'll check in with you to see how you're doing. Your wellbeing matters, and you don't have to face this alone.`;
+    }
+
+    // Add confidence and support message
+    if (crisisAssessment.riskLevel < 8) {
+      response += `\n\n🌟 **REMEMBER:**\nThese intense feelings are temporary, even though they feel overwhelming right now. You have survived difficult times before, and you can get through this too.`;
+    }
+
+    return response;
+  }
+
+  getEmergencyCrisisResponse(crisisAssessment) {
+    const { riskLevel, crisisType } = crisisAssessment;
+
+    if (riskLevel >= 9 || ['suicide', 'violence'].includes(crisisType)) {
+      return `🚨 **IMMEDIATE CRISIS SUPPORT NEEDED** 🚨
+
+I'm very concerned about your safety. Please reach out for immediate professional help:
+
+**🆘 IMMEDIATE RESOURCES:**
+• **Call 988** - National Suicide Prevention Lifeline (24/7)
+• **Text HOME to 741741** - Crisis Text Line
+• **Call 911** - Emergency Services
+
+You don't have to face this alone. Professional help is available right now.`;
+    } else if (riskLevel >= 6) {
+      return `💙 **CRISIS SUPPORT AVAILABLE** 💙
+
+I can see you're going through a very difficult time. Please consider reaching out for professional support:
+
+**🤝 SUPPORT RESOURCES:**
+• **Crisis Text Line:** Text HOME to 741741
+• **National Crisis Line:** 988
+• **National Alliance on Mental Illness:** 1-800-950-NAMI
+
+These feelings can improve with proper support. You deserve care and healing.`;
+    } else {
+      return `💙 **SUPPORT & VALIDATION** 💙
+
+I want to acknowledge the difficult emotions you're experiencing. Your feelings are valid and important.
+
+**🌟 GENTLE REMINDERS:**
+• These feelings are temporary, even when they feel overwhelming
+• Seeking support is a sign of strength
+• You have survived difficult times before
+
+I'm here to listen and support you. What would feel most helpful right now?`;
+    }
   }
 
   // Enhanced therapeutic response generation

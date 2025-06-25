@@ -81,6 +81,8 @@ $currentPage = basename($_SERVER['PHP_SELF']);
             z-index: 15 !important;
             position: relative !important;
         }
+
+
     </style>
 
     <!-- Favicon -->

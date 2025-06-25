@@ -4726,3 +4726,288 @@
 {"level":"info","message":"Found 0 relevant documents","service":"mood-rag-chatbot","timestamp":"2025-06-15T12:31:09.493Z"}
 {"ip":"::1","level":"info","message":"GET /api/health","service":"mood-rag-chatbot","timestamp":"2025-06-15T12:31:12.307Z","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36"}
 {"level":"info","message":"Processed message for conversation web_1749990621750_x0cqokysx, mood: anxious","service":"mood-rag-chatbot","timestamp":"2025-06-15T12:31:12.460Z"}
+{"level":"error","message":"Error generating text with Gemini: Gemini model not initialized. Call initialize() first.","service":"mood-rag-chatbot","stack":"Error: Gemini model not initialized. Call initialize() first.\n    at GeminiConfig.getModel (D:\\Xampp\\htdocs\\MoodifyMe\\MoodifyMe Assistant\\src\\config\\gemini.js:62:13)\n    at GeminiConfig.generateText (D:\\Xampp\\htdocs\\MoodifyMe\\MoodifyMe Assistant\\src\\config\\gemini.js:109:26)\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at async CrisisDetectionService.getAIRiskAssessment (D:\\Xampp\\htdocs\\MoodifyMe\\MoodifyMe Assistant\\src\\services\\crisisDetection.js:272:24)\n    at async CrisisDetectionService.assessCrisisRisk (D:\\Xampp\\htdocs\\MoodifyMe\\MoodifyMe Assistant\\src\\services\\crisisDetection.js:77:26)\n    at async testCrisisSystem (D:\\Xampp\\htdocs\\MoodifyMe\\MoodifyMe Assistant\\scripts\\testCrisisSystem.js:64:26)","timestamp":"2025-06-25T18:48:37.933Z"}
+{"level":"error","message":"Error getting AI risk assessment: AI service temporarily unavailable: Gemini model not initialized. Call initialize() first.","service":"mood-rag-chatbot","stack":"Error: AI service temporarily unavailable: Gemini model not initialized. Call initialize() first.\n    at GeminiConfig.generateText (D:\\Xampp\\htdocs\\MoodifyMe\\MoodifyMe Assistant\\src\\config\\gemini.js:136:13)\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at async CrisisDetectionService.getAIRiskAssessment (D:\\Xampp\\htdocs\\MoodifyMe\\MoodifyMe Assistant\\src\\services\\crisisDetection.js:272:24)\n    at async CrisisDetectionService.assessCrisisRisk (D:\\Xampp\\htdocs\\MoodifyMe\\MoodifyMe Assistant\\src\\services\\crisisDetection.js:77:26)\n    at async testCrisisSystem (D:\\Xampp\\htdocs\\MoodifyMe\\MoodifyMe Assistant\\scripts\\testCrisisSystem.js:64:26)","timestamp":"2025-06-25T18:48:37.936Z"}
+{"level":"error","message":"Error generating text with Gemini: Gemini model not initialized. Call initialize() first.","service":"mood-rag-chatbot","stack":"Error: Gemini model not initialized. Call initialize() first.\n    at GeminiConfig.getModel (D:\\Xampp\\htdocs\\MoodifyMe\\MoodifyMe Assistant\\src\\config\\gemini.js:62:13)\n    at GeminiConfig.generateText (D:\\Xampp\\htdocs\\MoodifyMe\\MoodifyMe Assistant\\src\\config\\gemini.js:109:26)\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at async CrisisDetectionService.getAIRiskAssessment (D:\\Xampp\\htdocs\\MoodifyMe\\MoodifyMe Assistant\\src\\services\\crisisDetection.js:272:24)\n    at async CrisisDetectionService.assessCrisisRisk (D:\\Xampp\\htdocs\\MoodifyMe\\MoodifyMe Assistant\\src\\services\\crisisDetection.js:77:26)\n    at async testCrisisSystem (D:\\Xampp\\htdocs\\MoodifyMe\\MoodifyMe Assistant\\scripts\\testCrisisSystem.js:64:26)","timestamp":"2025-06-25T18:48:37.938Z"}
+{"level":"error","message":"Error getting AI risk assessment: AI service temporarily unavailable: Gemini model not initialized. Call initialize() first.","service":"mood-rag-chatbot","stack":"Error: AI service temporarily unavailable: Gemini model not initialized. Call initialize() first.\n    at GeminiConfig.generateText (D:\\Xampp\\htdocs\\MoodifyMe\\MoodifyMe Assistant\\src\\config\\gemini.js:136:13)\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at async CrisisDetectionService.getAIRiskAssessment (D:\\Xampp\\htdocs\\MoodifyMe\\MoodifyMe Assistant\\src\\services\\crisisDetection.js:272:24)\n    at async CrisisDetectionService.assessCrisisRisk (D:\\Xampp\\htdocs\\MoodifyMe\\MoodifyMe Assistant\\src\\services\\crisisDetection.js:77:26)\n    at async testCrisisSystem (D:\\Xampp\\htdocs\\MoodifyMe\\MoodifyMe Assistant\\scripts\\testCrisisSystem.js:64:26)","timestamp":"2025-06-25T18:48:37.939Z"}
+{"level":"error","message":"Error generating text with Gemini: Gemini model not initialized. Call initialize() first.","service":"mood-rag-chatbot","stack":"Error: Gemini model not initialized. Call initialize() first.\n    at GeminiConfig.getModel (D:\\Xampp\\htdocs\\MoodifyMe\\MoodifyMe Assistant\\src\\config\\gemini.js:62:13)\n    at GeminiConfig.generateText (D:\\Xampp\\htdocs\\MoodifyMe\\MoodifyMe Assistant\\src\\config\\gemini.js:109:26)\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at async CrisisDetectionService.getAIRiskAssessment (D:\\Xampp\\htdocs\\MoodifyMe\\MoodifyMe Assistant\\src\\services\\crisisDetection.js:272:24)\n    at async CrisisDetectionService.assessCrisisRisk (D:\\Xampp\\htdocs\\MoodifyMe\\MoodifyMe Assistant\\src\\services\\crisisDetection.js:77:26)\n    at async testCrisisSystem (D:\\Xampp\\htdocs\\MoodifyMe\\MoodifyMe Assistant\\scripts\\testCrisisSystem.js:64:26)","timestamp":"2025-06-25T18:48:37.940Z"}
+{"level":"error","message":"Error getting AI risk assessment: AI service temporarily unavailable: Gemini model not initialized. Call initialize() first.","service":"mood-rag-chatbot","stack":"Error: AI service temporarily unavailable: Gemini model not initialized. Call initialize() first.\n    at GeminiConfig.generateText (D:\\Xampp\\htdocs\\MoodifyMe\\MoodifyMe Assistant\\src\\config\\gemini.js:136:13)\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at async CrisisDetectionService.getAIRiskAssessment (D:\\Xampp\\htdocs\\MoodifyMe\\MoodifyMe Assistant\\src\\services\\crisisDetection.js:272:24)\n    at async CrisisDetectionService.assessCrisisRisk (D:\\Xampp\\htdocs\\MoodifyMe\\MoodifyMe Assistant\\src\\services\\crisisDetection.js:77:26)\n    at async testCrisisSystem (D:\\Xampp\\htdocs\\MoodifyMe\\MoodifyMe Assistant\\scripts\\testCrisisSystem.js:64:26)","timestamp":"2025-06-25T18:48:37.941Z"}
+{"level":"error","message":"Error generating text with Gemini: Gemini model not initialized. Call initialize() first.","service":"mood-rag-chatbot","stack":"Error: Gemini model not initialized. Call initialize() first.\n    at GeminiConfig.getModel (D:\\Xampp\\htdocs\\MoodifyMe\\MoodifyMe Assistant\\src\\config\\gemini.js:62:13)\n    at GeminiConfig.generateText (D:\\Xampp\\htdocs\\MoodifyMe\\MoodifyMe Assistant\\src\\config\\gemini.js:109:26)\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at async CrisisDetectionService.getAIRiskAssessment (D:\\Xampp\\htdocs\\MoodifyMe\\MoodifyMe Assistant\\src\\services\\crisisDetection.js:272:24)\n    at async CrisisDetectionService.assessCrisisRisk (D:\\Xampp\\htdocs\\MoodifyMe\\MoodifyMe Assistant\\src\\services\\crisisDetection.js:77:26)\n    at async testCrisisSystem (D:\\Xampp\\htdocs\\MoodifyMe\\MoodifyMe Assistant\\scripts\\testCrisisSystem.js:64:26)","timestamp":"2025-06-25T18:48:37.943Z"}
+{"level":"error","message":"Error getting AI risk assessment: AI service temporarily unavailable: Gemini model not initialized. Call initialize() first.","service":"mood-rag-chatbot","stack":"Error: AI service temporarily unavailable: Gemini model not initialized. Call initialize() first.\n    at GeminiConfig.generateText (D:\\Xampp\\htdocs\\MoodifyMe\\MoodifyMe Assistant\\src\\config\\gemini.js:136:13)\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at async CrisisDetectionService.getAIRiskAssessment (D:\\Xampp\\htdocs\\MoodifyMe\\MoodifyMe Assistant\\src\\services\\crisisDetection.js:272:24)\n    at async CrisisDetectionService.assessCrisisRisk (D:\\Xampp\\htdocs\\MoodifyMe\\MoodifyMe Assistant\\src\\services\\crisisDetection.js:77:26)\n    at async testCrisisSystem (D:\\Xampp\\htdocs\\MoodifyMe\\MoodifyMe Assistant\\scripts\\testCrisisSystem.js:64:26)","timestamp":"2025-06-25T18:48:37.943Z"}
+{"level":"error","message":"Error generating text with Gemini: Gemini model not initialized. Call initialize() first.","service":"mood-rag-chatbot","stack":"Error: Gemini model not initialized. Call initialize() first.\n    at GeminiConfig.getModel (D:\\Xampp\\htdocs\\MoodifyMe\\MoodifyMe Assistant\\src\\config\\gemini.js:62:13)\n    at GeminiConfig.generateText (D:\\Xampp\\htdocs\\MoodifyMe\\MoodifyMe Assistant\\src\\config\\gemini.js:109:26)\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at async CrisisDetectionService.getAIRiskAssessment (D:\\Xampp\\htdocs\\MoodifyMe\\MoodifyMe Assistant\\src\\services\\crisisDetection.js:272:24)\n    at async CrisisDetectionService.assessCrisisRisk (D:\\Xampp\\htdocs\\MoodifyMe\\MoodifyMe Assistant\\src\\services\\crisisDetection.js:77:26)\n    at async testCrisisSystem (D:\\Xampp\\htdocs\\MoodifyMe\\MoodifyMe Assistant\\scripts\\testCrisisSystem.js:64:26)","timestamp":"2025-06-25T18:48:37.945Z"}
+{"level":"error","message":"Error getting AI risk assessment: AI service temporarily unavailable: Gemini model not initialized. Call initialize() first.","service":"mood-rag-chatbot","stack":"Error: AI service temporarily unavailable: Gemini model not initialized. Call initialize() first.\n    at GeminiConfig.generateText (D:\\Xampp\\htdocs\\MoodifyMe\\MoodifyMe Assistant\\src\\config\\gemini.js:136:13)\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at async CrisisDetectionService.getAIRiskAssessment (D:\\Xampp\\htdocs\\MoodifyMe\\MoodifyMe Assistant\\src\\services\\crisisDetection.js:272:24)\n    at async CrisisDetectionService.assessCrisisRisk (D:\\Xampp\\htdocs\\MoodifyMe\\MoodifyMe Assistant\\src\\services\\crisisDetection.js:77:26)\n    at async testCrisisSystem (D:\\Xampp\\htdocs\\MoodifyMe\\MoodifyMe Assistant\\scripts\\testCrisisSystem.js:64:26)","timestamp":"2025-06-25T18:48:37.946Z"}
+{"level":"error","message":"Error generating text with Gemini: Gemini model not initialized. Call initialize() first.","service":"mood-rag-chatbot","stack":"Error: Gemini model not initialized. Call initialize() first.\n    at GeminiConfig.getModel (D:\\Xampp\\htdocs\\MoodifyMe\\MoodifyMe Assistant\\src\\config\\gemini.js:62:13)\n    at GeminiConfig.generateText (D:\\Xampp\\htdocs\\MoodifyMe\\MoodifyMe Assistant\\src\\config\\gemini.js:109:26)\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at async CrisisDetectionService.getAIRiskAssessment (D:\\Xampp\\htdocs\\MoodifyMe\\MoodifyMe Assistant\\src\\services\\crisisDetection.js:272:24)\n    at async CrisisDetectionService.assessCrisisRisk (D:\\Xampp\\htdocs\\MoodifyMe\\MoodifyMe Assistant\\src\\services\\crisisDetection.js:77:26)\n    at async testCrisisSystem (D:\\Xampp\\htdocs\\MoodifyMe\\MoodifyMe Assistant\\scripts\\testCrisisSystem.js:64:26)","timestamp":"2025-06-25T18:48:37.947Z"}
+{"level":"error","message":"Error getting AI risk assessment: AI service temporarily unavailable: Gemini model not initialized. Call initialize() first.","service":"mood-rag-chatbot","stack":"Error: AI service temporarily unavailable: Gemini model not initialized. Call initialize() first.\n    at GeminiConfig.generateText (D:\\Xampp\\htdocs\\MoodifyMe\\MoodifyMe Assistant\\src\\config\\gemini.js:136:13)\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at async CrisisDetectionService.getAIRiskAssessment (D:\\Xampp\\htdocs\\MoodifyMe\\MoodifyMe Assistant\\src\\services\\crisisDetection.js:272:24)\n    at async CrisisDetectionService.assessCrisisRisk (D:\\Xampp\\htdocs\\MoodifyMe\\MoodifyMe Assistant\\src\\services\\crisisDetection.js:77:26)\n    at async testCrisisSystem (D:\\Xampp\\htdocs\\MoodifyMe\\MoodifyMe Assistant\\scripts\\testCrisisSystem.js:64:26)","timestamp":"2025-06-25T18:48:37.948Z"}
+{"crisisType":"suicide","level":"warn","message":"CRISIS INTERVENTION ACTIVATED","messagePreview":"I want to kill myself...","riskLevel":9,"service":"mood-rag-chatbot","severity":"critical","timestamp":"2025-06-25T18:48:37.950Z","triggers":["kill myself","can't take it"],"userId":"test-user"}
+{"level":"error","message":"Error generating text with Gemini: Gemini model not initialized. Call initialize() first.","service":"mood-rag-chatbot","stack":"Error: Gemini model not initialized. Call initialize() first.\n    at GeminiConfig.getModel (D:\\Xampp\\htdocs\\MoodifyMe\\MoodifyMe Assistant\\src\\config\\gemini.js:62:13)\n    at GeminiConfig.generateText (D:\\Xampp\\htdocs\\MoodifyMe\\MoodifyMe Assistant\\src\\config\\gemini.js:109:26)\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at async CrisisDetectionService.getAIRiskAssessment (D:\\Xampp\\htdocs\\MoodifyMe\\MoodifyMe Assistant\\src\\services\\crisisDetection.js:272:24)\n    at async CrisisDetectionService.assessCrisisRisk (D:\\Xampp\\htdocs\\MoodifyMe\\MoodifyMe Assistant\\src\\services\\crisisDetection.js:77:26)\n    at async testCrisisSystem (D:\\Xampp\\htdocs\\MoodifyMe\\MoodifyMe Assistant\\scripts\\testCrisisSystem.js:184:30)","timestamp":"2025-06-25T18:48:37.953Z"}
+{"level":"error","message":"Error getting AI risk assessment: AI service temporarily unavailable: Gemini model not initialized. Call initialize() first.","service":"mood-rag-chatbot","stack":"Error: AI service temporarily unavailable: Gemini model not initialized. Call initialize() first.\n    at GeminiConfig.generateText (D:\\Xampp\\htdocs\\MoodifyMe\\MoodifyMe Assistant\\src\\config\\gemini.js:136:13)\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at async CrisisDetectionService.getAIRiskAssessment (D:\\Xampp\\htdocs\\MoodifyMe\\MoodifyMe Assistant\\src\\services\\crisisDetection.js:272:24)\n    at async CrisisDetectionService.assessCrisisRisk (D:\\Xampp\\htdocs\\MoodifyMe\\MoodifyMe Assistant\\src\\services\\crisisDetection.js:77:26)\n    at async testCrisisSystem (D:\\Xampp\\htdocs\\MoodifyMe\\MoodifyMe Assistant\\scripts\\testCrisisSystem.js:184:30)","timestamp":"2025-06-25T18:48:37.953Z"}
+{"crisisType":null,"level":"warn","message":"CRISIS INTERVENTION ACTIVATED","messagePreview":"I feel like ending it all. Nobody would miss me....","riskLevel":0,"service":"mood-rag-chatbot","severity":"minimal","timestamp":"2025-06-25T18:48:37.954Z","triggers":[],"userId":"sample-user"}
+{"level":"info","message":"Gemini API initialized successfully","service":"mood-rag-chatbot","timestamp":"2025-06-25T18:54:47.625Z"}
+{"level":"info","message":"Pinecone initialized with index: mood-chatbot-index","service":"mood-rag-chatbot","timestamp":"2025-06-25T18:54:48.943Z"}
+{"level":"info","message":"LangChain configuration initialized successfully","service":"mood-rag-chatbot","timestamp":"2025-06-25T18:54:48.950Z"}
+{"level":"info","message":"Vector store service initialized","service":"mood-rag-chatbot","timestamp":"2025-06-25T18:54:48.952Z"}
+{"level":"info","message":"Vector store setup initialized successfully","service":"mood-rag-chatbot","timestamp":"2025-06-25T18:54:48.953Z"}
+{"level":"info","message":"Found 6 PDF files to process","service":"mood-rag-chatbot","timestamp":"2025-06-25T18:54:50.253Z"}
+{"level":"info","message":"Processed daily stoic.pdf: 735 chunks created","service":"mood-rag-chatbot","timestamp":"2025-06-25T18:54:51.373Z"}
+{"level":"info","message":"Processed Kafka’s Letters and Diaries.pdf: 404 chunks created","service":"mood-rag-chatbot","timestamp":"2025-06-25T18:54:51.661Z"}
+{"level":"info","message":"Processed mans-search-for-meaning.pdf: 351 chunks created","service":"mood-rag-chatbot","timestamp":"2025-06-25T18:54:51.947Z"}
+{"level":"info","message":"Processed The Art of Happiness and the Art of Being.pdf: 1902 chunks created","service":"mood-rag-chatbot","timestamp":"2025-06-25T18:54:53.292Z"}
+{"level":"info","message":"Processed The Art of Happiness.pdf: 680 chunks created","service":"mood-rag-chatbot","timestamp":"2025-06-25T18:54:54.806Z"}
+{"level":"info","message":"Processed Wherever_You_Go_There_You_Are.pdf: 567 chunks created","service":"mood-rag-chatbot","timestamp":"2025-06-25T18:54:55.635Z"}
+{"level":"info","message":"Adding 4639 documents to vector store","service":"mood-rag-chatbot","timestamp":"2025-06-25T18:54:55.638Z"}
+{"level":"info","message":"Added batch: 10/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T18:54:59.378Z"}
+{"level":"info","message":"Added batch: 20/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T18:55:01.688Z"}
+{"level":"info","message":"Added batch: 30/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T18:55:03.845Z"}
+{"level":"info","message":"Added batch: 40/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T18:55:06.067Z"}
+{"level":"info","message":"Added batch: 50/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T18:55:08.656Z"}
+{"level":"info","message":"Added batch: 60/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T18:55:10.924Z"}
+{"level":"info","message":"Added batch: 70/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T18:55:13.152Z"}
+{"level":"info","message":"Added batch: 80/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T18:55:15.481Z"}
+{"level":"info","message":"Added batch: 90/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T18:55:17.753Z"}
+{"level":"info","message":"Added batch: 100/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T18:55:20.084Z"}
+{"level":"info","message":"Added batch: 110/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T18:55:22.509Z"}
+{"level":"info","message":"Added batch: 120/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T18:55:24.800Z"}
+{"level":"info","message":"Added batch: 130/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T18:55:27.001Z"}
+{"level":"info","message":"Added batch: 140/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T18:55:29.138Z"}
+{"level":"info","message":"Added batch: 150/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T18:55:31.330Z"}
+{"level":"info","message":"Added batch: 160/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T18:55:33.727Z"}
+{"level":"info","message":"Added batch: 170/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T18:55:35.972Z"}
+{"level":"info","message":"Added batch: 180/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T18:55:38.373Z"}
+{"level":"info","message":"Added batch: 190/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T18:55:42.080Z"}
+{"level":"info","message":"Added batch: 200/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T18:55:44.672Z"}
+{"level":"info","message":"Added batch: 210/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T18:55:47.372Z"}
+{"level":"info","message":"Added batch: 220/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T18:55:50.051Z"}
+{"level":"info","message":"Added batch: 230/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T18:55:52.583Z"}
+{"level":"info","message":"Added batch: 240/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T18:55:54.911Z"}
+{"level":"info","message":"Added batch: 250/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T18:55:57.256Z"}
+{"level":"info","message":"Added batch: 260/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T18:55:59.644Z"}
+{"level":"info","message":"Added batch: 270/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T18:56:02.262Z"}
+{"level":"info","message":"Added batch: 280/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T18:56:04.624Z"}
+{"level":"info","message":"Added batch: 290/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T18:56:07.242Z"}
+{"level":"info","message":"Added batch: 300/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T18:56:09.599Z"}
+{"level":"info","message":"Added batch: 310/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T18:56:11.894Z"}
+{"level":"info","message":"Added batch: 320/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T18:56:14.303Z"}
+{"level":"info","message":"Added batch: 330/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T18:56:16.574Z"}
+{"level":"info","message":"Added batch: 340/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T18:56:18.707Z"}
+{"level":"info","message":"Added batch: 350/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T18:56:21.011Z"}
+{"level":"info","message":"Added batch: 360/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T18:56:23.639Z"}
+{"level":"info","message":"Added batch: 370/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T18:56:25.966Z"}
+{"level":"info","message":"Added batch: 380/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T18:56:28.171Z"}
+{"level":"info","message":"Added batch: 390/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T18:56:30.416Z"}
+{"level":"info","message":"Added batch: 400/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T18:56:32.758Z"}
+{"level":"info","message":"Added batch: 410/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T18:56:35.216Z"}
+{"level":"info","message":"Added batch: 420/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T18:56:37.690Z"}
+{"level":"info","message":"Added batch: 430/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T18:56:40.076Z"}
+{"level":"info","message":"Added batch: 440/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T18:56:42.560Z"}
+{"level":"info","message":"Added batch: 450/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T18:56:44.852Z"}
+{"level":"info","message":"Added batch: 460/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T18:56:47.065Z"}
+{"level":"info","message":"Added batch: 470/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T18:57:08.086Z"}
+{"level":"info","message":"Added batch: 480/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T18:57:10.690Z"}
+{"level":"info","message":"Added batch: 490/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T18:57:12.882Z"}
+{"level":"info","message":"Added batch: 500/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T18:57:15.170Z"}
+{"level":"info","message":"Added batch: 510/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T18:57:17.348Z"}
+{"level":"info","message":"Added batch: 520/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T18:57:19.519Z"}
+{"level":"info","message":"Added batch: 530/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T18:57:21.708Z"}
+{"level":"info","message":"Added batch: 540/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T18:57:24.084Z"}
+{"level":"info","message":"Added batch: 550/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T18:57:26.463Z"}
+{"level":"info","message":"Added batch: 560/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T18:57:28.696Z"}
+{"level":"info","message":"Added batch: 570/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T18:57:30.927Z"}
+{"level":"info","message":"Added batch: 580/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T18:57:33.192Z"}
+{"level":"info","message":"Added batch: 590/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T18:57:35.510Z"}
+{"level":"info","message":"Added batch: 600/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T18:57:37.820Z"}
+{"level":"info","message":"Added batch: 610/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T18:57:40.127Z"}
+{"level":"info","message":"Added batch: 620/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T18:57:42.442Z"}
+{"level":"info","message":"Added batch: 630/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T18:57:44.906Z"}
+{"level":"info","message":"Added batch: 640/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T18:57:47.328Z"}
+{"level":"info","message":"Added batch: 650/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T18:57:49.754Z"}
+{"level":"info","message":"Added batch: 660/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T18:57:52.470Z"}
+{"level":"info","message":"Added batch: 670/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T18:57:54.846Z"}
+{"level":"info","message":"Added batch: 680/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T18:57:57.108Z"}
+{"level":"info","message":"Added batch: 690/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T18:57:59.591Z"}
+{"level":"info","message":"Added batch: 700/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T18:58:01.943Z"}
+{"level":"info","message":"Added batch: 710/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T18:58:04.184Z"}
+{"level":"info","message":"Added batch: 720/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T18:58:06.479Z"}
+{"level":"info","message":"Added batch: 730/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T18:58:08.811Z"}
+{"level":"info","message":"Added batch: 740/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T18:58:11.068Z"}
+{"level":"info","message":"Added batch: 750/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T18:58:13.271Z"}
+{"level":"info","message":"Added batch: 760/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T18:58:15.499Z"}
+{"level":"info","message":"Added batch: 770/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T18:58:17.846Z"}
+{"level":"info","message":"Added batch: 780/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T18:58:20.277Z"}
+{"level":"info","message":"Added batch: 790/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T18:58:22.744Z"}
+{"level":"info","message":"Added batch: 800/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T18:58:25.155Z"}
+{"level":"info","message":"Added batch: 810/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T18:58:27.375Z"}
+{"level":"info","message":"Added batch: 820/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T18:58:29.657Z"}
+{"level":"info","message":"Added batch: 830/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T18:58:31.812Z"}
+{"level":"info","message":"Added batch: 840/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T18:58:33.990Z"}
+{"level":"info","message":"Added batch: 850/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T18:58:36.232Z"}
+{"level":"info","message":"Added batch: 860/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T18:58:38.368Z"}
+{"level":"info","message":"Added batch: 870/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T18:58:40.644Z"}
+{"level":"info","message":"Added batch: 880/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T18:58:43.172Z"}
+{"level":"info","message":"Added batch: 890/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T18:58:45.289Z"}
+{"level":"info","message":"Added batch: 900/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T18:58:47.644Z"}
+{"level":"info","message":"Added batch: 910/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T18:58:50.214Z"}
+{"level":"info","message":"Added batch: 920/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T18:58:52.668Z"}
+{"level":"info","message":"Added batch: 930/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T18:58:54.945Z"}
+{"level":"info","message":"Added batch: 940/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T18:58:57.183Z"}
+{"level":"info","message":"Added batch: 950/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T18:58:59.546Z"}
+{"level":"info","message":"Added batch: 960/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T18:59:01.734Z"}
+{"level":"info","message":"Added batch: 970/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T18:59:04.045Z"}
+{"level":"info","message":"Added batch: 980/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T18:59:06.347Z"}
+{"level":"info","message":"Added batch: 990/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T18:59:08.773Z"}
+{"level":"info","message":"Added batch: 1000/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T18:59:11.152Z"}
+{"level":"info","message":"Added batch: 1010/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T18:59:13.345Z"}
+{"level":"info","message":"Added batch: 1020/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T18:59:15.727Z"}
+{"level":"info","message":"Added batch: 1030/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T18:59:17.992Z"}
+{"level":"info","message":"Added batch: 1040/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T18:59:20.330Z"}
+{"level":"info","message":"Added batch: 1050/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T18:59:22.461Z"}
+{"level":"info","message":"Added batch: 1060/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T18:59:24.702Z"}
+{"level":"info","message":"Added batch: 1070/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T18:59:26.893Z"}
+{"level":"info","message":"Added batch: 1080/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T18:59:29.090Z"}
+{"level":"info","message":"Added batch: 1090/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T18:59:31.378Z"}
+{"level":"info","message":"Added batch: 1100/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T18:59:34.133Z"}
+{"level":"info","message":"Added batch: 1110/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T18:59:36.454Z"}
+{"level":"info","message":"Added batch: 1120/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T18:59:38.726Z"}
+{"level":"info","message":"Added batch: 1130/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T18:59:41.016Z"}
+{"level":"info","message":"Added batch: 1140/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T18:59:43.432Z"}
+{"level":"info","message":"Added batch: 1150/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T18:59:45.754Z"}
+{"level":"info","message":"Added batch: 1160/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T18:59:48.180Z"}
+{"level":"info","message":"Added batch: 1170/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T18:59:50.404Z"}
+{"level":"info","message":"Added batch: 1180/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T18:59:52.626Z"}
+{"level":"info","message":"Added batch: 1190/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T18:59:54.877Z"}
+{"level":"info","message":"Added batch: 1200/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T18:59:57.023Z"}
+{"level":"info","message":"Added batch: 1210/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T18:59:59.175Z"}
+{"level":"info","message":"Added batch: 1220/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T19:00:01.428Z"}
+{"level":"info","message":"Added batch: 1230/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T19:00:03.733Z"}
+{"level":"info","message":"Added batch: 1240/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T19:00:05.917Z"}
+{"level":"info","message":"Added batch: 1250/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T19:00:08.093Z"}
+{"level":"info","message":"Added batch: 1260/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T19:00:10.419Z"}
+{"level":"info","message":"Added batch: 1270/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T19:00:12.638Z"}
+{"level":"info","message":"Added batch: 1280/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T19:00:14.777Z"}
+{"level":"info","message":"Added batch: 1290/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T19:00:16.865Z"}
+{"level":"info","message":"Added batch: 1300/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T19:00:19.049Z"}
+{"level":"info","message":"Added batch: 1310/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T19:00:21.287Z"}
+{"level":"info","message":"Added batch: 1320/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T19:00:23.488Z"}
+{"level":"info","message":"Added batch: 1330/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T19:00:25.718Z"}
+{"level":"info","message":"Added batch: 1340/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T19:00:28.018Z"}
+{"level":"info","message":"Added batch: 1350/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T19:00:30.323Z"}
+{"level":"info","message":"Added batch: 1360/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T19:00:32.505Z"}
+{"level":"info","message":"Added batch: 1370/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T19:00:34.750Z"}
+{"level":"info","message":"Added batch: 1380/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T19:00:37.006Z"}
+{"level":"info","message":"Added batch: 1390/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T19:00:39.198Z"}
+{"level":"info","message":"Added batch: 1400/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T19:00:41.620Z"}
+{"level":"info","message":"Added batch: 1410/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T19:00:43.810Z"}
+{"level":"info","message":"Added batch: 1420/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T19:00:46.044Z"}
+{"level":"info","message":"Added batch: 1430/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T19:00:48.204Z"}
+{"level":"info","message":"Added batch: 1440/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T19:00:50.513Z"}
+{"level":"info","message":"Added batch: 1450/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T19:00:52.754Z"}
+{"level":"info","message":"Added batch: 1460/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T19:00:54.956Z"}
+{"level":"info","message":"Added batch: 1470/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T19:00:57.065Z"}
+{"level":"info","message":"Added batch: 1480/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T19:00:59.202Z"}
+{"level":"info","message":"Added batch: 1490/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T19:01:01.473Z"}
+{"level":"info","message":"Added batch: 1500/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T19:01:03.660Z"}
+{"level":"info","message":"Added batch: 1510/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T19:01:05.809Z"}
+{"level":"info","message":"Added batch: 1520/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T19:01:07.957Z"}
+{"level":"info","message":"Added batch: 1530/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T19:01:10.089Z"}
+{"level":"info","message":"Added batch: 1540/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T19:01:12.475Z"}
+{"level":"info","message":"Added batch: 1550/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T19:01:14.629Z"}
+{"level":"info","message":"Added batch: 1560/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T19:01:16.755Z"}
+{"level":"info","message":"Added batch: 1570/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T19:01:18.894Z"}
+{"level":"info","message":"Added batch: 1580/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T19:01:21.148Z"}
+{"level":"info","message":"Added batch: 1590/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T19:01:23.391Z"}
+{"level":"info","message":"Added batch: 1600/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T19:01:25.468Z"}
+{"level":"info","message":"Added batch: 1610/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T19:01:27.557Z"}
+{"level":"info","message":"Added batch: 1620/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T19:01:29.732Z"}
+{"level":"info","message":"Added batch: 1630/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T19:01:31.833Z"}
+{"level":"info","message":"Added batch: 1640/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T19:01:33.957Z"}
+{"attemptNumber":7,"cause":{},"level":"error","message":"Error adding documents to vector store: Request failed to reach Pinecone. This can occur for reasons such as network problems that prevent the request from being completed, or a Pinecone API outage. Check your network connection, and visit https://status.pinecone.io/ to see whether any outages are ongoing.","name":"PineconeConnectionError","retriesLeft":0,"service":"mood-rag-chatbot","stack":"PineconeConnectionError: Request failed to reach Pinecone. This can occur for reasons such as network problems that prevent the request from being completed, or a Pinecone API outage. Check your network connection, and visit https://status.pinecone.io/ to see whether any outages are ongoing.\n    at handleApiError (D:\\Xampp\\htdocs\\MoodifyMe\\MoodifyMe Assistant\\node_modules\\@pinecone-database\\pinecone\\dist\\errors\\handling.js:32:16)\n    at Object.onError (D:\\Xampp\\htdocs\\MoodifyMe\\MoodifyMe Assistant\\node_modules\\@pinecone-database\\pinecone\\dist\\utils\\middleware.js:71:59)\n    at BaseAPI.fetchApi (D:\\Xampp\\htdocs\\MoodifyMe\\MoodifyMe Assistant\\node_modules\\@pinecone-database\\pinecone\\dist\\pinecone-generated-ts-fetch\\db_data\\runtime.js:89:53)\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at async VectorOperationsApi.request (D:\\Xampp\\htdocs\\MoodifyMe\\MoodifyMe Assistant\\node_modules\\@pinecone-database\\pinecone\\dist\\pinecone-generated-ts-fetch\\db_data\\runtime.js:152:26)\n    at async VectorOperationsApi.upsertVectorsRaw (D:\\Xampp\\htdocs\\MoodifyMe\\MoodifyMe Assistant\\node_modules\\@pinecone-database\\pinecone\\dist\\pinecone-generated-ts-fetch\\db_data\\apis\\VectorOperationsApi.js:324:26)\n    at async VectorOperationsApi.upsertVectors (D:\\Xampp\\htdocs\\MoodifyMe\\MoodifyMe Assistant\\node_modules\\@pinecone-database\\pinecone\\dist\\pinecone-generated-ts-fetch\\db_data\\apis\\VectorOperationsApi.js:338:26)\n    at async RetryOnServerFailure.execute (D:\\Xampp\\htdocs\\MoodifyMe\\MoodifyMe Assistant\\node_modules\\@pinecone-database\\pinecone\\dist\\utils\\retries.js:48:34)\n    at async UpsertCommand.run (D:\\Xampp\\htdocs\\MoodifyMe\\MoodifyMe Assistant\\node_modules\\@pinecone-database\\pinecone\\dist\\data\\vectors\\upsert.js:33:9)\n    at async Index.upsert (D:\\Xampp\\htdocs\\MoodifyMe\\MoodifyMe Assistant\\node_modules\\@pinecone-database\\pinecone\\dist\\data\\index.js:351:16)","timestamp":"2025-06-25T19:04:33.003Z"}
+{"level":"info","message":"Gemini API initialized successfully","service":"mood-rag-chatbot","timestamp":"2025-06-25T19:05:00.416Z"}
+{"level":"info","message":"Pinecone initialized with index: mood-chatbot-index","service":"mood-rag-chatbot","timestamp":"2025-06-25T19:05:01.522Z"}
+{"level":"info","message":"LangChain configuration initialized successfully","service":"mood-rag-chatbot","timestamp":"2025-06-25T19:05:01.527Z"}
+{"level":"info","message":"Vector store service initialized","service":"mood-rag-chatbot","timestamp":"2025-06-25T19:05:01.528Z"}
+{"level":"info","message":"Vector store setup initialized successfully","service":"mood-rag-chatbot","timestamp":"2025-06-25T19:05:01.529Z"}
+{"level":"info","message":"Found 6 PDF files to process","service":"mood-rag-chatbot","timestamp":"2025-06-25T19:05:02.949Z"}
+{"level":"info","message":"Processed daily stoic.pdf: 735 chunks created","service":"mood-rag-chatbot","timestamp":"2025-06-25T19:05:04.039Z"}
+{"level":"info","message":"Processed Kafka’s Letters and Diaries.pdf: 404 chunks created","service":"mood-rag-chatbot","timestamp":"2025-06-25T19:05:04.319Z"}
+{"level":"info","message":"Processed mans-search-for-meaning.pdf: 351 chunks created","service":"mood-rag-chatbot","timestamp":"2025-06-25T19:05:04.603Z"}
+{"level":"info","message":"Processed The Art of Happiness and the Art of Being.pdf: 1902 chunks created","service":"mood-rag-chatbot","timestamp":"2025-06-25T19:05:05.921Z"}
+{"level":"info","message":"Processed The Art of Happiness.pdf: 680 chunks created","service":"mood-rag-chatbot","timestamp":"2025-06-25T19:05:07.409Z"}
+{"level":"info","message":"Processed Wherever_You_Go_There_You_Are.pdf: 567 chunks created","service":"mood-rag-chatbot","timestamp":"2025-06-25T19:05:08.222Z"}
+{"level":"info","message":"Adding 4639 documents to vector store","service":"mood-rag-chatbot","timestamp":"2025-06-25T19:05:08.224Z"}
+{"level":"info","message":"Added batch: 10/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T19:05:13.018Z"}
+{"level":"info","message":"Added batch: 20/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T19:06:10.124Z"}
+{"level":"info","message":"Added batch: 30/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T19:06:13.273Z"}
+{"level":"info","message":"Added batch: 40/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T19:06:42.057Z"}
+{"level":"info","message":"Added batch: 50/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T19:06:45.459Z"}
+{"level":"info","message":"Added batch: 60/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T19:06:48.154Z"}
+{"level":"info","message":"Added batch: 70/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T19:06:50.589Z"}
+{"level":"info","message":"Added batch: 80/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T19:06:52.839Z"}
+{"level":"info","message":"Added batch: 90/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T19:06:55.210Z"}
+{"level":"info","message":"Added batch: 100/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T19:06:57.752Z"}
+{"level":"info","message":"Added batch: 110/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T19:07:00.039Z"}
+{"level":"info","message":"Added batch: 120/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T19:07:02.411Z"}
+{"level":"info","message":"Added batch: 130/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T19:07:05.044Z"}
+{"level":"info","message":"Added batch: 140/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T19:07:07.445Z"}
+{"level":"info","message":"Added batch: 150/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T19:07:10.116Z"}
+{"level":"info","message":"Added batch: 160/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T19:07:12.615Z"}
+{"level":"info","message":"Added batch: 170/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T19:07:15.082Z"}
+{"level":"info","message":"Added batch: 180/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T19:07:17.382Z"}
+{"level":"info","message":"Added batch: 190/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T19:07:19.856Z"}
+{"level":"info","message":"Added batch: 200/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T19:07:22.162Z"}
+{"level":"info","message":"Added batch: 210/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T19:07:24.402Z"}
+{"level":"info","message":"Added batch: 220/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T19:07:26.616Z"}
+{"level":"info","message":"Added batch: 230/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T19:07:28.875Z"}
+{"level":"info","message":"Added batch: 240/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T19:07:31.319Z"}
+{"level":"info","message":"Added batch: 250/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T19:07:33.552Z"}
+{"level":"info","message":"Added batch: 260/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T19:07:35.929Z"}
+{"level":"info","message":"Added batch: 270/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T19:07:38.305Z"}
+{"level":"info","message":"Added batch: 280/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T19:07:40.651Z"}
+{"level":"info","message":"Added batch: 290/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T19:07:43.179Z"}
+{"level":"info","message":"Added batch: 300/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T19:07:45.869Z"}
+{"level":"info","message":"Added batch: 310/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T19:07:48.346Z"}
+{"level":"info","message":"Added batch: 320/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T19:07:50.960Z"}
+{"level":"info","message":"Added batch: 330/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T19:07:53.700Z"}
+{"level":"info","message":"Added batch: 340/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T19:07:56.478Z"}
+{"level":"info","message":"Added batch: 350/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T19:07:59.193Z"}
+{"level":"info","message":"Added batch: 360/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T19:08:01.915Z"}
+{"level":"info","message":"Added batch: 370/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T19:08:04.564Z"}
+{"level":"info","message":"Added batch: 380/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T19:08:07.231Z"}
+{"level":"info","message":"Added batch: 390/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T19:08:09.707Z"}
+{"level":"info","message":"Added batch: 400/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T19:08:12.113Z"}
+{"level":"info","message":"Added batch: 410/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T19:08:14.830Z"}
+{"level":"info","message":"Added batch: 420/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T19:08:17.281Z"}
+{"level":"info","message":"Added batch: 430/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T19:08:19.767Z"}
+{"level":"info","message":"Added batch: 440/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T19:08:22.159Z"}
+{"level":"info","message":"Added batch: 450/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T19:08:24.557Z"}
+{"level":"info","message":"Added batch: 460/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T19:08:27.980Z"}
+{"level":"info","message":"Added batch: 470/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T19:08:30.209Z"}
+{"level":"info","message":"Added batch: 480/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T19:08:32.396Z"}
+{"level":"info","message":"Added batch: 490/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T19:08:35.055Z"}
+{"level":"info","message":"Added batch: 500/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T19:08:37.463Z"}
+{"level":"info","message":"Added batch: 510/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T19:08:39.769Z"}
+{"level":"info","message":"Added batch: 520/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T19:08:42.012Z"}
+{"level":"info","message":"Added batch: 530/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T19:08:44.498Z"}
+{"level":"info","message":"Added batch: 540/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T19:08:46.927Z"}
+{"level":"info","message":"Added batch: 550/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T19:08:49.474Z"}
+{"level":"info","message":"Added batch: 560/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T19:08:52.228Z"}
+{"level":"info","message":"Added batch: 570/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T19:08:55.030Z"}
+{"level":"info","message":"Added batch: 580/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T19:08:57.731Z"}
+{"level":"info","message":"Added batch: 590/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T19:09:00.399Z"}
+{"level":"info","message":"Added batch: 600/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T19:09:02.953Z"}
+{"level":"info","message":"Added batch: 610/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T19:09:05.703Z"}
+{"level":"info","message":"Added batch: 620/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T19:09:08.260Z"}
+{"level":"info","message":"Added batch: 630/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T19:09:11.065Z"}
+{"level":"info","message":"Added batch: 640/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T19:09:13.748Z"}
+{"level":"info","message":"Added batch: 650/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T19:09:16.387Z"}
+{"level":"info","message":"Added batch: 660/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T19:09:19.042Z"}
+{"level":"info","message":"Added batch: 670/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T19:09:22.230Z"}
+{"level":"info","message":"Added batch: 680/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T19:09:24.689Z"}
+{"level":"info","message":"Added batch: 690/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T19:09:27.511Z"}
+{"level":"info","message":"Added batch: 700/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T19:09:33.717Z"}
+{"level":"info","message":"Added batch: 710/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T19:09:36.161Z"}
+{"level":"info","message":"Added batch: 720/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T19:09:38.913Z"}
+{"level":"info","message":"Added batch: 730/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T19:09:41.166Z"}
+{"level":"info","message":"Added batch: 740/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T19:09:43.503Z"}
+{"level":"info","message":"Added batch: 750/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T19:09:46.071Z"}
+{"level":"info","message":"Added batch: 760/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T19:09:48.578Z"}
+{"level":"info","message":"Added batch: 770/4639 documents","service":"mood-rag-chatbot","timestamp":"2025-06-25T19:09:51.188Z"}
+{"attemptNumber":7,"cause":{},"level":"error","message":"Error adding documents to vector store: Request failed to reach Pinecone. This can occur for reasons such as network problems that prevent the request from being completed, or a Pinecone API outage. Check your network connection, and visit https://status.pinecone.io/ to see whether any outages are ongoing.","name":"PineconeConnectionError","retriesLeft":0,"service":"mood-rag-chatbot","stack":"PineconeConnectionError: Request failed to reach Pinecone. This can occur for reasons such as network problems that prevent the request from being completed, or a Pinecone API outage. Check your network connection, and visit https://status.pinecone.io/ to see whether any outages are ongoing.\n    at handleApiError (D:\\Xampp\\htdocs\\MoodifyMe\\MoodifyMe Assistant\\node_modules\\@pinecone-database\\pinecone\\dist\\errors\\handling.js:32:16)\n    at Object.onError (D:\\Xampp\\htdocs\\MoodifyMe\\MoodifyMe Assistant\\node_modules\\@pinecone-database\\pinecone\\dist\\utils\\middleware.js:71:59)\n    at BaseAPI.fetchApi (D:\\Xampp\\htdocs\\MoodifyMe\\MoodifyMe Assistant\\node_modules\\@pinecone-database\\pinecone\\dist\\pinecone-generated-ts-fetch\\db_data\\runtime.js:89:53)\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at async VectorOperationsApi.request (D:\\Xampp\\htdocs\\MoodifyMe\\MoodifyMe Assistant\\node_modules\\@pinecone-database\\pinecone\\dist\\pinecone-generated-ts-fetch\\db_data\\runtime.js:152:26)\n    at async VectorOperationsApi.upsertVectorsRaw (D:\\Xampp\\htdocs\\MoodifyMe\\MoodifyMe Assistant\\node_modules\\@pinecone-database\\pinecone\\dist\\pinecone-generated-ts-fetch\\db_data\\apis\\VectorOperationsApi.js:324:26)\n    at async VectorOperationsApi.upsertVectors (D:\\Xampp\\htdocs\\MoodifyMe\\MoodifyMe Assistant\\node_modules\\@pinecone-database\\pinecone\\dist\\pinecone-generated-ts-fetch\\db_data\\apis\\VectorOperationsApi.js:338:26)\n    at async RetryOnServerFailure.execute (D:\\Xampp\\htdocs\\MoodifyMe\\MoodifyMe Assistant\\node_modules\\@pinecone-database\\pinecone\\dist\\utils\\retries.js:48:34)\n    at async UpsertCommand.run (D:\\Xampp\\htdocs\\MoodifyMe\\MoodifyMe Assistant\\node_modules\\@pinecone-database\\pinecone\\dist\\data\\vectors\\upsert.js:33:9)\n    at async Index.upsert (D:\\Xampp\\htdocs\\MoodifyMe\\MoodifyMe Assistant\\node_modules\\@pinecone-database\\pinecone\\dist\\data\\index.js:351:16)","timestamp":"2025-06-25T19:12:10.742Z"}

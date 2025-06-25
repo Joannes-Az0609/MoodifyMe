@@ -27,6 +27,11 @@ define('GOOGLE_CLIENT_ID', '1005843795519-95v3g07sj7rder70eb1ikavouk057rli.apps.
 define('GOOGLE_CLIENT_SECRET', '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');
 define('GOOGLE_REDIRECT_URI', APP_URL . '/api/google_oauth_callback.php');
 
+// AI Assistant Configuration
+define('AI_ASSISTANT_URL', 'http://localhost:3001'); // Node.js AI Assistant URL
+define('AI_ASSISTANT_TIMEOUT', 10); // Timeout in seconds for AI Assistant requests
+define('CRISIS_INTERVENTION_ENABLED', true); // Enable/disable crisis intervention features
+
 // Recommendation Types
 define('REC_TYPES', [
     'music' => 'Music',
