@@ -1,14 +1,13 @@
 {
-  "name": "moodifyme-ai-assistant",
-  "version": "1.1.0",
-  "description": "AI-powered emotional wellness assistant with crisis intervention and therapeutic support",
+  "name": "mood-rag-chatbot",
+  "version": "1.0.0",
+  "description": "A RAG-powered chatbot that improves mood and tells jokes based on user emotions",
   "main": "src/app.js",
   "scripts": {
     "start": "node src/app.js",
     "dev": "nodemon src/app.js",
     "setup": "node scripts/setupVectorStore.js",
     "test-cli": "node scripts/testCli.js",
-    "test-crisis": "node scripts/testCrisisSystem.js",
     "lint": "eslint src/",
     "format": "prettier --write src/"
   },
@@ -16,11 +15,6 @@
     "chatbot",
     "rag",
     "mood",
-    "crisis-intervention",
-    "mental-health",
-    "emotional-wellness",
-    "therapeutic-ai",
-    "suicide-prevention",
     "langchain",
     "pinecone",
     "gemini"

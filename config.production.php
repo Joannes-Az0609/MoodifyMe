@@ -44,11 +44,6 @@ define('GOOGLE_CLIENT_ID', $_ENV['GOOGLE_CLIENT_ID'] ?? '1005843795519-95v3g07sj
 define('GOOGLE_CLIENT_SECRET', $_ENV['GOOGLE_CLIENT_SECRET'] ?? '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');
 define('GOOGLE_REDIRECT_URI', APP_URL . '/api/google_oauth_callback.php');
 
-// AI Assistant Configuration
-define('AI_ASSISTANT_URL', $_ENV['AI_ASSISTANT_URL'] ?? 'http://localhost:3001');
-define('AI_ASSISTANT_TIMEOUT', (int)($_ENV['AI_ASSISTANT_TIMEOUT'] ?? 10));
-define('CRISIS_INTERVENTION_ENABLED', filter_var($_ENV['CRISIS_INTERVENTION_ENABLED'] ?? 'true', FILTER_VALIDATE_BOOLEAN));
-
 // Recommendation Types
 define('REC_TYPES', [
     'music' => 'Music',
