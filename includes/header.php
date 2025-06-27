@@ -209,16 +209,13 @@ $currentPage = basename($_SERVER['PHP_SELF']);
                                 Dashboard
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link <?php echo ($currentPage == 'recommendations.php') ? 'active' : ''; ?>" href="<?php echo APP_URL; ?>/pages/recommendations.php">
-                                Recommendations
-                            </a>
-                        </li>
+
                         <li class="nav-item">
                             <a class="nav-link <?php echo ($currentPage == 'history.php') ? 'active' : ''; ?>" href="<?php echo APP_URL; ?>/pages/history.php">
                                 History
                             </a>
                         </li>
+
                     <?php endif; ?>
 
                     <li class="nav-item">
@@ -254,6 +251,11 @@ $currentPage = basename($_SERVER['PHP_SELF']);
                                 <li>
                                     <a class="dropdown-item" href="<?php echo APP_URL; ?>/pages/settings.php">
                                         <i class="fas fa-cog"></i> Settings
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="<?php echo APP_URL; ?>/pages/privacy_settings.php">
+                                        <i class="fas fa-shield-alt"></i> Privacy & Safety
                                     </a>
                                 </li>
                                 <li><hr class="dropdown-divider"></li>
