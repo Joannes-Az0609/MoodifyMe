@@ -5,8 +5,10 @@
  */
 
 // Include configuration and functions
-// Use production config if in production environment
-if (isset($_ENV['RENDER']) || strpos($_SERVER['HTTP_HOST'], '.onrender.com') !== false || $_SERVER['HTTP_HOST'] !== 'localhost') {
+// Use appropriate config based on environment
+if (isset($_ENV['RENDER']) || strpos($_SERVER['HTTP_HOST'], '.onrender.com') !== false) {
+    require_once 'config.render.php';
+} elseif ($_SERVER['HTTP_HOST'] !== 'localhost') {
     require_once 'config.production.php';
 } else {
     require_once 'config.php';

@@ -22,11 +22,11 @@ if ($sourceEmotion && $targetEmotion) {
 $encodedMessage = urlencode($contextMessage);
 
 // MoodifyMe Assistant URL
-$aiAssistantUrl = "http://localhost:3001";
+$aiAssistantUrl = "https://moodifyme-bot.onrender.com";
 
-// If we have context, we'll pass it via JavaScript to auto-send the message
+// Add context parameters to URL for the AI to detect
 if ($contextMessage) {
-    $aiAssistantUrl .= "?context=" . $encodedMessage;
+    $aiAssistantUrl .= "?autoMessage=" . $encodedMessage . "&source=moodifyme&sourceEmotion=" . urlencode($sourceEmotion) . "&targetEmotion=" . urlencode($targetEmotion);
 }
 ?>
 
@@ -107,6 +107,22 @@ if ($contextMessage) {
     </div>
 
     <script>
+        // Store context in localStorage for the AI assistant to pick up
+        const contextMessage = <?php echo json_encode($contextMessage); ?>;
+        const sourceEmotion = <?php echo json_encode($sourceEmotion); ?>;
+        const targetEmotion = <?php echo json_encode($targetEmotion); ?>;
+
+        if (contextMessage) {
+            // Store context data that the AI can access
+            localStorage.setItem('moodifyMe_context', JSON.stringify({
+                message: contextMessage,
+                sourceEmotion: sourceEmotion,
+                targetEmotion: targetEmotion,
+                timestamp: Date.now(),
+                source: 'moodifyme'
+            }));
+        }
+
         // Simple direct redirect after 3 seconds
         setTimeout(function() {
             window.location.href = '<?php echo $aiAssistantUrl; ?>';

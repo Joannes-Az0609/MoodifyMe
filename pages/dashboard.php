@@ -175,7 +175,7 @@ include '../includes/header.php';
                             <i class="fas fa-robot me-1"></i> AI Assistant
                         </h6>
                         <p class="small text-muted mb-2">Get instant help and emotional support</p>
-                        <a href="http://localhost:3001" target="_blank" class="btn btn-outline-primary btn-sm w-100 mb-2">
+                        <a href="https://moodifyme-bot.onrender.com" target="_blank" class="btn btn-outline-primary btn-sm w-100 mb-2">
                             <i class="fas fa-comments me-1"></i> Chat with AI
                         </a>
                     </div>

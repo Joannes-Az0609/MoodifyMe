@@ -59,3 +59,13 @@ ini_set('session.cookie_secure', 0); // Set to 1 if using HTTPS
 
 // Timezone
 date_default_timezone_set('UTC');
+
+// AI Assistant configuration
+define('AI_ASSISTANT_URL', 'https://moodifyme-bot.onrender.com');
+define('AI_ASSISTANT_ENABLED', true);
+
+// Feature flags
+define('FEATURE_FACIAL_DETECTION', true);
+define('FEATURE_VOICE_INPUT', true);
+define('FEATURE_AI_CHAT', AI_ASSISTANT_ENABLED);
+define('FEATURE_SOCIAL_LOGIN', true);

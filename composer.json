@@ -16,6 +16,10 @@
   "scripts": {
     "post-install-cmd": [
       "php install.php"
+    ],
+    "build": [
+      "mkdir -p uploads logs cache",
+      "chmod 755 uploads logs cache"
     ]
   },
   "config": {

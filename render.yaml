@@ -1,0 +1,56 @@
+services:
+  # Main MoodifyMe Web Application
+  - type: web
+    name: moodifyme-web
+    env: php
+    plan: free
+    buildCommand: |
+      # Install Composer if not available
+      if [ ! -f composer.phar ]; then
+        curl -sS https://getcomposer.org/installer | php
+      fi
+      # Install PHP dependencies
+      php composer.phar install --no-dev --optimize-autoloader
+      # Create necessary directories
+      mkdir -p uploads logs cache
+      chmod 755 uploads logs cache
+    startCommand: |
+      # Start PHP built-in server
+      php -S 0.0.0.0:$PORT -t .
+    envVars:
+      - key: APP_ENV
+        value: production
+      - key: APP_URL
+        fromService:
+          type: web
+          name: moodifyme-web
+          property: host
+      - key: DB_HOST
+        fromDatabase:
+          name: moodifyme-db
+          property: host
+      - key: DB_PORT
+        fromDatabase:
+          name: moodifyme-db
+          property: port
+      - key: DB_NAME
+        fromDatabase:
+          name: moodifyme-db
+          property: database
+      - key: DB_USER
+        fromDatabase:
+          name: moodifyme-db
+          property: user
+      - key: DB_PASS
+        fromDatabase:
+          name: moodifyme-db
+          property: password
+      - key: AI_ASSISTANT_URL
+        value: https://moodifyme-bot.onrender.com
+
+  # PostgreSQL Database
+databases:
+  - name: moodifyme-db
+    plan: free
+    databaseName: moodifyme
+    user: moodifyme_user

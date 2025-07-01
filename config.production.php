@@ -159,7 +159,7 @@ define('SMTP_PASSWORD', $_ENV['SMTP_PASSWORD'] ?? '');
 define('SMTP_ENCRYPTION', $_ENV['SMTP_ENCRYPTION'] ?? 'tls');
 
 // AI Assistant configuration
-define('AI_ASSISTANT_URL', $_ENV['AI_ASSISTANT_URL'] ?? 'http://localhost:3000');
+define('AI_ASSISTANT_URL', $_ENV['AI_ASSISTANT_URL'] ?? 'https://moodifyme-bot.onrender.com');
 define('AI_ASSISTANT_ENABLED', !empty($_ENV['AI_ASSISTANT_URL']));
 
 // Logging configuration
@@ -192,6 +192,7 @@ if ($isProduction) {
 function setCorsHeaders() {
     $allowedOrigins = [
         APP_URL,
+        'https://moodifyme-bot.onrender.com',
         'https://localhost:3000',
         'https://127.0.0.1:3000'
     ];

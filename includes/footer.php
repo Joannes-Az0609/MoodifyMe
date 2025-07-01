@@ -88,7 +88,7 @@
                         <i class="fas fa-search me-1"></i> Find People
                     </a>
                     <hr class="my-2">
-                    <a href="http://localhost:3001" target="_blank" class="btn btn-outline-primary btn-sm">
+                    <a href="https://moodifyme-bot.onrender.com" target="_blank" class="btn btn-outline-primary btn-sm">
                         <i class="fas fa-robot me-1"></i> AI Assistant
                     </a>
                 </div>
