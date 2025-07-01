@@ -15,24 +15,16 @@
    ```
 
 2. **Files created for Render deployment:**
-   - ✅ `render.yaml` - Render service configuration
    - ✅ `config.render.php` - Production configuration for Render
    - ✅ `database/schema.postgresql.sql` - PostgreSQL schema
+   - ✅ `database/migrate.php` - Database migration script
    - ✅ Updated `includes/db_connect.php` - Multi-database support
    - ✅ Updated `composer.json` - Build scripts
+   - ✅ `Dockerfile` - Container configuration
 
 ## Step 2: Deploy to Render
 
-### Option A: Using render.yaml (Recommended)
-
-1. **Go to [Render Dashboard](https://dashboard.render.com)**
-2. **Click "New" → "Blueprint"**
-3. **Connect your GitHub repository**
-4. **Select your MoodifyMe repository**
-5. **Render will automatically detect the `render.yaml` file**
-6. **Click "Apply" to deploy**
-
-### Option B: Manual Setup
+### Manual Setup (Recommended for PHP)
 
 1. **Create Web Service:**
    - Go to Render Dashboard
@@ -40,8 +32,9 @@
    - Connect GitHub and select your repository
    - Configure:
      - **Name:** `moodifyme-web`
-     - **Environment:** `PHP`
-     - **Build Command:** `composer install --no-dev && mkdir -p uploads logs cache`
+     - **Runtime:** `Docker`
+     - **Dockerfile Path:** `./Dockerfile`
+     - **Build Command:** `composer install --no-dev --optimize-autoloader && mkdir -p uploads logs cache && chmod 755 uploads logs cache`
      - **Start Command:** `php -S 0.0.0.0:$PORT -t .`
 
 2. **Create PostgreSQL Database:**
