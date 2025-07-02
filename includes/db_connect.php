@@ -9,7 +9,8 @@ if (isset($_ENV['VERCEL']) || strpos($_SERVER['HTTP_HOST'], '.vercel.app') !== f
     require_once dirname(__DIR__) . '/config.vercel.php';
 } elseif (strpos($_SERVER['HTTP_HOST'], '.epizy.com') !== false ||
           strpos($_SERVER['HTTP_HOST'], '.rf.gd') !== false ||
-          strpos($_SERVER['HTTP_HOST'], '.42web.io') !== false) {
+          strpos($_SERVER['HTTP_HOST'], '.42web.io') !== false ||
+          strpos($_SERVER['HTTP_HOST'], '.kesug.com') !== false) {
     require_once dirname(__DIR__) . '/config.infinityfree.php';
 } else {
     require_once dirname(__DIR__) . '/config.php';

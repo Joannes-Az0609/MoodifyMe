@@ -7,15 +7,14 @@
  */
 
 // Database Configuration (InfinityFree)
-// TODO: Replace these with your actual InfinityFree database details
-define('DB_HOST', 'sql200.epizy.com'); // Replace with your actual database host
-define('DB_USER', 'epiz_xxxxx_user'); // Replace with your actual database username
-define('DB_PASS', 'your_password_here'); // Replace with your actual database password
-define('DB_NAME', 'epiz_xxxxx_moodifyme'); // Replace with your actual database name
+define('DB_HOST', 'sql100.infinityfree.com');
+define('DB_USER', 'if0_39373357');
+define('DB_PASS', 'Feres12*345');
+define('DB_NAME', 'if0_39373357_moodifyme');
 
 // Application Configuration
 define('APP_NAME', 'MoodifyMe');
-define('APP_URL', 'http://yourdomain.epizy.com'); // Replace with your actual domain
+define('APP_URL', 'http://MoodifyMe.kesug.com');
 define('APP_VERSION', '1.0.0');
 define('APP_ENV', 'production');
 
@@ -40,8 +39,8 @@ define('SESSION_SAMESITE', 'Lax');
 // CORS Configuration for AI Assistant
 $allowed_origins = [
     'https://moodifyme-bot.onrender.com',
-    'http://yourdomain.epizy.com', // Replace with your actual domain
-    'https://yourdomain.epizy.com' // If you get SSL later
+    'http://MoodifyMe.kesug.com',
+    'https://MoodifyMe.kesug.com' // If you get SSL later
 ];
 
 // Set CORS headers if needed
