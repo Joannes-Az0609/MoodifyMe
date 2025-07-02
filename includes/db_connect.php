@@ -27,13 +27,14 @@ function getDbConnection() {
         if ($dbType === 'postgresql') {
             // PostgreSQL connection using PDO (for Render)
             $port = defined('DB_PORT') ? DB_PORT : '5432';
-            $dsn = "pgsql:host=" . DB_HOST . ";port=" . $port . ";dbname=" . DB_NAME;
+            $dsn = "pgsql:host=" . DB_HOST . ";port=" . $port . ";dbname=" . DB_NAME . ";sslmode=require";
 
             try {
                 $conn = new PDO($dsn, DB_USER, DB_PASS, [
                     PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
                     PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-                    PDO::ATTR_EMULATE_PREPARES => false
+                    PDO::ATTR_EMULATE_PREPARES => false,
+                    PDO::ATTR_TIMEOUT => 30
                 ]);
             } catch (PDOException $e) {
                 die("PostgreSQL Connection failed: " . $e->getMessage());
