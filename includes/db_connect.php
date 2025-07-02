@@ -26,36 +26,43 @@ function getDbConnection() {
 
         if ($dbType === 'postgresql') {
             // PostgreSQL connection using PDO (for Render)
-            $port = defined('DB_PORT') ? DB_PORT : '5432';
 
-            // Try different connection approaches for Render
-            $connectionAttempts = [
-                // Internal hostname without SSL
-                "pgsql:host=" . str_replace('.oregon-postgres.render.com', '', DB_HOST) . ";port=" . $port . ";dbname=" . DB_NAME,
-                // External hostname with SSL
-                "pgsql:host=" . DB_HOST . ";port=" . $port . ";dbname=" . DB_NAME . ";sslmode=require",
-                // External hostname without SSL
-                "pgsql:host=" . DB_HOST . ";port=" . $port . ";dbname=" . DB_NAME
-            ];
+            // Check if we have DATABASE_URL (Render's preferred method)
+            if (defined('DATABASE_URL')) {
+                // Use DATABASE_URL directly
+                $databaseUrl = DATABASE_URL;
+                // Convert postgres:// to pgsql:// for PDO
+                $dsn = str_replace('postgres://', 'pgsql://', $databaseUrl);
+                // Add SSL mode if not present
+                if (strpos($dsn, 'sslmode=') === false) {
+                    $dsn .= '?sslmode=prefer';
+                }
 
-            $lastError = '';
-            foreach ($connectionAttempts as $dsn) {
+                try {
+                    $conn = new PDO($dsn, null, null, [
+                        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+                        PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+                        PDO::ATTR_EMULATE_PREPARES => false,
+                        PDO::ATTR_TIMEOUT => 30
+                    ]);
+                } catch (PDOException $e) {
+                    die("PostgreSQL Connection failed (DATABASE_URL): " . $e->getMessage());
+                }
+            } else {
+                // Fallback to individual parameters
+                $port = defined('DB_PORT') ? DB_PORT : '5432';
+                $dsn = "pgsql:host=" . DB_HOST . ";port=" . $port . ";dbname=" . DB_NAME . ";sslmode=prefer";
+
                 try {
                     $conn = new PDO($dsn, DB_USER, DB_PASS, [
                         PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
                         PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
                         PDO::ATTR_EMULATE_PREPARES => false,
-                        PDO::ATTR_TIMEOUT => 10
+                        PDO::ATTR_TIMEOUT => 30
                     ]);
-                    break; // Success, exit loop
                 } catch (PDOException $e) {
-                    $lastError = $e->getMessage();
-                    continue; // Try next connection method
+                    die("PostgreSQL Connection failed (individual params): " . $e->getMessage());
                 }
-            }
-
-            if ($conn === null) {
-                die("PostgreSQL Connection failed after all attempts. Last error: " . $lastError);
             }
         } else {
             // MySQL connection using mysqli (for local development)

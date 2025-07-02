@@ -10,11 +10,23 @@ $isProduction = $isRender || isset($_ENV['APP_ENV']) && $_ENV['APP_ENV'] === 'pr
 
 // Database Configuration for Render (PostgreSQL)
 if ($isRender) {
-    define('DB_HOST', $_ENV['DB_HOST'] ?? 'localhost');
-    define('DB_PORT', $_ENV['DB_PORT'] ?? '5432');
-    define('DB_USER', $_ENV['DB_USER'] ?? 'moodifyme_user');
-    define('DB_PASS', $_ENV['DB_PASS'] ?? '');
-    define('DB_NAME', $_ENV['DB_NAME'] ?? 'moodifyme');
+    // Check if DATABASE_URL is available (Render's preferred method)
+    if (isset($_ENV['DATABASE_URL'])) {
+        $databaseUrl = parse_url($_ENV['DATABASE_URL']);
+        define('DB_HOST', $databaseUrl['host']);
+        define('DB_PORT', $databaseUrl['port'] ?? '5432');
+        define('DB_USER', $databaseUrl['user']);
+        define('DB_PASS', $databaseUrl['pass']);
+        define('DB_NAME', ltrim($databaseUrl['path'], '/'));
+        define('DATABASE_URL', $_ENV['DATABASE_URL']); // Store full URL for direct use
+    } else {
+        // Fallback to individual environment variables
+        define('DB_HOST', $_ENV['DB_HOST'] ?? 'localhost');
+        define('DB_PORT', $_ENV['DB_PORT'] ?? '5432');
+        define('DB_USER', $_ENV['DB_USER'] ?? 'moodifyme_user');
+        define('DB_PASS', $_ENV['DB_PASS'] ?? '');
+        define('DB_NAME', $_ENV['DB_NAME'] ?? 'moodifyme');
+    }
     define('DB_TYPE', 'postgresql'); // Use PostgreSQL on Render
 } else {
     // Local development with MySQL
