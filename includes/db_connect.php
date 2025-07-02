@@ -27,17 +27,35 @@ function getDbConnection() {
         if ($dbType === 'postgresql') {
             // PostgreSQL connection using PDO (for Render)
             $port = defined('DB_PORT') ? DB_PORT : '5432';
-            $dsn = "pgsql:host=" . DB_HOST . ";port=" . $port . ";dbname=" . DB_NAME . ";sslmode=require";
 
-            try {
-                $conn = new PDO($dsn, DB_USER, DB_PASS, [
-                    PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-                    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-                    PDO::ATTR_EMULATE_PREPARES => false,
-                    PDO::ATTR_TIMEOUT => 30
-                ]);
-            } catch (PDOException $e) {
-                die("PostgreSQL Connection failed: " . $e->getMessage());
+            // Try different connection approaches for Render
+            $connectionAttempts = [
+                // Internal hostname without SSL
+                "pgsql:host=" . str_replace('.oregon-postgres.render.com', '', DB_HOST) . ";port=" . $port . ";dbname=" . DB_NAME,
+                // External hostname with SSL
+                "pgsql:host=" . DB_HOST . ";port=" . $port . ";dbname=" . DB_NAME . ";sslmode=require",
+                // External hostname without SSL
+                "pgsql:host=" . DB_HOST . ";port=" . $port . ";dbname=" . DB_NAME
+            ];
+
+            $lastError = '';
+            foreach ($connectionAttempts as $dsn) {
+                try {
+                    $conn = new PDO($dsn, DB_USER, DB_PASS, [
+                        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+                        PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+                        PDO::ATTR_EMULATE_PREPARES => false,
+                        PDO::ATTR_TIMEOUT => 10
+                    ]);
+                    break; // Success, exit loop
+                } catch (PDOException $e) {
+                    $lastError = $e->getMessage();
+                    continue; // Try next connection method
+                }
+            }
+
+            if ($conn === null) {
+                die("PostgreSQL Connection failed after all attempts. Last error: " . $lastError);
             }
         } else {
             // MySQL connection using mysqli (for local development)
