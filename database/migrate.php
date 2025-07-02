@@ -104,11 +104,40 @@ function checkDatabaseConnection() {
     }
 }
 
+// Debug connection if requested
+if (isset($_GET['debug'])) {
+    echo "MoodifyMe Database Connection Debug\n";
+    echo "===================================\n\n";
+
+    echo "Environment Info:\n";
+    echo "- PHP Version: " . phpversion() . "\n";
+    echo "- PDO PostgreSQL: " . (extension_loaded('pdo_pgsql') ? 'Available' : 'NOT Available') . "\n";
+    echo "- DB_TYPE: " . (defined('DB_TYPE') ? DB_TYPE : 'Not defined') . "\n";
+    echo "- DB_HOST: " . (defined('DB_HOST') ? DB_HOST : 'Not defined') . "\n";
+    echo "- DATABASE_URL: " . (defined('DATABASE_URL') ? 'Set (' . strlen(DATABASE_URL) . ' chars)' : 'Not set') . "\n\n";
+
+    // Test basic connection
+    try {
+        $conn = getDbConnection();
+        echo "✅ Connection successful!\n";
+
+        if (defined('DB_TYPE') && DB_TYPE === 'postgresql') {
+            $result = $conn->query("SELECT version()");
+            $version = $result->fetch()['version'];
+            echo "PostgreSQL Version: " . substr($version, 0, 50) . "...\n";
+        }
+    } catch (Exception $e) {
+        echo "❌ Connection failed: " . $e->getMessage() . "\n";
+    }
+
+    exit;
+}
+
 // Run migration if called directly
 if (php_sapi_name() === 'cli' || isset($_GET['migrate'])) {
     echo "MoodifyMe Database Migration\n";
     echo "============================\n\n";
-    
+
     if (checkDatabaseConnection()) {
         if (runMigration()) {
             echo "\n✅ Migration completed successfully!\n";
