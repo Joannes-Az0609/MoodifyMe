@@ -4,12 +4,11 @@
  * Handles database setup for MySQL
  */
 
-// Include configuration
-require_once dirname(__DIR__) . '/config.php';
+// Include configuration and database connection
 require_once dirname(__DIR__) . '/includes/db_connect.php';
 
 function runMigration() {
-    global $conn;
+    $conn = getDbConnection();
 
     echo "Starting database migration for MySQL...\n";
 
