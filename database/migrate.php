@@ -4,17 +4,12 @@
  * Handles database setup for MySQL
  */
 
-// Load appropriate configuration based on environment
-if (isset($_ENV['VERCEL']) || strpos($_SERVER['HTTP_HOST'], '.vercel.app') !== false) {
-    require_once dirname(__DIR__) . '/config.vercel.php';
-} else {
-    require_once dirname(__DIR__) . '/config.php';
-}
-
+// Include configuration
+require_once dirname(__DIR__) . '/config.php';
 require_once dirname(__DIR__) . '/includes/db_connect.php';
 
 function runMigration() {
-    $conn = getDbConnection();
+    global $conn;
 
     echo "Starting database migration for MySQL...\n";
 
@@ -50,8 +45,9 @@ function runMySQLMigration($conn) {
 }
 
 function checkDatabaseConnection() {
+    global $conn;
+
     try {
-        $conn = getDbConnection();
         $result = $conn->query("SELECT VERSION()");
         $version = $result->fetch_row()[0];
         echo "Connected to MySQL: $version\n";
