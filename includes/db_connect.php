@@ -27,42 +27,50 @@ function getDbConnection() {
         if ($dbType === 'postgresql') {
             // PostgreSQL connection using PDO (for Render)
 
-            // Check if we have DATABASE_URL (Render's preferred method)
+            // Try multiple connection approaches for Render PostgreSQL
+            $connectionAttempts = [];
+
+            // First try DATABASE_URL if available
             if (defined('DATABASE_URL')) {
-                // Use DATABASE_URL directly
                 $databaseUrl = DATABASE_URL;
                 // Convert postgres:// to pgsql:// for PDO
                 $dsn = str_replace('postgres://', 'pgsql://', $databaseUrl);
-                // Add SSL mode if not present
-                if (strpos($dsn, 'sslmode=') === false) {
-                    $dsn .= '?sslmode=prefer';
-                }
 
+                // Try different SSL modes
+                $connectionAttempts[] = ['dsn' => $dsn . (strpos($dsn, '?') !== false ? '&' : '?') . 'sslmode=disable', 'method' => 'DATABASE_URL (no SSL)'];
+                $connectionAttempts[] = ['dsn' => $dsn . (strpos($dsn, '?') !== false ? '&' : '?') . 'sslmode=prefer', 'method' => 'DATABASE_URL (prefer SSL)'];
+                $connectionAttempts[] = ['dsn' => $dsn . (strpos($dsn, '?') !== false ? '&' : '?') . 'sslmode=require', 'method' => 'DATABASE_URL (require SSL)'];
+            }
+
+            // Fallback to individual parameters
+            $port = defined('DB_PORT') ? DB_PORT : '5432';
+            $connectionAttempts[] = ['dsn' => "pgsql:host=" . DB_HOST . ";port=" . $port . ";dbname=" . DB_NAME . ";sslmode=disable", 'method' => 'Individual params (no SSL)', 'user' => DB_USER, 'pass' => DB_PASS];
+            $connectionAttempts[] = ['dsn' => "pgsql:host=" . DB_HOST . ";port=" . $port . ";dbname=" . DB_NAME . ";sslmode=prefer", 'method' => 'Individual params (prefer SSL)', 'user' => DB_USER, 'pass' => DB_PASS];
+
+            $lastError = '';
+            foreach ($connectionAttempts as $attempt) {
                 try {
-                    $conn = new PDO($dsn, null, null, [
+                    $user = isset($attempt['user']) ? $attempt['user'] : null;
+                    $pass = isset($attempt['pass']) ? $attempt['pass'] : null;
+
+                    $conn = new PDO($attempt['dsn'], $user, $pass, [
                         PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
                         PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
                         PDO::ATTR_EMULATE_PREPARES => false,
-                        PDO::ATTR_TIMEOUT => 30
+                        PDO::ATTR_TIMEOUT => 10
                     ]);
-                } catch (PDOException $e) {
-                    die("PostgreSQL Connection failed (DATABASE_URL): " . $e->getMessage());
-                }
-            } else {
-                // Fallback to individual parameters
-                $port = defined('DB_PORT') ? DB_PORT : '5432';
-                $dsn = "pgsql:host=" . DB_HOST . ";port=" . $port . ";dbname=" . DB_NAME . ";sslmode=prefer";
 
-                try {
-                    $conn = new PDO($dsn, DB_USER, DB_PASS, [
-                        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-                        PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-                        PDO::ATTR_EMULATE_PREPARES => false,
-                        PDO::ATTR_TIMEOUT => 30
-                    ]);
+                    // Success! Break out of loop
+                    break;
                 } catch (PDOException $e) {
-                    die("PostgreSQL Connection failed (individual params): " . $e->getMessage());
+                    $lastError = $attempt['method'] . ': ' . $e->getMessage();
+                    $conn = null; // Reset connection
+                    continue;
                 }
+            }
+
+            if ($conn === null) {
+                die("PostgreSQL Connection failed after all attempts. Last error: " . $lastError);
             }
         } else {
             // MySQL connection using mysqli (for local development)
