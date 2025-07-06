@@ -71,26 +71,10 @@ include '../includes/header.php';
 
                     <div class="recommendation-options">
                         <div class="row g-4">
-                            <!-- African Meals Option -->
-                            <div class="col-md-6">
-                                <div class="card h-100 option-card">
-                                    <div class="card-body text-center p-4">
-                                        <div class="option-icon mb-3">
-                                            <i class="fas fa-utensils fa-3x text-primary"></i>
-                                        </div>
-                                        <h3 class="card-title">African Meals</h3>
-                                        <p class="card-text">
-                                            Discover traditional African recipes that can help enhance your mood.
-                                        </p>
-                                        <a href="<?php echo APP_URL; ?>/pages/recommendations.php?source=<?php echo urlencode($sourceEmotion); ?>&target=<?php echo urlencode($targetEmotion); ?>&emotion_id=<?php echo urlencode($emotionId); ?>&type=african_meals" class="btn btn-primary btn-lg mt-3 w-100">
-                                            <i class="fas fa-utensils me-2"></i> View African Meals
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
+
 
                             <!-- Music Option -->
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <div class="card h-100 option-card">
                                     <div class="card-body text-center p-4">
                                         <div class="option-icon mb-3">
@@ -108,7 +92,7 @@ include '../includes/header.php';
                             </div>
 
                             <!-- Movies Option -->
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <div class="card h-100 option-card">
                                     <div class="card-body text-center p-4">
                                         <div class="option-icon mb-3">
@@ -120,6 +104,24 @@ include '../includes/header.php';
                                         </p>
                                         <a href="<?php echo APP_URL; ?>/pages/movie_genre_selection.php?source=<?php echo urlencode($sourceEmotion); ?>&target=<?php echo urlencode($targetEmotion); ?>&emotion_id=<?php echo urlencode($emotionId); ?>" class="btn btn-danger btn-lg mt-3 w-100">
                                             <i class="fas fa-film me-2"></i> Choose Movie Genre
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Meals Option -->
+                            <div class="col-md-4">
+                                <div class="card h-100 option-card">
+                                    <div class="card-body text-center p-4">
+                                        <div class="option-icon mb-3">
+                                            <i class="fas fa-utensils fa-3x text-warning"></i>
+                                        </div>
+                                        <h3 class="card-title">Meals</h3>
+                                        <p class="card-text">
+                                            Discover comfort foods and recipes that can boost your mood.
+                                        </p>
+                                        <a href="<?php echo APP_URL; ?>/pages/meal_recommendations.php?source=<?php echo urlencode($sourceEmotion); ?>&target=<?php echo urlencode($targetEmotion); ?>&emotion_id=<?php echo urlencode($emotionId); ?>" class="btn btn-warning btn-lg mt-3 w-100">
+                                            <i class="fas fa-utensils me-2"></i> View Meals
                                         </a>
                                     </div>
                                 </div>

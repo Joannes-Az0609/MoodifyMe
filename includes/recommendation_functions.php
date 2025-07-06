@@ -8,7 +8,7 @@
 /**
  * Get recommendations by type
  * 
- * @param string $type Recommendation type (music, movies, african_meals)
+ * @param string $type Recommendation type (music, movies)
  * @param string $sourceEmotion Source emotion
  * @param string $targetEmotion Target emotion
  * @param int $limit Maximum number of recommendations to return

@@ -72,7 +72,7 @@ include '../includes/header.php';
                                 <ol>
                                     <li><strong>Mood Detection:</strong> Tell us how you're feeling using text, voice, or facial detection</li>
                                     <li><strong>Target Selection:</strong> Choose your desired emotional state</li>
-                                    <li><strong>AI Recommendations:</strong> Get personalized music, movies, activities, and African meals</li>
+                                    <li><strong>AI Recommendations:</strong> Get personalized music, movies, and comfort meals</li>
                                     <li><strong>Track Progress:</strong> Monitor your emotional journey over time</li>
                                 </ol>
                             </div>
@@ -202,12 +202,7 @@ include '../includes/header.php';
                                         </ul>
                                     </div>
                                     <div class="col-md-6">
-                                        <h6><i class="fas fa-utensils text-primary"></i> African Meals</h6>
-                                        <ul>
-                                            <li>Comfort food recipes</li>
-                                            <li>Mood-boosting ingredients</li>
-                                            <li>Cultural cuisine therapy</li>
-                                        </ul>
+
                                         
                                         <h6><i class="fas fa-running text-primary"></i> Activities</h6>
                                         <ul>
@@ -226,21 +221,22 @@ include '../includes/header.php';
                     <div class="accordion-item">
                         <h2 class="accordion-header" id="faq6">
                             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse6">
-                                <i class="fas fa-globe-africa me-2 text-primary"></i>
-                                Why do you include African meals in recommendations?
+                                <i class="fas fa-utensils me-2 text-primary"></i>
+                                Why do you include meal recommendations?
                             </button>
                         </h2>
                         <div id="collapse6" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
                             <div class="accordion-body">
-                                <p>African cuisine plays a unique role in emotional well-being:</p>
+                                <p>Food plays a crucial role in emotional well-being and mood regulation:</p>
                                 <ul>
-                                    <li><strong>Cultural Connection:</strong> Food connects us to heritage and community</li>
-                                    <li><strong>Comfort Factor:</strong> Traditional meals provide emotional comfort</li>
-                                    <li><strong>Nutritional Benefits:</strong> Many African ingredients have mood-boosting properties</li>
-                                    <li><strong>Social Aspect:</strong> Cooking and sharing meals builds connections</li>
+                                    <li><strong>Comfort Factor:</strong> Certain foods provide emotional comfort and stress relief</li>
+                                    <li><strong>Nutritional Benefits:</strong> Many ingredients have natural mood-boosting properties</li>
+                                    <li><strong>Social Connection:</strong> Cooking and sharing meals builds relationships</li>
                                     <li><strong>Mindful Preparation:</strong> Cooking can be therapeutic and meditative</li>
+                                    <li><strong>Sensory Experience:</strong> Aromas, textures, and flavors can trigger positive emotions</li>
+                                    <li><strong>Cultural Comfort:</strong> Familiar foods connect us to positive memories</li>
                                 </ul>
-                                <p>Our AI matches specific African dishes to mood transitions, helping you discover new flavors while improving your emotional state.</p>
+                                <p>Our AI matches specific comfort foods and recipes to mood transitions, helping you discover meals that can naturally boost your emotional state.</p>
                             </div>
                         </div>
                     </div>
