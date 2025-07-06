@@ -5,6 +5,14 @@
  */
 
 // Include configuration and functions
+// Use appropriate config based on environment
+if (isset($_ENV['RENDER']) || strpos($_SERVER['HTTP_HOST'], '.onrender.com') !== false) {
+    require_once 'config.render.php';
+} elseif ($_SERVER['HTTP_HOST'] !== 'localhost') {
+    require_once 'config.production.php';
+} else {
+    require_once 'config.php';
+}
 require_once 'includes/functions.php';
 require_once 'includes/db_connect.php';
 

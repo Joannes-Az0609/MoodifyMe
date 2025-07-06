@@ -5,14 +5,17 @@
  */
 
 // Load appropriate configuration based on environment
-if (isset($_ENV['VERCEL']) || strpos($_SERVER['HTTP_HOST'], '.vercel.app') !== false) {
+$http_host = $_SERVER['HTTP_HOST'] ?? '';
+
+if (isset($_ENV['VERCEL']) || strpos($http_host, '.vercel.app') !== false) {
     require_once dirname(__DIR__) . '/config.vercel.php';
-} elseif (strpos($_SERVER['HTTP_HOST'], '.epizy.com') !== false ||
-          strpos($_SERVER['HTTP_HOST'], '.rf.gd') !== false ||
-          strpos($_SERVER['HTTP_HOST'], '.42web.io') !== false ||
-          strpos($_SERVER['HTTP_HOST'], '.kesug.com') !== false) {
+} elseif (strpos($http_host, '.epizy.com') !== false ||
+          strpos($http_host, '.rf.gd') !== false ||
+          strpos($http_host, '.42web.io') !== false ||
+          strpos($http_host, '.kesug.com') !== false) {
     require_once dirname(__DIR__) . '/config.infinityfree.php';
 } else {
+    // Default to localhost configuration
     require_once dirname(__DIR__) . '/config.php';
 }
 
