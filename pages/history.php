@@ -36,8 +36,8 @@ $totalPages = ceil($totalItems / $itemsPerPage);
 // Get emotions with pagination
 $emotions = [];
 $stmt = $conn->prepare("
-    SELECT e.*, 
-           (SELECT COUNT(*) FROM recommendation_logs rl WHERE rl.emotion_id = e.id) as recommendation_count
+    SELECT e.*,
+           0 as recommendation_count
     FROM emotions e
     WHERE e.user_id = ?
     ORDER BY e.created_at DESC
@@ -87,8 +87,6 @@ include '../includes/header.php';
                                         <th>Mood</th>
                                         <th>Confidence</th>
                                         <th>Source</th>
-                                        <th>Recommendations</th>
-                                        <th>Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -110,21 +108,11 @@ include '../includes/header.php';
                                                         <i class="fas fa-microphone"></i>
                                                     <?php elseif ($emotion['source'] === 'face'): ?>
                                                         <i class="fas fa-camera"></i>
+                                                    <?php else: ?>
+                                                        <i class="fas fa-question"></i>
                                                     <?php endif; ?>
                                                     <?php echo ucfirst($emotion['source']); ?>
                                                 </span>
-                                            </td>
-                                            <td>
-                                                <?php if ($emotion['recommendation_count'] > 0): ?>
-                                                    <span class="badge bg-success"><?php echo $emotion['recommendation_count']; ?> recommendations</span>
-                                                <?php else: ?>
-                                                    <span class="badge bg-light text-dark">None</span>
-                                                <?php endif; ?>
-                                            </td>
-                                            <td>
-                                                <a href="<?php echo APP_URL; ?>/pages/emotion_details.php?id=<?php echo $emotion['id']; ?>" class="btn btn-sm btn-outline-primary">
-                                                    <i class="fas fa-eye"></i> View Details
-                                                </a>
                                             </td>
                                         </tr>
                                     <?php endforeach; ?>
