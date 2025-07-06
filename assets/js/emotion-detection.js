@@ -66,10 +66,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-
-
-
-
     // Helper functions
     function showLoadingIndicator(message) {
         // Create loading overlay if it doesn't exist
@@ -121,342 +117,177 @@ document.addEventListener('DOMContentLoaded', function() {
             }, 5000);
         }
     }
+});
 
-    // Make showEmotionResults available globally
-    window.showEmotionResults = function(emotion, confidence, emotionId, needsClarification, clarificationMessage) {
-        // Create results container
-        const resultsContainer = document.createElement('div');
-        resultsContainer.className = 'emotion-results';
-
-        // Check if emotion is unknown and needs clarification
-        if (emotion === 'unknown' || needsClarification) {
-            // Show error message for unknown emotion
-            resultsContainer.innerHTML = `
-                <div class="alert alert-warning mb-4">
-                    <i class="fas fa-exclamation-triangle"></i>
-                    <strong>Emotion Not Detected:</strong>
-                    ${clarificationMessage || 'Could not detect a clear emotion in your text. Please try being more specific about how you feel, for example: "I feel happy" or "I am stressed".'}
-                </div>
-                <div class="text-center mt-4">
-                    <button class="btn btn-primary" id="try-again-button">
-                        <i class="fas fa-redo"></i> Try Again
-                    </button>
-                </div>
-            `;
-
-            // Add the results container to the page first
-            addResultsToPage(resultsContainer);
-
-            // Add event listener to the try again button
-            document.getElementById('try-again-button').addEventListener('click', function() {
-                // Remove the results container
-                resultsContainer.remove();
-
-                // Show the input forms again
-                const inputForms = document.querySelectorAll('.mood-input-form');
-                inputForms.forEach(form => {
-                    if (form.id === 'text-input-form') {
-                        form.style.display = 'block';
-                    }
-                });
-
-                // Show the input options again
-                const inputOptions = document.querySelector('.mood-input-options');
-                if (inputOptions) {
-                    inputOptions.style.display = 'flex';
-                }
-
-                // Clear the text area
-                const moodText = document.getElementById('mood-text');
-                if (moodText) {
-                    moodText.value = '';
-                    moodText.focus();
-                }
-            });
-
-            return; // Exit early - do not proceed to target mood selection
+// Make showEmotionResults available globally
+window.showEmotionResults = function(emotion, confidence, emotionId, needsClarification, clarificationMessage) {
+    // Helper function to add results to page
+    function addResultsToPage(container) {
+        // Try to find the container - could be mood-detection-section or mood-detection-container
+        // or the card that contains the mood input forms
+        let targetContainer = document.querySelector('.mood-detection-section');
+        if (!targetContainer) {
+            targetContainer = document.querySelector('.mood-detection-container');
+        }
+        if (!targetContainer) {
+            // Try to find the card that contains the mood input forms
+            const moodInputForm = document.querySelector('.mood-input-form');
+            if (moodInputForm) {
+                targetContainer = moodInputForm.closest('.card-body');
+            }
         }
 
-        // Helper function to add results to page
-        function addResultsToPage(container) {
-                // Try to find the container - could be mood-detection-section or mood-detection-container
-                // or the card that contains the mood input forms
-                let targetContainer = document.querySelector('.mood-detection-section');
-                if (!targetContainer) {
-                    targetContainer = document.querySelector('.mood-detection-container');
-                }
-                if (!targetContainer) {
-                    // Try to find the card that contains the mood input forms
-                    const moodInputForm = document.querySelector('.mood-input-form');
-                    if (moodInputForm) {
-                        targetContainer = moodInputForm.closest('.card-body');
-                    }
-                }
+        if (targetContainer) {
+            console.log('Found container:', targetContainer);
 
-                if (targetContainer) {
-                    // Remove any existing results
-                    const existingResults = document.querySelector('.emotion-results');
-                    if (existingResults) {
-                        existingResults.remove();
-                    }
-
-                    // Hide input forms
-                    const inputForms = document.querySelectorAll('.mood-input-form');
-                    inputForms.forEach(form => {
-                        form.style.display = 'none';
-                    });
-
-                    // Hide input options
-                    const inputOptions = document.querySelector('.mood-input-options');
-                    if (inputOptions) {
-                        inputOptions.style.display = 'none';
-                    }
-
-                    // Add a title to the results
-                    const titleElement = document.createElement('h2');
-                    titleElement.className = 'text-center mb-4 mt-4';
-                    titleElement.textContent = 'Emotion Detection Results';
-                    container.prepend(titleElement);
-
-                    // Add results
-                    targetContainer.appendChild(container);
-
-                    // Scroll to results
-                    container.scrollIntoView({ behavior: 'smooth' });
-                } else {
-                    console.error('Container not found for emotion results');
-                    alert('Could not display emotion results. Please try again.');
-                }
+            // Remove any existing results
+            const existingResults = document.querySelector('.emotion-results');
+            if (existingResults) {
+                existingResults.remove();
             }
 
-            // Add event listener to the confirm button
-            document.getElementById('confirm-emotion').addEventListener('click', function() {
-                const selectedEmotion = document.getElementById('clarified-emotion').value;
-                if (selectedEmotion) {
-                    // Call showEmotionResults again with the selected emotion
-                    showEmotionResults(selectedEmotion, 1.0, emotionId);
-                } else {
-                    alert('Please select your current mood.');
-                }
+            // Hide input forms
+            const inputForms = document.querySelectorAll('.mood-input-form');
+            inputForms.forEach(form => {
+                form.style.display = 'none';
             });
 
-            return; // Exit early
-        }
+            // Hide input options
+            const inputOptions = document.querySelector('.mood-input-options');
+            if (inputOptions) {
+                inputOptions.style.display = 'none';
+            }
 
-        // Normal emotion display
+            // Add a title to the results
+            const titleElement = document.createElement('h2');
+            titleElement.className = 'text-center mb-4 mt-4';
+            titleElement.textContent = 'Choose Your Target Mood';
+            container.prepend(titleElement);
+
+            // Add results
+            targetContainer.appendChild(container);
+
+            // Scroll to results
+            container.scrollIntoView({ behavior: 'smooth' });
+        } else {
+            console.error('Container not found for emotion results');
+            alert('Could not display emotion results. Please try again.');
+        }
+    }
+
+    // Create results container
+    const resultsContainer = document.createElement('div');
+    resultsContainer.className = 'emotion-results';
+
+    // Check if emotion is unknown and needs clarification
+    if (emotion === 'unknown' || needsClarification) {
+        // Show error message for unknown emotion
         resultsContainer.innerHTML = `
-            <div class="detected-emotion">
-                <h3>Your Current Mood</h3>
-                <div class="emotion-badge ${emotion.toLowerCase()}">
-                    <i class="fas fa-${getEmotionIcon(emotion)}"></i>
-                    <span>${emotion}</span>
-                    <small>(${Math.round(confidence * 100)}% confidence)</small>
-                </div>
-            </div>
-            <div class="target-emotion-selection">
-                <h3>What mood would you like to achieve?</h3>
-                <div class="emotion-buttons">
-                    <!-- Emotion buttons will be added here -->
-                </div>
+            <div class="alert alert-warning mb-4">
+                <h4>We couldn't identify your mood clearly</h4>
+                <p>${clarificationMessage || 'Please try describing your feelings in a different way.'}</p>
+                <button class="btn btn-primary" onclick="location.reload()">Try Again</button>
             </div>
         `;
 
-        // Add emotion buttons
-        const emotionButtons = resultsContainer.querySelector('.emotion-buttons');
-        const emotions = [
-            'Happy', 'Calm', 'Energetic', 'Focused', 'Inspired', 'Relaxed',
-            'Confident', 'Peaceful', 'Motivated', 'Creative', 'Optimistic', 'Grateful',
-            'Joyful', 'Serene', 'Ambitious', 'Mindful', 'Empowered', 'Content',
-            'Excited', 'Balanced', 'Determined', 'Refreshed', 'Uplifted', 'Centered'
-        ];
+        // Add results to page for clarification
+        addResultsToPage(resultsContainer);
+        return; // Exit early
+    }
 
-        // Create a grid layout for the emotion buttons
-        emotionButtons.style.display = 'grid';
-        emotionButtons.style.gridTemplateColumns = 'repeat(auto-fill, minmax(200px, 1fr))';
-        emotionButtons.style.gap = '15px';
-        emotionButtons.style.marginTop = '20px';
+    // Normal emotion display
+    resultsContainer.innerHTML = `
+        <div class="detected-emotion">
+            <h3>Your Current Mood</h3>
+            <div class="emotion-badge ${emotion.toLowerCase()}">
+                <i class="fas fa-${getEmotionIcon(emotion)}"></i>
+                <span>${emotion}</span>
+                <small>(${Math.round(confidence * 100)}% confidence)</small>
+            </div>
+        </div>
+        <div class="target-emotion-selection">
+            <h3>What mood would you like to achieve?</h3>
+            <div class="emotion-buttons">
+                <!-- Emotion buttons will be added here -->
+            </div>
+        </div>
+    `;
 
-        emotions.forEach(targetEmotion => {
-            // Create the emotion button
-            const button = document.createElement('button');
-            button.className = 'btn btn-primary emotion-button';
-            button.dataset.emotion = targetEmotion.toLowerCase();
-            button.style.padding = '15px';
-            button.style.border = '1px solid #e0e0e0';
-            button.style.borderRadius = '10px';
-            button.style.backgroundColor = '#007bff';
-            button.style.color = 'white';
-            button.style.transition = 'transform 0.3s ease, box-shadow 0.3s ease';
-            button.style.cursor = 'pointer';
-            button.style.boxShadow = '0 4px 6px rgba(0, 0, 0, 0.1)';
-            button.style.width = '100%';
-            button.innerHTML = `
-                <i class="fas fa-${getEmotionIcon(targetEmotion)} me-2"></i>
-                <span>${targetEmotion}</span>
-            `;
+    // Add emotion buttons
+    const emotionButtons = resultsContainer.querySelector('.emotion-buttons');
+    const emotions = [
+        'Happy', 'Calm', 'Energetic', 'Focused', 'Inspired', 'Relaxed',
+        'Confident', 'Peaceful', 'Motivated', 'Creative', 'Optimistic', 'Grateful',
+        'Joyful', 'Serene', 'Ambitious', 'Mindful', 'Empowered', 'Content',
+        'Excited', 'Balanced', 'Determined', 'Refreshed', 'Uplifted', 'Centered'
+    ];
 
-            // Hover effect
-            button.addEventListener('mouseenter', function() {
-                this.style.transform = 'translateY(-5px)';
-                this.style.boxShadow = '0 8px 15px rgba(0, 0, 0, 0.1)';
-                this.style.backgroundColor = '#0056b3';
-            });
+    // Create a grid layout for the emotion buttons
+    emotionButtons.style.display = 'grid';
+    emotionButtons.style.gridTemplateColumns = 'repeat(auto-fill, minmax(200px, 1fr))';
+    emotionButtons.style.gap = '15px';
+    emotionButtons.style.marginTop = '20px';
 
-            button.addEventListener('mouseleave', function() {
-                this.style.transform = 'translateY(0)';
-                this.style.boxShadow = '0 4px 6px rgba(0, 0, 0, 0.1)';
-                this.style.backgroundColor = '#007bff';
-            });
+    emotions.forEach(targetEmotion => {
+        // Create the emotion button
+        const button = document.createElement('button');
+        button.className = 'btn btn-outline-primary emotion-btn';
+        button.innerHTML = `
+            <i class="fas fa-${getEmotionIcon(targetEmotion)}"></i>
+            <span>${targetEmotion}</span>
+        `;
 
-            button.addEventListener('click', function(event) {
-                // Prevent default behavior
-                event.preventDefault();
-                event.stopPropagation();
+        // Add click event listener
+        button.addEventListener('click', function() {
+            // Construct the redirect URL
+            const redirectUrl = window.location.pathname.includes('/pages/') 
+                ? `mood_options.php?source=${emotion.toLowerCase()}&target=${targetEmotion.toLowerCase()}`
+                : `pages/mood_options.php?source=${emotion.toLowerCase()}&target=${targetEmotion.toLowerCase()}`;
 
-                // Redirect directly to mood_options.php
-                const basePath = window.location.pathname.includes('/pages/') ? '' : 'pages/';
-                const redirectUrl = `${basePath}mood_options.php?source=${emotion.toLowerCase()}&target=${targetEmotion.toLowerCase()}&emotion_id=${emotionId || ''}`;
-
-                // Redirect to mood options page
-                window.location.href = redirectUrl;
-            });
-
-            // Add button to the grid
-            emotionButtons.appendChild(button);
+            // Redirect to mood options page
+            window.location.href = redirectUrl;
         });
 
-        // Define the addResultsToPage function
-        function addResultsToPage(container) {
-            // Try to find the container - could be mood-detection-section or mood-detection-container
-            // or the card that contains the mood input forms
-            let targetContainer = document.querySelector('.mood-detection-section');
-            if (!targetContainer) {
-                targetContainer = document.querySelector('.mood-detection-container');
-            }
-            if (!targetContainer) {
-                // Try to find the card that contains the mood input forms
-                const moodInputForm = document.querySelector('.mood-input-form');
-                if (moodInputForm) {
-                    targetContainer = moodInputForm.closest('.card-body');
-                }
-            }
+        // Add button to the grid
+        emotionButtons.appendChild(button);
+    });
 
-            if (targetContainer) {
-                console.log('Found container:', targetContainer);
+    // Add results to page
+    addResultsToPage(resultsContainer);
+};
 
-                // Remove any existing results
-                const existingResults = document.querySelector('.emotion-results');
-                if (existingResults) {
-                    existingResults.remove();
-                }
+// Make getEmotionIcon available globally
+window.getEmotionIcon = function(emotion) {
+    const icons = {
+        'happy': 'smile',
+        'sad': 'frown',
+        'angry': 'angry',
+        'anxious': 'tired',
+        'calm': 'peace',
+        'energetic': 'bolt',
+        'focused': 'eye',
+        'inspired': 'lightbulb',
+        'relaxed': 'leaf',
+        'confident': 'thumbs-up',
+        'peaceful': 'dove',
+        'motivated': 'fire',
+        'creative': 'palette',
+        'optimistic': 'sun',
+        'grateful': 'heart',
+        'joyful': 'laugh',
+        'serene': 'water',
+        'ambitious': 'mountain',
+        'mindful': 'brain',
+        'empowered': 'fist-raised',
+        'content': 'smile-beam',
+        'excited': 'star',
+        'balanced': 'yin-yang',
+        'determined': 'flag',
+        'refreshed': 'seedling',
+        'uplifted': 'arrow-up',
+        'centered': 'circle-dot',
+        'unknown': 'question-circle'
+    };
 
-                // Hide input forms
-                const inputForms = document.querySelectorAll('.mood-input-form');
-                inputForms.forEach(form => {
-                    form.style.display = 'none';
-                });
-
-                // Hide input options
-                const inputOptions = document.querySelector('.mood-input-options');
-                if (inputOptions) {
-                    inputOptions.style.display = 'none';
-                }
-
-                // Add a title to the results
-                const titleElement = document.createElement('h2');
-                titleElement.className = 'text-center mb-4 mt-4';
-                titleElement.textContent = 'Choose Your Target Mood';
-                container.prepend(titleElement);
-
-                // Add results
-                targetContainer.appendChild(container);
-
-                // Scroll to results
-                container.scrollIntoView({ behavior: 'smooth' });
-            } else {
-                // If container not found, redirect using form submission
-                console.error('Container not found for emotion results');
-
-                // Create a form for redirection
-                const form = document.createElement('form');
-                form.method = 'GET';
-                form.action = window.location.pathname.includes('/pages/') ? 'mood_options.php' : 'pages/mood_options.php';
-
-                // Add source emotion input
-                const sourceInput = document.createElement('input');
-                sourceInput.type = 'hidden';
-                sourceInput.name = 'source';
-                sourceInput.value = emotion.toLowerCase();
-                form.appendChild(sourceInput);
-
-                // Add target emotion input (default to happy)
-                const targetInput = document.createElement('input');
-                targetInput.type = 'hidden';
-                targetInput.name = 'target';
-                targetInput.value = 'happy';
-                form.appendChild(targetInput);
-
-                // Add emotion ID input if available
-                if (emotionId) {
-                    const idInput = document.createElement('input');
-                    idInput.type = 'hidden';
-                    idInput.name = 'emotion_id';
-                    idInput.value = emotionId;
-                    form.appendChild(idInput);
-                }
-
-                // Add the form to the document
-                document.body.appendChild(form);
-
-                // Show an alert for debugging
-                alert('Fallback: Submitting form to: ' + form.action);
-
-                // Submit the form
-                form.submit();
-            }
-        }
-
-        // Add results to page
-        addResultsToPage(resultsContainer);
-    }
-
-    // Make getEmotionIcon available globally
-    window.getEmotionIcon = function(emotion) {
-        const icons = {
-            'happy': 'smile',
-            'sad': 'frown',
-            'angry': 'angry',
-            'anxious': 'tired',
-            'calm': 'peace',
-            'excited': 'grin-stars',
-            'bored': 'meh',
-            'tired': 'bed',
-            'stressed': 'grimace',
-            'neutral': 'meh-blank',
-            'energetic': 'bolt',
-            'focused': 'bullseye',
-            'inspired': 'lightbulb',
-            'relaxed': 'couch',
-            'confident': 'crown',
-            'peaceful': 'dove',
-            'motivated': 'fire',
-            'creative': 'palette',
-            'optimistic': 'sun',
-            'grateful': 'heart',
-            'joyful': 'laugh',
-            'serene': 'leaf',
-            'ambitious': 'mountain',
-            'mindful': 'brain',
-            'empowered': 'fist-raised',
-            'content': 'smile-beam',
-            'balanced': 'yin-yang',
-            'determined': 'flag',
-            'refreshed': 'seedling',
-            'uplifted': 'arrow-up',
-            'centered': 'circle-dot',
-            'unknown': 'question-circle'
-        };
-
-        return icons[emotion.toLowerCase()] || 'smile';
-    }
-});
+    return icons[emotion.toLowerCase()] || 'smile';
+};

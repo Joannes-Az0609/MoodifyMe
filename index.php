@@ -616,3 +616,6 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 </script>
+
+<!-- Include emotion detection JavaScript -->
+<script src="<?php echo APP_URL; ?>/assets/js/emotion-detection.js"></script>
