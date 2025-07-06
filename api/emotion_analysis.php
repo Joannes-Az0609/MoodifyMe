@@ -215,11 +215,13 @@ function fallbackTextAnalysis($text, &$emotion, &$confidence) {
             // Direct words
             'sad', 'unhappy', 'depressed', 'down', 'blue', 'gloomy', 'miserable', 'cry', 'tears',
             'sorrow', 'grief', 'melancholy', 'dejected', 'heartbroken', 'disappointed', 'upset',
-            'low', 'hurt', 'pain', 'ache', 'broken', 'empty', 'lonely', 'hopeless',
+            'low', 'hurt', 'pain', 'ache', 'broken', 'empty', 'lonely', 'hopeless', 'vulnerable',
+            'fragile', 'defeated', 'discouraged', 'disheartened', 'demoralized',
             // Phrases
             'feel bad', 'feeling bad', 'feeling sad', 'feeling down', 'feeling low',
             'so sad', 'really sad', 'very sad', 'quite sad', 'pretty sad',
-            'feeling awful', 'feeling terrible', 'feeling miserable', 'bad mood'
+            'feeling awful', 'feeling terrible', 'feeling miserable', 'bad mood',
+            'feeling vulnerable', 'feel defeated', 'feeling defeated', 'emotionally weak'
         ],
         'angry' => [
             // Direct words
@@ -271,10 +273,13 @@ function fallbackTextAnalysis($text, &$emotion, &$confidence) {
             // Direct words
             'tired', 'exhausted', 'sleepy', 'fatigued', 'drained', 'weary', 'beat', 'spent',
             'depleted', 'lethargic', 'sluggish', 'drowsy', 'zonked', 'pooped', 'bushed',
+            'weak', 'weakened', 'feeble', 'frail', 'powerless', 'lacking energy', 'low energy',
             // Phrases
             'feeling tired', 'so tired', 'really tired', 'very tired', 'quite tired',
+            'feeling weak', 'feel weak', 'so weak', 'really weak', 'very weak',
             'worn out', 'wiped out', 'burned out', 'dead tired', 'dog tired',
-            'need sleep', 'need rest', 'can\'t keep my eyes open'
+            'need sleep', 'need rest', 'can\'t keep my eyes open', 'no energy',
+            'lacking strength', 'feel drained', 'feeling drained'
         ],
         'stressed' => [
             // Direct words
