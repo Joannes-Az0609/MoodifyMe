@@ -100,7 +100,13 @@ if (!empty($specificType) && array_key_exists($specificType, REC_TYPES)) {
                                             <div class="card-body">
                                                 <h5 class="card-title"><?php echo htmlspecialchars($recommendation['title']); ?></h5>
                                                 <p class="card-text"><?php echo htmlspecialchars($recommendation['description']); ?></p>
-
+                                                <?php if ($specificType === 'african_meals' && !empty($recommendation['content'])): ?>
+                                                    <div class="recipe-preview">
+                                                        <small class="text-muted">
+                                                            <?php echo htmlspecialchars(substr($recommendation['content'], 0, 150)); ?>...
+                                                        </small>
+                                                    </div>
+                                                <?php endif; ?>
                                             </div>
                                             <div class="card-footer">
                                                 <?php if ($specificType === 'movies'): ?>
@@ -113,7 +119,7 @@ if (!empty($specificType) && array_key_exists($specificType, REC_TYPES)) {
                                                        class="btn btn-primary btn-sm"
                                                        target="_blank">
                                                         <i class="fas fa-external-link-alt me-1"></i>
-                                                        View Details
+                                                        <?php echo $specificType === 'african_meals' ? 'View Recipe' : 'View Details'; ?>
                                                     </a>
                                                 <?php endif; ?>
                                             </div>
@@ -130,7 +136,11 @@ if (!empty($specificType) && array_key_exists($specificType, REC_TYPES)) {
                                 <div class="mt-4">
                                     <h5>Try These Alternatives:</h5>
                                     <div class="d-flex flex-wrap gap-2 justify-content-center">
-
+                                        <?php if ($specificType !== 'african_meals'): ?>
+                                            <a href="<?php echo APP_URL; ?>/pages/recommendations.php?source=<?php echo urlencode($sourceEmotion); ?>&target=<?php echo urlencode($targetEmotion); ?>&emotion_id=<?php echo urlencode($emotionId); ?>&type=african_meals" class="btn btn-outline-primary btn-sm">
+                                                <i class="fas fa-utensils me-1"></i> African Meals
+                                            </a>
+                                        <?php endif; ?>
 
                                         <?php if ($specificType !== 'music'): ?>
                                             <a href="<?php echo APP_URL; ?>/pages/spotify_music.php?source=<?php echo urlencode($sourceEmotion); ?>&target=<?php echo urlencode($targetEmotion); ?>&emotion_id=<?php echo urlencode($emotionId); ?>" class="btn btn-outline-success btn-sm">
@@ -138,17 +148,9 @@ if (!empty($specificType) && array_key_exists($specificType, REC_TYPES)) {
                                             </a>
                                         <?php endif; ?>
 
-                                        <?php if ($specificType !== 'movies'): ?>
-                                            <a href="<?php echo APP_URL; ?>/pages/movie_genre_selection.php?source=<?php echo urlencode($sourceEmotion); ?>&target=<?php echo urlencode($targetEmotion); ?>&emotion_id=<?php echo urlencode($emotionId); ?>" class="btn btn-outline-danger btn-sm">
-                                                <i class="fas fa-film me-1"></i> Movies
-                                            </a>
-                                        <?php endif; ?>
-
-                                        <?php if ($specificType !== 'meals'): ?>
-                                            <a href="<?php echo APP_URL; ?>/pages/meal_recommendations.php?source=<?php echo urlencode($sourceEmotion); ?>&target=<?php echo urlencode($targetEmotion); ?>&emotion_id=<?php echo urlencode($emotionId); ?>" class="btn btn-outline-warning btn-sm">
-                                                <i class="fas fa-utensils me-1"></i> Meals
-                                            </a>
-                                        <?php endif; ?>
+                                        <a href="<?php echo APP_URL; ?>/pages/movie_genre_selection.php?source=<?php echo urlencode($sourceEmotion); ?>&target=<?php echo urlencode($targetEmotion); ?>&emotion_id=<?php echo urlencode($emotionId); ?>" class="btn btn-outline-danger btn-sm">
+                                            <i class="fas fa-film me-1"></i> Movies
+                                        </a>
 
                                         <a href="<?php echo APP_URL; ?>/pages/ai_chat_redirect.php?source=<?php echo urlencode($sourceEmotion); ?>&target=<?php echo urlencode($targetEmotion); ?>&emotion_id=<?php echo urlencode($emotionId); ?>" class="btn btn-outline-info btn-sm">
                                             <i class="fas fa-robot me-1"></i> AI Support
@@ -197,10 +199,26 @@ if (!empty($specificType) && array_key_exists($specificType, REC_TYPES)) {
 
                     <div class="recommendation-options">
                         <div class="row g-4">
-
+                            <!-- African Meals Option -->
+                            <div class="col-md-6">
+                                <div class="card h-100 option-card">
+                                    <div class="card-body text-center p-4">
+                                        <div class="option-icon mb-3">
+                                            <i class="fas fa-utensils fa-3x text-primary"></i>
+                                        </div>
+                                        <h3 class="card-title">African Meals</h3>
+                                        <p class="card-text">
+                                            Discover traditional African recipes that can help enhance your mood.
+                                        </p>
+                                        <a href="<?php echo APP_URL; ?>/pages/recommendations.php?source=<?php echo urlencode($sourceEmotion); ?>&target=<?php echo urlencode($targetEmotion); ?>&emotion_id=<?php echo urlencode($emotionId); ?>&type=african_meals" class="btn btn-primary btn-lg mt-3 w-100">
+                                            <i class="fas fa-utensils me-2"></i> View African Meals
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
 
                             <!-- Music Option -->
-                            <div class="col-md-4">
+                            <div class="col-md-6">
                                 <div class="card h-100 option-card">
                                     <div class="card-body text-center p-4">
                                         <div class="option-icon mb-3">
@@ -217,8 +235,8 @@ if (!empty($specificType) && array_key_exists($specificType, REC_TYPES)) {
                                 </div>
                             </div>
 
-                            <!-- Movies Option -->
-                            <div class="col-md-4">
+                            <!-- Movies Option (Always show, regardless of recommendations) -->
+                            <div class="col-md-6">
                                 <div class="card h-100 option-card">
                                     <div class="card-body text-center p-4">
                                         <div class="option-icon mb-3">
@@ -230,24 +248,6 @@ if (!empty($specificType) && array_key_exists($specificType, REC_TYPES)) {
                                         </p>
                                         <a href="<?php echo APP_URL; ?>/pages/movie_genre_selection.php?source=<?php echo urlencode($sourceEmotion); ?>&target=<?php echo urlencode($targetEmotion); ?>&emotion_id=<?php echo urlencode($emotionId); ?>" class="btn btn-danger btn-lg mt-3 w-100">
                                             <i class="fas fa-film me-2"></i> Choose Movie Genre
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Meals Option -->
-                            <div class="col-md-4">
-                                <div class="card h-100 option-card">
-                                    <div class="card-body text-center p-4">
-                                        <div class="option-icon mb-3">
-                                            <i class="fas fa-utensils fa-3x text-warning"></i>
-                                        </div>
-                                        <h3 class="card-title">Meals</h3>
-                                        <p class="card-text">
-                                            Discover comfort foods and recipes that can boost your mood.
-                                        </p>
-                                        <a href="<?php echo APP_URL; ?>/pages/meal_recommendations.php?source=<?php echo urlencode($sourceEmotion); ?>&target=<?php echo urlencode($targetEmotion); ?>&emotion_id=<?php echo urlencode($emotionId); ?>" class="btn btn-warning btn-lg mt-3 w-100">
-                                            <i class="fas fa-utensils me-2"></i> View Meals
                                         </a>
                                     </div>
                                 </div>

@@ -22,8 +22,6 @@ define('TMDB_API_KEY', 'a931731976a07c91bf2dc1208ed4ac3d'); // The Movie Databas
 define('SPOTIFY_CLIENT_ID', 'a0f9cf5c2f3e4bdb80bdc3213bab0035'); // Spotify API Client ID
 define('SPOTIFY_CLIENT_SECRET', '8ca23d17f6dc4324bc0823ab7ce297dd'); // Spotify API Client Secret
 
-
-
 // Google OAuth Configuration
 define('GOOGLE_CLIENT_ID', '1005843795519-95v3g07sj7rder70eb1ikavouk057rli.apps.googleusercontent.com');
 define('GOOGLE_CLIENT_SECRET', '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');
@@ -33,7 +31,7 @@ define('GOOGLE_REDIRECT_URI', APP_URL . '/api/google_oauth_callback.php');
 define('REC_TYPES', [
     'music' => 'Music',
     'movies' => 'Movies',
-    'meals' => 'Meals'
+    'african_meals' => 'African Meals'
 ]);
 
 // Emotion Categories

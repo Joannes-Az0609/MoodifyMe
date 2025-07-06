@@ -80,7 +80,10 @@ include '../includes/header.php';
                                         <h5>In the meantime...</h5>
                                         <p class="mb-3">Try our other mood enhancement options:</p>
                                         <div class="d-grid gap-2">
-
+                                            <a href="<?php echo APP_URL; ?>/pages/recommendations.php?source=<?php echo $sourceEmotion; ?>&target=<?php echo $targetEmotion; ?>&emotion_id=<?php echo $emotionId; ?>&type=african_meals" 
+                                               class="btn btn-primary btn-sm">
+                                                <i class="fas fa-utensils me-2"></i> Try African Meals
+                                            </a>
                                             <a href="<?php echo APP_URL; ?>/pages/movie_genre_selection.php?source=<?php echo $sourceEmotion; ?>&target=<?php echo $targetEmotion; ?>&emotion_id=<?php echo $emotionId; ?>"
                                             class="btn btn-danger btn-sm">
                                             <i class="fas fa-film me-2"></i> Watch Movies
