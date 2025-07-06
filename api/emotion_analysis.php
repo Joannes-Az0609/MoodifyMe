@@ -442,31 +442,44 @@ function fallbackRandomEmotion(&$emotion, &$confidence) {
     $confidence = mt_rand(70, 95) / 100;
 }
 
-// Log emotion
-$emotionId = logEmotion($userId, $emotion, $confidence, $inputType, $inputData);
+// Check if emotion detection failed and needs clarification
+$needsClarification = ($emotion === 'unknown' && isset($apiResponse['needs_clarification']) && $apiResponse['needs_clarification']);
+
+// Only log emotion if it was successfully detected
+$emotionId = null;
+if (!$needsClarification && $emotion !== 'unknown') {
+    $emotionId = logEmotion($userId, $emotion, $confidence, $inputType, $inputData);
+}
 
 // Prepare response data
-$responseData = [
-    'success' => true,
-    'emotion' => $emotion,
-    'confidence' => $confidence,
-    'emotion_id' => $emotionId,
-    'input_type' => $inputType
-];
+if ($needsClarification) {
+    // Return error response for unknown emotions that need clarification
+    $responseData = [
+        'success' => false,
+        'emotion' => $emotion,
+        'confidence' => $confidence,
+        'needs_clarification' => true,
+        'clarification_message' => $apiResponse['clarification_message'] ?? 'Could not detect a clear emotion in your text. Please try being more specific about how you feel.',
+        'input_type' => $inputType
+    ];
+} else {
+    // Return success response for detected emotions
+    $responseData = [
+        'success' => true,
+        'emotion' => $emotion,
+        'confidence' => $confidence,
+        'emotion_id' => $emotionId,
+        'input_type' => $inputType
+    ];
 
-// Add API response data if available
-if ($apiResponse) {
-    $responseData['api_method'] = $apiResponse['method'] ?? 'unknown';
+    // Add API response data if available
+    if ($apiResponse) {
+        $responseData['api_method'] = $apiResponse['method'] ?? 'unknown';
 
-    // Add clarification information if needed
-    if (isset($apiResponse['needs_clarification']) && $apiResponse['needs_clarification']) {
-        $responseData['needs_clarification'] = true;
-        $responseData['clarification_message'] = $apiResponse['clarification_message'] ?? 'Please clarify your emotion';
-    }
-
-    // Add additional data based on input type
-    if ($inputType === 'text' && isset($apiResponse['all_emotions'])) {
-        $responseData['all_emotions'] = $apiResponse['all_emotions'];
+        // Add additional data based on input type
+        if ($inputType === 'text' && isset($apiResponse['all_emotions'])) {
+            $responseData['all_emotions'] = $apiResponse['all_emotions'];
+        }
     }
 }
 

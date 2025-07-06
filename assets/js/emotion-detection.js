@@ -44,7 +44,18 @@ document.addEventListener('DOMContentLoaded', function() {
                         data.clarification_message
                     );
                 } else {
-                    showError(data.message || 'An error occurred during emotion analysis.');
+                    // Check if it's a clarification needed error
+                    if (data.needs_clarification) {
+                        showEmotionResults(
+                            data.emotion,
+                            data.confidence,
+                            data.emotion_id,
+                            data.needs_clarification,
+                            data.clarification_message
+                        );
+                    } else {
+                        showError(data.message || data.clarification_message || 'An error occurred during emotion analysis.');
+                    }
                 }
             })
             .catch(error => {
@@ -118,93 +129,56 @@ document.addEventListener('DOMContentLoaded', function() {
         resultsContainer.className = 'emotion-results';
 
         // Check if emotion is unknown and needs clarification
-        if (emotion === 'unknown' && needsClarification) {
-            // Check if the clarification message indicates no mood was detected
-            const isNoMoodDetected = clarificationMessage && clarificationMessage.toLowerCase().includes('no mood detected');
-
-            if (isNoMoodDetected) {
-                // Show error message for no mood detected
-                resultsContainer.innerHTML = `
-                    <div class="alert alert-danger mb-4">
-                        <i class="fas fa-exclamation-circle"></i>
-                        <strong>Error:</strong>
-                        ${clarificationMessage || 'No mood detected in your text. Please be more specific about how you feel.'}
-                    </div>
-                    <div class="text-center mt-4">
-                        <button class="btn btn-primary" id="try-again-button">
-                            <i class="fas fa-redo"></i> Try Again
-                        </button>
-                    </div>
-                `;
-
-                // Add the results container to the page first
-                addResultsToPage(resultsContainer);
-
-                // Add event listener to the try again button
-                document.getElementById('try-again-button').addEventListener('click', function() {
-                    // Remove the results container
-                    resultsContainer.remove();
-
-                    // Show the input forms again
-                    const inputForms = document.querySelectorAll('.mood-input-form');
-                    inputForms.forEach(form => {
-                        if (form.id === 'text-input-form') {
-                            form.style.display = 'block';
-                        }
-                    });
-
-                    // Show the input options again
-                    const inputOptions = document.querySelector('.mood-input-options');
-                    if (inputOptions) {
-                        inputOptions.style.display = 'flex';
-                    }
-
-                    // Clear the text area
-                    const moodText = document.getElementById('mood-text');
-                    if (moodText) {
-                        moodText.value = '';
-                        moodText.focus();
-                    }
-                });
-
-                return; // Exit early
-            }
-
-            // Regular clarification needed (uncertain emotion)
+        if (emotion === 'unknown' || needsClarification) {
+            // Show error message for unknown emotion
             resultsContainer.innerHTML = `
                 <div class="alert alert-warning mb-4">
                     <i class="fas fa-exclamation-triangle"></i>
-                    <strong>Emotion Detection Uncertain:</strong>
-                    ${clarificationMessage || 'Could not determine your emotion with confidence.'}
+                    <strong>Emotion Not Detected:</strong>
+                    ${clarificationMessage || 'Could not detect a clear emotion in your text. Please try being more specific about how you feel, for example: "I feel happy" or "I am stressed".'}
                 </div>
-                <div class="detected-emotion">
-                    <h3>Please Select Your Current Mood</h3>
-                    <div class="emotion-selection mb-4">
-                        <select class="form-select mb-3" id="clarified-emotion">
-                            <option value="">-- Select your current mood --</option>
-                            <option value="happy">Happy</option>
-                            <option value="sad">Sad</option>
-                            <option value="angry">Angry</option>
-                            <option value="anxious">Anxious</option>
-                            <option value="calm">Calm</option>
-                            <option value="excited">Excited</option>
-                            <option value="bored">Bored</option>
-                            <option value="tired">Tired</option>
-                            <option value="stressed">Stressed</option>
-                            <option value="neutral">Neutral</option>
-                        </select>
-                        <button class="btn btn-primary" id="confirm-emotion">
-                            <i class="fas fa-check-circle"></i> Confirm Mood
-                        </button>
-                    </div>
+                <div class="text-center mt-4">
+                    <button class="btn btn-primary" id="try-again-button">
+                        <i class="fas fa-redo"></i> Try Again
+                    </button>
                 </div>
             `;
 
             // Add the results container to the page first
             addResultsToPage(resultsContainer);
 
-            // Helper function to add results to page
-            function addResultsToPage(container) {
+            // Add event listener to the try again button
+            document.getElementById('try-again-button').addEventListener('click', function() {
+                // Remove the results container
+                resultsContainer.remove();
+
+                // Show the input forms again
+                const inputForms = document.querySelectorAll('.mood-input-form');
+                inputForms.forEach(form => {
+                    if (form.id === 'text-input-form') {
+                        form.style.display = 'block';
+                    }
+                });
+
+                // Show the input options again
+                const inputOptions = document.querySelector('.mood-input-options');
+                if (inputOptions) {
+                    inputOptions.style.display = 'flex';
+                }
+
+                // Clear the text area
+                const moodText = document.getElementById('mood-text');
+                if (moodText) {
+                    moodText.value = '';
+                    moodText.focus();
+                }
+            });
+
+            return; // Exit early - do not proceed to target mood selection
+        }
+
+        // Helper function to add results to page
+        function addResultsToPage(container) {
                 // Try to find the container - could be mood-detection-section or mood-detection-container
                 // or the card that contains the mood input forms
                 let targetContainer = document.querySelector('.mood-detection-section');
