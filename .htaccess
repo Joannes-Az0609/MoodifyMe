@@ -12,7 +12,7 @@
     # Prevent direct access to sensitive files
     RewriteRule ^config\.php$ - [F,L]
     RewriteRule ^includes/ - [F,L]
-    RewriteRule ^database/ - [F,L]
+    # RewriteRule ^database/ - [F,L]  # Temporarily commented out
     RewriteRule ^models/ - [F,L]
 
     # Allow direct access to assets, api, and pages
@@ -38,9 +38,9 @@
     php_flag log_errors on
     php_value error_log logs/php_errors.log
     
-    # Session security
-    php_flag session.cookie_httponly on
-    php_flag session.use_only_cookies on
+    # Session security (handled in config.php)
+    # php_flag session.cookie_httponly on
+    # php_flag session.use_only_cookies on
     
     # File uploads
     php_value upload_max_filesize 10M

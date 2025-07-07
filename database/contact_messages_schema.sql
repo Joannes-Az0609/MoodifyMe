@@ -1,7 +1,7 @@
 -- Contact Messages Table for MoodifyMe
 -- Run this to add contact form storage capability
 
-USE moodifyme;
+USE modifyMe1;
 
 -- Create contact_messages table
 CREATE TABLE IF NOT EXISTS contact_messages (

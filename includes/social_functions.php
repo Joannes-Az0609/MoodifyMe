@@ -9,19 +9,25 @@
  */
 function getUserProfileWithStats($userId) {
     global $conn;
-    
+
     $stmt = $conn->prepare("
-        SELECT u.*, 
+        SELECT u.*,
                COALESCE(u.follower_count, 0) as follower_count,
                COALESCE(u.following_count, 0) as following_count,
                COALESCE(u.connection_count, 0) as connection_count
-        FROM users u 
+        FROM users u
         WHERE u.id = ?
     ");
+
+    if (!$stmt) {
+        error_log("Failed to prepare getUserProfileWithStats query: " . $conn->error);
+        return null;
+    }
+
     $stmt->bind_param("i", $userId);
     $stmt->execute();
     $result = $stmt->get_result();
-    
+
     return $result->fetch_assoc();
 }
 
@@ -30,12 +36,18 @@ function getUserProfileWithStats($userId) {
  */
 function isFollowing($followerId, $followingId) {
     global $conn;
-    
+
     $stmt = $conn->prepare("SELECT id FROM user_follows WHERE follower_id = ? AND following_id = ?");
+
+    if (!$stmt) {
+        error_log("Failed to prepare isFollowing query: " . $conn->error);
+        return false;
+    }
+
     $stmt->bind_param("ii", $followerId, $followingId);
     $stmt->execute();
     $result = $stmt->get_result();
-    
+
     return $result->num_rows > 0;
 }
 
@@ -146,21 +158,30 @@ function getConnectionStatus($userId1, $userId2) {
  */
 function sendConnectionRequest($requesterId, $receiverId) {
     global $conn;
-    
+
+    // Include notification functions
+    require_once __DIR__ . '/notification_functions.php';
+
     // Check if connection already exists
     if (getConnectionStatus($requesterId, $receiverId)) {
         return false;
     }
-    
+
     // Check if trying to connect to self
     if ($requesterId == $receiverId) {
         return false;
     }
-    
+
     $stmt = $conn->prepare("INSERT INTO user_connections (requester_id, receiver_id, status) VALUES (?, ?, 'pending')");
     $stmt->bind_param("ii", $requesterId, $receiverId);
-    
-    return $stmt->execute();
+
+    if ($stmt->execute()) {
+        // Create notification for the receiver
+        createFriendRequestNotification($receiverId, $requesterId);
+        return true;
+    }
+
+    return false;
 }
 
 /**
@@ -168,29 +189,35 @@ function sendConnectionRequest($requesterId, $receiverId) {
  */
 function acceptConnectionRequest($requesterId, $receiverId) {
     global $conn;
-    
+
+    // Include notification functions
+    require_once __DIR__ . '/notification_functions.php';
+
     $conn->begin_transaction();
-    
+
     try {
         // Update connection status
         $stmt = $conn->prepare("
-            UPDATE user_connections 
-            SET status = 'accepted', updated_at = NOW() 
+            UPDATE user_connections
+            SET status = 'accepted', updated_at = NOW()
             WHERE requester_id = ? AND receiver_id = ? AND status = 'pending'
         ");
         $stmt->bind_param("ii", $requesterId, $receiverId);
         $stmt->execute();
-        
+
         if ($stmt->affected_rows > 0) {
             // Update connection counts
             $stmt = $conn->prepare("UPDATE users SET connection_count = connection_count + 1 WHERE id IN (?, ?)");
             $stmt->bind_param("ii", $requesterId, $receiverId);
             $stmt->execute();
-            
+
+            // Create notification for the requester
+            createFriendAcceptedNotification($requesterId, $receiverId);
+
             $conn->commit();
             return true;
         }
-        
+
         $conn->rollback();
         return false;
     } catch (Exception $e) {
@@ -315,30 +342,114 @@ function unblockUser($blockerId, $blockedId) {
  */
 function searchUsers($query, $currentUserId, $limit = 20) {
     global $conn;
-    
+
     $searchTerm = "%$query%";
-    
-    $stmt = $conn->prepare("
-        SELECT u.id, u.username, u.display_name, u.profile_image, u.bio, u.is_public,
-               u.follower_count, u.following_count
-        FROM users u
-        WHERE u.id != ? 
-          AND (u.username LIKE ? OR u.display_name LIKE ?)
-          AND u.is_public = TRUE
-          AND NOT EXISTS (SELECT 1 FROM user_blocks WHERE blocker_id = u.id AND blocked_id = ?)
-          AND NOT EXISTS (SELECT 1 FROM user_blocks WHERE blocker_id = ? AND blocked_id = u.id)
-        ORDER BY u.username
-        LIMIT ?
-    ");
-    $stmt->bind_param("isssii", $currentUserId, $searchTerm, $searchTerm, $currentUserId, $currentUserId, $limit);
+
+    // First check what columns exist in the users table
+    $columnsQuery = $conn->query("SHOW COLUMNS FROM users");
+    $availableColumns = [];
+    while ($column = $columnsQuery->fetch_assoc()) {
+        $availableColumns[] = $column['Field'];
+    }
+
+    // Build SELECT clause based on available columns
+    $selectColumns = ['u.id', 'u.username'];
+
+    // Add optional columns if they exist
+    if (in_array('display_name', $availableColumns)) {
+        $selectColumns[] = 'u.display_name';
+    }
+    if (in_array('profile_image', $availableColumns)) {
+        $selectColumns[] = 'u.profile_image';
+    }
+    if (in_array('bio', $availableColumns)) {
+        $selectColumns[] = 'u.bio';
+    }
+    if (in_array('is_public', $availableColumns)) {
+        $selectColumns[] = 'u.is_public';
+    }
+    if (in_array('follower_count', $availableColumns)) {
+        $selectColumns[] = 'u.follower_count';
+    }
+    if (in_array('following_count', $availableColumns)) {
+        $selectColumns[] = 'u.following_count';
+    }
+
+    $selectClause = implode(', ', $selectColumns);
+
+    // Build WHERE clause based on available columns
+    $whereConditions = ['u.id != ?'];
+    $bindTypes = 'i';
+    $bindValues = [$currentUserId];
+
+    // Add search conditions
+    if (in_array('display_name', $availableColumns)) {
+        $whereConditions[] = '(u.username LIKE ? OR u.display_name LIKE ?)';
+        $bindTypes .= 'ss';
+        $bindValues[] = $searchTerm;
+        $bindValues[] = $searchTerm;
+    } else {
+        $whereConditions[] = 'u.username LIKE ?';
+        $bindTypes .= 's';
+        $bindValues[] = $searchTerm;
+    }
+
+    // Add public filter if column exists
+    if (in_array('is_public', $availableColumns)) {
+        $whereConditions[] = 'u.is_public = TRUE';
+    }
+
+    // Check if user_blocks table exists
+    $tablesQuery = $conn->query("SHOW TABLES LIKE 'user_blocks'");
+    if ($tablesQuery && $tablesQuery->num_rows > 0) {
+        $whereConditions[] = 'NOT EXISTS (SELECT 1 FROM user_blocks WHERE blocker_id = u.id AND blocked_id = ?)';
+        $whereConditions[] = 'NOT EXISTS (SELECT 1 FROM user_blocks WHERE blocker_id = ? AND blocked_id = u.id)';
+        $bindTypes .= 'ii';
+        $bindValues[] = $currentUserId;
+        $bindValues[] = $currentUserId;
+    }
+
+    $whereClause = implode(' AND ', $whereConditions);
+
+    $sql = "SELECT $selectClause FROM users u WHERE $whereClause ORDER BY u.username LIMIT ?";
+    $bindTypes .= 'i';
+    $bindValues[] = $limit;
+
+    $stmt = $conn->prepare($sql);
+    if (!$stmt) {
+        error_log("Failed to prepare searchUsers query: " . $conn->error);
+        return [];
+    }
+
+    $stmt->bind_param($bindTypes, ...$bindValues);
     $stmt->execute();
     $result = $stmt->get_result();
-    
+
     $users = [];
     while ($row = $result->fetch_assoc()) {
+        // Set default values for missing columns
+        if (!isset($row['display_name'])) {
+            $row['display_name'] = $row['username'];
+        }
+        if (!isset($row['profile_image'])) {
+            $row['profile_image'] = null;
+        }
+        if (!isset($row['bio'])) {
+            $row['bio'] = '';
+        }
+        if (!isset($row['is_public'])) {
+            $row['is_public'] = 1;
+        }
+        if (!isset($row['follower_count'])) {
+            $row['follower_count'] = 0;
+        }
+        if (!isset($row['following_count'])) {
+            $row['following_count'] = 0;
+        }
+
         $users[] = $row;
     }
-    
+
     return $users;
 }
 

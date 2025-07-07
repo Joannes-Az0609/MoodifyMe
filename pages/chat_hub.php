@@ -21,79 +21,104 @@ if (!isset($_SESSION['user_id'])) {
 $currentUserId = $_SESSION['user_id'];
 $currentUser = getUserProfileWithStats($currentUserId);
 
-// Get user's recent conversations
+// Get user's recent conversations - with error handling
 $recentConversations = [];
-$stmt = $conn->prepare("
-    SELECT 
-        c.id,
-        c.conversation_type,
-        c.last_message_at,
-        u.id as other_user_id,
-        u.username as other_username,
-        u.display_name as other_display_name,
-        u.profile_image as other_profile_image,
-        (SELECT content FROM messages m WHERE m.conversation_id = c.id ORDER BY m.created_at DESC LIMIT 1) as last_message,
-        (SELECT COUNT(*) FROM messages m 
-         JOIN conversation_participants cp ON m.conversation_id = cp.conversation_id
-         WHERE m.conversation_id = c.id 
-           AND m.created_at > cp.last_read_at 
-           AND cp.user_id = ? 
-           AND m.sender_id != ?) as unread_count
-    FROM conversations c
-    JOIN conversation_participants cp1 ON c.id = cp1.conversation_id
-    JOIN conversation_participants cp2 ON c.id = cp2.conversation_id
-    JOIN users u ON cp2.user_id = u.id
-    WHERE cp1.user_id = ? 
-      AND cp1.is_active = TRUE
-      AND cp2.user_id != ?
-      AND cp2.is_active = TRUE
-    ORDER BY c.last_message_at DESC
-    LIMIT 5
-");
-$stmt->bind_param("iiii", $currentUserId, $currentUserId, $currentUserId, $currentUserId);
-$stmt->execute();
-$result = $stmt->get_result();
 
-while ($row = $result->fetch_assoc()) {
-    $recentConversations[] = $row;
+// Check if conversations table exists and has proper structure
+$tableCheck = $conn->query("SHOW TABLES LIKE 'conversations'");
+if ($tableCheck && $tableCheck->num_rows > 0) {
+    // Use conversations table with simplified query
+    $stmt = $conn->prepare("
+        SELECT
+            c.id,
+            c.conversation_type,
+            c.last_message_at,
+            u.id as other_user_id,
+            u.username as other_username,
+            u.display_name as other_display_name,
+            u.profile_picture as other_profile_image,
+            (SELECT content FROM messages m WHERE m.conversation_id = c.id ORDER BY m.created_at DESC LIMIT 1) as last_message,
+            0 as unread_count
+        FROM conversations c
+        JOIN conversation_participants cp1 ON c.id = cp1.conversation_id
+        JOIN conversation_participants cp2 ON c.id = cp2.conversation_id
+        JOIN users u ON cp2.user_id = u.id
+        WHERE cp1.user_id = ?
+          AND cp1.is_active = TRUE
+          AND cp2.user_id != ?
+          AND cp2.is_active = TRUE
+        ORDER BY c.last_message_at DESC
+        LIMIT 5
+    ");
+
+    if ($stmt) {
+        $stmt->bind_param("ii", $currentUserId, $currentUserId);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        while ($row = $result->fetch_assoc()) {
+            $recentConversations[] = $row;
+        }
+    }
+} else {
+    // Use direct_messages table as fallback
+    $stmt = $conn->prepare("
+        SELECT DISTINCT
+            CASE
+                WHEN dm.sender_id = ? THEN dm.receiver_id
+                ELSE dm.sender_id
+            END as other_user_id,
+            u.username as other_username,
+            u.display_name as other_display_name,
+            u.profile_picture as other_profile_image,
+            dm.content as last_message,
+            dm.created_at as last_message_at,
+            COUNT(CASE WHEN dm.receiver_id = ? AND dm.is_read = FALSE THEN 1 END) as unread_count
+        FROM direct_messages dm
+        JOIN users u ON (
+            CASE
+                WHEN dm.sender_id = ? THEN u.id = dm.receiver_id
+                ELSE u.id = dm.sender_id
+            END
+        )
+        WHERE (dm.sender_id = ? OR dm.receiver_id = ?)
+        AND dm.is_deleted_by_sender = FALSE
+        AND dm.is_deleted_by_receiver = FALSE
+        GROUP BY other_user_id
+        ORDER BY dm.created_at DESC
+        LIMIT 5
+    ");
+
+    if ($stmt) {
+        $stmt->bind_param("iiiii", $currentUserId, $currentUserId, $currentUserId, $currentUserId, $currentUserId);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        while ($row = $result->fetch_assoc()) {
+            $recentConversations[] = $row;
+        }
+    }
 }
 
-// Get active chat rooms
-$activeChatRooms = [];
-$stmt = $conn->prepare("
-    SELECT cr.*, 
-           (SELECT COUNT(*) FROM chat_room_participants crp 
-            WHERE crp.chat_room_id = cr.id AND crp.is_active = TRUE) as participant_count,
-           (SELECT COUNT(*) FROM messages m 
-            WHERE m.chat_room_id = cr.id 
-              AND m.created_at > (
-                  SELECT COALESCE(last_read_at, '1970-01-01') 
-                  FROM chat_room_participants 
-                  WHERE chat_room_id = cr.id AND user_id = ?
-              )) as unread_count
-    FROM chat_rooms cr
-    WHERE cr.is_active = TRUE AND cr.room_type = 'public'
-    ORDER BY cr.name
-");
-$stmt->bind_param("i", $currentUserId);
-$stmt->execute();
-$result = $stmt->get_result();
+// Chat rooms functionality removed - keeping direct messaging only
 
-while ($row = $result->fetch_assoc()) {
-    $activeChatRooms[] = $row;
-}
-
-// Get pending connection requests
-$pendingRequests = [];
+// Get pending connection requests - with error handling
+$pendingRequestsCount = 0;
 $stmt = $conn->prepare("
     SELECT COUNT(*) as count
-    FROM user_connections 
+    FROM user_connections
     WHERE receiver_id = ? AND status = 'pending'
 ");
-$stmt->bind_param("i", $currentUserId);
-$stmt->execute();
-$result = $stmt->get_result();
-$pendingRequestsCount = $result->fetch_assoc()['count'];
+
+if ($stmt) {
+    $stmt->bind_param("i", $currentUserId);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    if ($result) {
+        $row = $result->fetch_assoc();
+        $pendingRequestsCount = $row ? $row['count'] : 0;
+    }
+}
 
 // Update user online status
 updateUserOnlineStatus($currentUserId);
@@ -102,7 +127,8 @@ updateUserOnlineStatus($currentUserId);
 include '../includes/header.php';
 ?>
 
-<div class="container mt-4">
+<div class="main-wrapper">
+<div class="container mt-4 mb-4">
     <!-- Welcome Section -->
     <div class="row mb-4">
         <div class="col-12">
@@ -114,7 +140,7 @@ include '../includes/header.php';
                                 <i class="fas fa-comments"></i> Welcome to Chat Hub
                             </h2>
                             <p class="card-text mb-0">
-                                Connect with the MoodifyMe community through public chat rooms or private messages. 
+                                Connect with the MoodifyMe community through private messages and community posts.
                                 Share your journey, find support, and build meaningful connections.
                             </p>
                         </div>
@@ -142,18 +168,7 @@ include '../includes/header.php';
 
     <!-- Quick Actions -->
     <div class="row mb-4">
-        <div class="col-md-3 mb-3">
-            <div class="card h-100 text-center">
-                <div class="card-body">
-                    <i class="fas fa-users fa-3x text-primary mb-3"></i>
-                    <h5 class="card-title">Community Chat</h5>
-                    <p class="card-text">Join public rooms for group discussions and community support.</p>
-                    <a href="<?php echo APP_URL; ?>/pages/community_chat.php" class="btn btn-primary">
-                        Join Chat Rooms
-                    </a>
-                </div>
-            </div>
-        </div>
+
         
         <div class="col-md-3 mb-3">
             <div class="card h-100 text-center">
@@ -277,46 +292,7 @@ include '../includes/header.php';
             </div>
         </div>
 
-        <!-- Active Chat Rooms -->
-        <div class="col-md-6 mb-4">
-            <div class="card">
-                <div class="card-header">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <h5 class="card-title mb-0">
-                            <i class="fas fa-users"></i> Community Rooms
-                        </h5>
-                        <a href="<?php echo APP_URL; ?>/pages/community_chat.php" class="btn btn-outline-primary btn-sm">
-                            Join Chat
-                        </a>
-                    </div>
-                </div>
-                <div class="card-body">
-                    <div class="list-group list-group-flush">
-                        <?php foreach ($activeChatRooms as $room): ?>
-                            <a href="<?php echo APP_URL; ?>/pages/community_chat.php?room=<?php echo $room['id']; ?>" 
-                               class="list-group-item list-group-item-action">
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <div>
-                                        <h6 class="mb-1">
-                                            <?php echo htmlspecialchars($room['name']); ?>
-                                            <?php if ($room['unread_count'] > 0): ?>
-                                                <span class="badge bg-primary ms-2"><?php echo $room['unread_count']; ?></span>
-                                            <?php endif; ?>
-                                        </h6>
-                                        <p class="mb-1 small text-muted"><?php echo htmlspecialchars($room['description']); ?></p>
-                                    </div>
-                                    <div class="text-end">
-                                        <span class="badge bg-secondary">
-                                            <i class="fas fa-users"></i> <?php echo $room['participant_count']; ?>
-                                        </span>
-                                    </div>
-                                </div>
-                            </a>
-                        <?php endforeach; ?>
-                    </div>
-                </div>
-            </div>
-        </div>
+
     </div>
 
     <!-- Community Guidelines -->
@@ -341,7 +317,7 @@ include '../includes/header.php';
                         <div class="col-md-6">
                             <h6>Quick Tips</h6>
                             <ul class="list-unstyled">
-                                <li><i class="fas fa-lightbulb text-warning"></i> Use community chat for group support</li>
+                                <li><i class="fas fa-lightbulb text-warning"></i> Use community posts for group support</li>
                                 <li><i class="fas fa-user-friends text-info"></i> Connect with users for private messaging</li>
                                 <li><i class="fas fa-flag text-danger"></i> Report inappropriate behavior</li>
                             </ul>
@@ -351,6 +327,7 @@ include '../includes/header.php';
             </div>
         </div>
     </div>
+</div>
 </div>
 
 <style>
@@ -373,6 +350,21 @@ include '../includes/header.php';
 
 .badge {
     font-size: 0.75em;
+}
+
+/* Fix page layout */
+body {
+    min-height: 100vh;
+}
+
+.container {
+    max-width: 1200px;
+    padding-bottom: 2rem;
+}
+
+/* Prevent excessive white space */
+.main-wrapper {
+    min-height: calc(100vh - 120px);
 }
 </style>
 

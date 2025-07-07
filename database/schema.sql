@@ -1,10 +1,10 @@
 -- MoodifyMe Database Schema
 
 -- Create database
-CREATE DATABASE IF NOT EXISTS moodifyme CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+CREATE DATABASE IF NOT EXISTS modifyMe1 CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- Use database
-USE moodifyme;
+USE modifyMe1;
 
 -- Users table
 CREATE TABLE IF NOT EXISTS users (
@@ -12,7 +12,7 @@ CREATE TABLE IF NOT EXISTS users (
     username VARCHAR(50) NOT NULL UNIQUE,
     email VARCHAR(100) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
-    profile_image VARCHAR(255),
+    profile_picture VARCHAR(255),
     bio TEXT,
     preferences JSON,
     created_at DATETIME NOT NULL,

@@ -1,23 +1,9 @@
 -- MoodifyMe Social Messaging System Database Schema
 -- Run this after the main schema.sql to add social messaging features
 
-USE moodifyme;
+USE modifyMe1;
 
--- Chat rooms table (for community chats)
-CREATE TABLE IF NOT EXISTS chat_rooms (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(100) NOT NULL,
-    description TEXT,
-    room_type ENUM('public', 'private', 'support_group') DEFAULT 'public',
-    created_by INT NOT NULL,
-    max_participants INT DEFAULT NULL,
-    is_active BOOLEAN DEFAULT TRUE,
-    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    FOREIGN KEY (created_by) REFERENCES users(id) ON DELETE CASCADE,
-    INDEX idx_room_type (room_type),
-    INDEX idx_active (is_active)
-);
+-- Chat rooms functionality removed - keeping direct messaging only
 
 -- User follows table (who follows whom)
 CREATE TABLE IF NOT EXISTS user_follows (
@@ -79,13 +65,12 @@ CREATE TABLE IF NOT EXISTS conversation_participants (
     INDEX idx_active (is_active)
 );
 
--- Messages table (for both community and direct messages)
+-- Messages table (for direct messages only)
 CREATE TABLE IF NOT EXISTS messages (
     id INT AUTO_INCREMENT PRIMARY KEY,
     sender_id INT NOT NULL,
-    message_type ENUM('community', 'direct') NOT NULL,
-    chat_room_id INT NULL, -- For community messages
-    conversation_id INT NULL, -- For direct messages
+    message_type ENUM('direct') NOT NULL DEFAULT 'direct',
+    conversation_id INT NOT NULL, -- For direct messages
     content TEXT NOT NULL,
     message_status ENUM('sent', 'delivered', 'read', 'deleted') DEFAULT 'sent',
     reply_to_message_id INT NULL, -- For threaded conversations
@@ -93,35 +78,16 @@ CREATE TABLE IF NOT EXISTS messages (
     created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (sender_id) REFERENCES users(id) ON DELETE CASCADE,
-    FOREIGN KEY (chat_room_id) REFERENCES chat_rooms(id) ON DELETE CASCADE,
     FOREIGN KEY (conversation_id) REFERENCES conversations(id) ON DELETE CASCADE,
     FOREIGN KEY (reply_to_message_id) REFERENCES messages(id) ON DELETE SET NULL,
     INDEX idx_sender (sender_id),
-    INDEX idx_chat_room (chat_room_id),
     INDEX idx_conversation (conversation_id),
     INDEX idx_created_at (created_at),
     INDEX idx_message_type (message_type),
     INDEX idx_status (message_status)
 );
 
--- Chat room participants table
-CREATE TABLE IF NOT EXISTS chat_room_participants (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    chat_room_id INT NOT NULL,
-    user_id INT NOT NULL,
-    role ENUM('member', 'moderator', 'admin') DEFAULT 'member',
-    joined_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    left_at DATETIME NULL,
-    is_active BOOLEAN DEFAULT TRUE,
-    last_read_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (chat_room_id) REFERENCES chat_rooms(id) ON DELETE CASCADE,
-    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
-    UNIQUE KEY unique_room_participant (chat_room_id, user_id),
-    INDEX idx_chat_room (chat_room_id),
-    INDEX idx_user (user_id),
-    INDEX idx_role (role),
-    INDEX idx_active (is_active)
-);
+-- Chat room participants table removed
 
 -- Message reactions table (likes, hearts, etc.)
 CREATE TABLE IF NOT EXISTS message_reactions (
@@ -181,9 +147,4 @@ CREATE TABLE IF NOT EXISTS user_online_status (
     INDEX idx_last_seen (last_seen)
 );
 
--- Insert default community chat rooms
-INSERT INTO chat_rooms (name, description, created_by, room_type) VALUES
-('General Support', 'A welcoming space for general emotional support and encouragement', 1, 'public'),
-('Daily Check-ins', 'Share how you''re feeling today and connect with others', 1, 'public'),
-('Success Stories', 'Celebrate your wins and inspire others with your progress', 1, 'public'),
-('Mindfulness & Meditation', 'Discuss mindfulness practices and meditation techniques', 1, 'public');
+-- Chat room sample data removed

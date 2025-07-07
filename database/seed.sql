@@ -1,7 +1,7 @@
 -- MoodifyMe Seed Data
 
 -- Use database
-USE moodifyme;
+USE modifyMe1;
 
 -- Insert sample recommendations for different emotion transitions
 

@@ -164,7 +164,7 @@ include '../includes/header.php';
                                     <li><i class="fas fa-lightbulb text-warning"></i> Search by username or display name</li>
                                     <li><i class="fas fa-heart text-danger"></i> Follow users to see their updates</li>
                                     <li><i class="fas fa-user-friends text-success"></i> Send connection requests to enable direct messaging</li>
-                                    <li><i class="fas fa-comments text-info"></i> Join community chat rooms to meet new people</li>
+                                    <li><i class="fas fa-comments text-info"></i> Participate in community posts to meet new people</li>
                                 </ul>
                             </div>
                         </div>

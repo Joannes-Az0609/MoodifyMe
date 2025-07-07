@@ -1,7 +1,7 @@
 -- MoodifyMe User Table Updates for Social Features
 -- Run this to add social features to existing users table
 
-USE moodifyme;
+USE modifyMe1;
 
 -- Add social-related columns to users table
 ALTER TABLE users 

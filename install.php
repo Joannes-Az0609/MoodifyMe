@@ -301,7 +301,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     
                     <div class="mb-3">
                         <label for="db_name" class="form-label">Database Name</label>
-                        <input type="text" class="form-control" id="db_name" name="db_name" value="moodifyme" required>
+                        <input type="text" class="form-control" id="db_name" name="db_name" value="modifyMe1" required>
                     </div>
                     
                     <div class="d-grid gap-2">

@@ -61,7 +61,7 @@ $conversation = $result->fetch_assoc();
 
 // Get the other participant's info
 $stmt = $conn->prepare("
-    SELECT u.id, u.username, u.display_name, u.profile_image
+    SELECT u.id, u.username, u.display_name, u.profile_picture as profile_image
     FROM conversation_participants cp
     JOIN users u ON cp.user_id = u.id
     WHERE cp.conversation_id = ? AND cp.user_id != ? AND cp.is_active = TRUE
@@ -85,7 +85,7 @@ if ($otherParticipant && isUserBlocked($otherParticipant['id'], $currentUserId))
 if ($afterId > 0) {
     // Get new messages after a specific ID
     $stmt = $conn->prepare("
-        SELECT m.*, u.username, u.display_name, u.profile_image
+        SELECT m.*, u.username, u.display_name, u.profile_picture as profile_image
         FROM messages m
         JOIN users u ON m.sender_id = u.id
         WHERE m.conversation_id = ? 
@@ -98,7 +98,7 @@ if ($afterId > 0) {
 } else {
     // Get recent messages
     $stmt = $conn->prepare("
-        SELECT m.*, u.username, u.display_name, u.profile_image
+        SELECT m.*, u.username, u.display_name, u.profile_picture as profile_image
         FROM messages m
         JOIN users u ON m.sender_id = u.id
         WHERE m.conversation_id = ? 

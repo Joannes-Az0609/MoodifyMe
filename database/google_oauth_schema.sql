@@ -1,13 +1,13 @@
 -- Google OAuth Schema Updates for MoodifyMe
 -- Run this to add Google OAuth support to existing database
 
-USE moodifyme;
+USE modifyMe1;
 
 -- Add OAuth fields to users table
 ALTER TABLE users 
 ADD COLUMN google_id VARCHAR(255) NULL UNIQUE AFTER email,
 ADD COLUMN oauth_provider VARCHAR(50) NULL AFTER google_id,
-ADD COLUMN avatar_url VARCHAR(500) NULL AFTER profile_image,
+ADD COLUMN avatar_url VARCHAR(500) NULL AFTER profile_picture,
 ADD COLUMN email_verified BOOLEAN DEFAULT FALSE AFTER email,
 ADD COLUMN account_type ENUM('regular', 'google', 'facebook', 'twitter') DEFAULT 'regular' AFTER oauth_provider;
 

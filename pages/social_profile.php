@@ -134,9 +134,9 @@ include '../includes/header.php';
                     <div class="row align-items-center">
                         <div class="col-md-3 text-center">
                             <div class="profile-avatar-container position-relative">
-                                <?php if ($user['profile_image']): ?>
-                                    <img src="<?php echo APP_URL . '/' . $user['profile_image']; ?>" 
-                                         alt="Profile Picture" class="profile-avatar rounded-circle" 
+                                <?php if ($user['profile_picture']): ?>
+                                    <img src="<?php echo APP_URL . '/' . $user['profile_picture']; ?>"
+                                         alt="Profile Picture" class="profile-avatar rounded-circle"
                                          style="width: 120px; height: 120px; object-fit: cover;">
                                 <?php else: ?>
                                     <div class="profile-avatar-placeholder rounded-circle d-flex align-items-center justify-content-center" 
@@ -146,9 +146,10 @@ include '../includes/header.php';
                                 <?php endif; ?>
                                 
                                 <?php if (!$isOwnProfile && $user['show_online_status'] && $onlineStatus): ?>
-                                    <span class="online-status-indicator position-absolute" 
-                                          style="bottom: 10px; right: 10px; width: 20px; height: 20px; border-radius: 50%; border: 3px solid white;
-                                                 background-color: <?php echo $onlineStatus['status'] === 'online' ? '#28a745' : '#6c757d'; ?>;">
+                                    <span class="online-status-indicator position-absolute"
+                                          style="bottom: 5px; right: 5px; width: 16px; height: 16px; border-radius: 50%; border: 2px solid white;
+                                                 background-color: <?php echo $onlineStatus['status'] === 'online' ? '#28a745' : '#6c757d'; ?>;
+                                                 box-shadow: 0 0 0 1px rgba(0,0,0,0.1);">
                                     </span>
                                 <?php endif; ?>
                             </div>

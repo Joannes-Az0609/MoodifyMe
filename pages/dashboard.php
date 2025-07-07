@@ -54,7 +54,8 @@ while ($row = $result->fetch_assoc()) {
 include '../includes/header.php';
 ?>
 
-<div class="container">
+<div class="main-wrapper">
+<div class="container mt-4 mb-4">
     <div class="row mb-4">
         <div class="col-md-12">
             <div class="card">
@@ -162,64 +163,10 @@ include '../includes/header.php';
                 </div>
             </div>
 
-            <div class="card h-100">
-                <div class="card-header text-white" style="background: linear-gradient(135deg, #28a745, #20c997);">
-                    <h5 class="card-title mb-0">
-                        <i class="fas fa-hands-helping me-2"></i> Support & Community
-                    </h5>
-                </div>
-                <div class="card-body">
-                    <!-- AI Assistant Section -->
-                    <div class="mb-4">
-                        <h6 class="fw-bold text-primary">
-                            <i class="fas fa-robot me-1"></i> AI Assistant
-                        </h6>
-                        <p class="small text-muted mb-2">Get instant help and emotional support</p>
-                        <a href="https://moodifyme-bot.onrender.com" target="_blank" class="btn btn-outline-primary btn-sm w-100 mb-2">
-                            <i class="fas fa-comments me-1"></i> Chat with AI
-                        </a>
-                    </div>
 
-                    <!-- Community Support Section -->
-                    <div class="mb-3">
-                        <h6 class="fw-bold text-success">
-                            <i class="fas fa-users me-1"></i> Community Support
-                        </h6>
-                        <p class="small text-muted mb-2">Connect with others on similar journeys</p>
-                        <div class="d-grid gap-2">
-                            <a href="<?php echo APP_URL; ?>/pages/community_posts.php" class="btn btn-outline-success btn-sm">
-                                <i class="fas fa-users me-1"></i> Community Posts
-                            </a>
-                            <a href="<?php echo APP_URL; ?>/pages/user_directory.php" class="btn btn-outline-info btn-sm">
-                                <i class="fas fa-search me-1"></i> Find Support Partners
-                            </a>
-                        </div>
-                    </div>
-
-                    <!-- Quick Stats -->
-                    <div class="mt-3 pt-3 border-top">
-                        <h6 class="fw-bold text-info mb-2">
-                            <i class="fas fa-chart-line me-1"></i> Community Stats
-                        </h6>
-                        <div class="row text-center">
-                            <div class="col-4">
-                                <div class="small text-muted">Online</div>
-                                <div class="fw-bold text-success" id="onlineUsersCount">-</div>
-                            </div>
-                            <div class="col-4">
-                                <div class="small text-muted">Rooms</div>
-                                <div class="fw-bold text-primary" id="activeRoomsCount">-</div>
-                            </div>
-                            <div class="col-4">
-                                <div class="small text-muted">Messages</div>
-                                <div class="fw-bold text-warning" id="unreadMessagesCount">-</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
+</div>
 </div>
 
 <!-- Chart.js -->
@@ -552,29 +499,7 @@ function showDashboardEmotionResults(emotion, confidence, emotionId) {
     }
 }
 
-// Load Community Stats
-function loadCommunityStats() {
-    fetch('<?php echo APP_URL; ?>/api/community_stats.php')
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                document.getElementById('onlineUsersCount').textContent = data.online_users || '0';
-                document.getElementById('activeRoomsCount').textContent = data.active_rooms || '0';
-                document.getElementById('unreadMessagesCount').textContent = data.unread_messages || '0';
-            }
-        })
-        .catch(error => {
-            console.log('Could not load community stats');
-            // Set default values
-            document.getElementById('onlineUsersCount').textContent = '0';
-            document.getElementById('activeRoomsCount').textContent = '0';
-            document.getElementById('unreadMessagesCount').textContent = '0';
-        });
-}
 
-// Load stats on page load and refresh every 30 seconds
-loadCommunityStats();
-setInterval(loadCommunityStats, 30000);
 </script>
 
 <style>
@@ -607,6 +532,23 @@ setInterval(loadCommunityStats, 30000);
 #emotion-results-container {
     animation: fadeIn 0.5s ease-in-out;
 }
+
+/* Fix page layout */
+body {
+    min-height: 100vh;
+}
+
+.container {
+    max-width: 1200px;
+    padding-bottom: 2rem;
+}
+
+/* Prevent excessive white space */
+.main-wrapper {
+    min-height: calc(100vh - 120px);
+}
+
+
 </style>
 
 <?php

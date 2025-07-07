@@ -12,6 +12,7 @@ header('Access-Control-Allow-Headers: Content-Type');
 // Include configuration and database
 require_once '../config.php';
 require_once '../includes/db_connect.php';
+require_once '../includes/notification_functions.php';
 
 // Start session
 session_start();
@@ -76,14 +77,5 @@ try {
     echo json_encode(['success' => false, 'message' => 'Database error occurred']);
 }
 
-function timeAgo($datetime) {
-    $time = time() - strtotime($datetime);
-    
-    if ($time < 60) return 'just now';
-    if ($time < 3600) return floor($time/60) . 'm ago';
-    if ($time < 86400) return floor($time/3600) . 'h ago';
-    if ($time < 2592000) return floor($time/86400) . 'd ago';
-    
-    return date('M j, Y', strtotime($datetime));
-}
+// timeAgo function is defined in includes/notification_functions.php
 ?>

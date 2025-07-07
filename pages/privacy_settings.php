@@ -57,19 +57,41 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 // Get blocked users
 $blockedUsers = [];
-$stmt = $conn->prepare("
-    SELECT u.id, u.username, u.display_name, u.profile_image, ub.created_at as blocked_at, ub.reason
-    FROM user_blocks ub
-    JOIN users u ON ub.blocked_id = u.id
-    WHERE ub.blocker_id = ?
-    ORDER BY ub.created_at DESC
-");
-$stmt->bind_param("i", $currentUserId);
-$stmt->execute();
-$result = $stmt->get_result();
 
-while ($row = $result->fetch_assoc()) {
-    $blockedUsers[] = $row;
+// Check if user_blocks table exists
+$tableCheck = $conn->query("SHOW TABLES LIKE 'user_blocks'");
+if ($tableCheck && $tableCheck->num_rows > 0) {
+    $stmt = $conn->prepare("
+        SELECT u.id, u.username, u.display_name, u.profile_picture, ub.created_at as blocked_at, ub.reason
+        FROM user_blocks ub
+        JOIN users u ON ub.blocked_id = u.id
+        WHERE ub.blocker_id = ?
+        ORDER BY ub.created_at DESC
+    ");
+
+    if ($stmt) {
+        $stmt->bind_param("i", $currentUserId);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        while ($row = $result->fetch_assoc()) {
+            $blockedUsers[] = $row;
+        }
+        $stmt->close();
+    }
+} else {
+    // Create user_blocks table if it doesn't exist
+    $createTable = "CREATE TABLE IF NOT EXISTS user_blocks (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        blocker_id INT NOT NULL,
+        blocked_id INT NOT NULL,
+        reason VARCHAR(255) DEFAULT NULL,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        FOREIGN KEY (blocker_id) REFERENCES users(id) ON DELETE CASCADE,
+        FOREIGN KEY (blocked_id) REFERENCES users(id) ON DELETE CASCADE,
+        UNIQUE KEY unique_block (blocker_id, blocked_id)
+    )";
+    $conn->query($createTable);
 }
 
 // Include header
@@ -187,8 +209,8 @@ include '../includes/header.php';
                                 <div class="list-group-item">
                                     <div class="d-flex align-items-center">
                                         <!-- Profile Picture -->
-                                        <?php if ($blockedUser['profile_image']): ?>
-                                            <img src="<?php echo APP_URL . '/' . $blockedUser['profile_image']; ?>" 
+                                        <?php if ($blockedUser['profile_picture']): ?>
+                                            <img src="<?php echo APP_URL . '/' . $blockedUser['profile_picture']; ?>"
                                                  alt="Profile" class="rounded-circle me-3" 
                                                  style="width: 50px; height: 50px; object-fit: cover;">
                                         <?php else: ?>

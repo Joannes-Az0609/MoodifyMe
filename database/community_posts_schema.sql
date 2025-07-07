@@ -1,7 +1,7 @@
 -- MoodifyMe Community Posts System
 -- Replace chat rooms with individual posts/blocks
 
-USE moodifyme;
+USE modifyMe1;
 
 -- Community posts table (replaces chat rooms concept)
 CREATE TABLE IF NOT EXISTS community_posts (

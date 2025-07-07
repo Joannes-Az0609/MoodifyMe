@@ -4,13 +4,6 @@ A comprehensive social messaging and community system for the MoodifyMe emotiona
 
 ## 🌟 Features
 
-### Community Chat
-- **Public Chat Rooms**: Join themed rooms for group discussions
-- **Real-time Messaging**: Live message updates every 3 seconds
-- **Participant Lists**: See who's online and active
-- **Moderation Tools**: Report inappropriate content
-- **Mobile Responsive**: Works seamlessly on all devices
-
 ### Direct Messaging
 - **Private Conversations**: One-on-one messaging between connected users
 - **Connection System**: Users must connect before messaging
@@ -64,13 +57,11 @@ MoodifyMe/
 ## 🗄️ Database Schema
 
 ### New Tables Created
-- `chat_rooms` - Public chat rooms
 - `user_follows` - User following relationships
 - `user_connections` - Friend/connection system
 - `conversations` - Direct message conversations
 - `conversation_participants` - Who's in each conversation
-- `messages` - All messages (community and direct)
-- `chat_room_participants` - Who's in each chat room
+- `messages` - Direct messages only
 - `message_reactions` - Like/heart reactions to messages
 - `user_blocks` - Blocked user relationships
 - `message_reports` - Reported messages for moderation
@@ -88,12 +79,11 @@ MoodifyMe/
 
 2. **Verify installation**:
    - Check that all database tables were created
-   - Ensure default chat rooms exist
    - Test user registration/login
 
 3. **Access the features**:
    - Visit `/pages/chat_hub.php` for the main hub
-   - Navigate through the Chat dropdown in the header
+   - Navigate through the Community dropdown in the header
 
 ## 🎯 Usage Guide
 
@@ -104,9 +94,9 @@ MoodifyMe/
    - Visit the Chat Hub from the navigation menu
    - Complete your profile with a display name and bio
 
-2. **Community Chat**:
-   - Join public rooms like "General Support" or "Daily Check-ins"
-   - Participate in group discussions
+2. **Community Posts**:
+   - Share your thoughts and experiences in community posts
+   - Support others with reactions and comments
    - Follow community guidelines
 
 3. **Direct Messaging**:
@@ -161,11 +151,8 @@ MoodifyMe/
 
 ## 🎨 Customization
 
-### Adding New Chat Rooms
-```sql
-INSERT INTO chat_rooms (name, description, created_by, room_type) 
-VALUES ('Room Name', 'Room Description', 1, 'public');
-```
+### Adding New Community Post Categories
+Edit the `post_type` ENUM in the `community_posts` table to add new categories.
 
 ### Modifying Privacy Settings
 Edit `pages/privacy_settings.php` to add new privacy options.

@@ -16,7 +16,7 @@ $isProduction = isset($_ENV['RAILWAY_ENVIRONMENT']) ||
 define('DB_HOST', $_ENV['DB_HOST'] ?? $_ENV['DATABASE_URL'] ?? 'localhost');
 define('DB_USER', $_ENV['DB_USER'] ?? $_ENV['DATABASE_USERNAME'] ?? 'root');
 define('DB_PASS', $_ENV['DB_PASS'] ?? $_ENV['DATABASE_PASSWORD'] ?? '');
-define('DB_NAME', $_ENV['DB_NAME'] ?? $_ENV['DATABASE_NAME'] ?? 'moodifyme');
+define('DB_NAME', $_ENV['DB_NAME'] ?? $_ENV['DATABASE_NAME'] ?? 'modifyMe1');
 
 // Application Configuration
 define('APP_NAME', 'MoodifyMe');

@@ -66,7 +66,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $hashedPassword = hashPassword($password);
 
                 // Insert user into database
-                $stmt = $conn->prepare("INSERT INTO users (username, email, password, created_at) VALUES (?, ?, ?, NOW())");
+                $stmt = $conn->prepare("INSERT INTO users (username, email, password_hash, account_type, is_verified, is_active) VALUES (?, ?, ?, 'regular', 0, 1)");
                 $stmt->bind_param("sss", $username, $email, $hashedPassword);
 
                 if ($stmt->execute()) {

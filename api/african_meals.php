@@ -794,6 +794,12 @@ function enhanceMealData($meal) {
     $meal['cooking_time'] = estimateCookingTime($meal);
     $meal['dietary_tags'] = extractDietaryTags($meal);
 
+    // Add mood benefits explanation
+    $meal['mood_benefits'] = getMoodBenefits($meal['source_emotion'], $meal['target_emotion']);
+
+    // Add ingredient count
+    $meal['ingredient_count'] = countIngredients($meal['content']);
+
     // Ensure image URL is absolute
     if (!empty($meal['image_url']) && !str_starts_with($meal['image_url'], 'http')) {
         $meal['image_url'] = APP_URL . '/' . ltrim($meal['image_url'], '/');
@@ -1107,6 +1113,46 @@ function logMoodBasedRecommendationView($userId, $sourceEmotion, $targetEmotion,
             logRecommendationView($userId, $emotionId, $meal['id']);
         }
     }
+}
+
+/**
+ * Get mood benefits explanation for emotion transition
+ */
+function getMoodBenefits($sourceEmotion, $targetEmotion) {
+    $benefits = [
+        'sad_happy' => 'This comforting meal helps lift spirits through warming spices and nourishing ingredients that naturally boost serotonin levels.',
+        'angry_calm' => 'The preparation ritual and soothing flavors help channel anger into mindful cooking, promoting inner peace.',
+        'anxious_calm' => 'These calming ingredients and gentle preparation methods help reduce anxiety and promote relaxation.',
+        'tired_energetic' => 'Rich in natural energy-boosting nutrients and stimulating spices to revitalize body and mind.',
+        'stressed_relaxed' => 'The slow cooking process and aromatic herbs create a meditative experience that melts away stress.',
+        'bored_excited' => 'Bold flavors and interactive preparation awaken the senses and create culinary excitement.',
+        'happy_happy' => 'Celebratory flavors and festive presentation amplify joy and maintain positive energy.',
+        'neutral_happy' => 'Vibrant spices and uplifting aromas naturally elevate mood and bring joy to the day.'
+    ];
+
+    $key = strtolower($sourceEmotion . '_' . $targetEmotion);
+    return $benefits[$key] ?? 'This traditional African meal provides comfort and nourishment for both body and soul.';
+}
+
+/**
+ * Count ingredients in recipe content
+ */
+function countIngredients($content) {
+    if (empty($content)) return 0;
+
+    // Look for "Ingredients:" section and count items
+    if (preg_match('/Ingredients?:\s*([^.]*)/i', $content, $matches)) {
+        $ingredientText = $matches[1];
+        // Count commas and add 1, or count individual items
+        $count = substr_count($ingredientText, ',') + 1;
+        return min($count, 20); // Cap at reasonable number
+    }
+
+    // Fallback: estimate based on content length
+    $wordCount = str_word_count($content);
+    if ($wordCount > 100) return 8;
+    if ($wordCount > 50) return 5;
+    return 3;
 }
 
 ?>

@@ -8,7 +8,7 @@
 define('DB_HOST', 'localhost');
 define('DB_USER', 'root');
 define('DB_PASS', ''); // If your root user has a password, enter it here
-define('DB_NAME', 'moodifyme');
+define('DB_NAME', 'modifyMe1');
 
 // Application Configuration
 define('APP_NAME', 'MoodifyMe');
@@ -56,6 +56,9 @@ ini_set('display_errors', 1);
 ini_set('session.cookie_httponly', 1);
 ini_set('session.use_only_cookies', 1);
 ini_set('session.cookie_secure', 0); // Set to 1 if using HTTPS
+ini_set('session.cookie_path', '/'); // Ensure cookies work across all directories
+ini_set('session.cookie_domain', ''); // Use default domain
+session_name('MOODIFYME_SESSION'); // Use consistent session name
 
 // Timezone
 date_default_timezone_set('UTC');

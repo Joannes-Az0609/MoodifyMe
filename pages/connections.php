@@ -27,7 +27,7 @@ $user = getUserProfileWithStats($currentUserId);
 // Get followers
 $followers = [];
 $stmt = $conn->prepare("
-    SELECT u.id, u.username, u.display_name, u.profile_image, u.bio, uf.created_at as followed_at
+    SELECT u.id, u.username, u.display_name, u.profile_picture, u.bio, uf.created_at as followed_at
     FROM user_follows uf
     JOIN users u ON uf.follower_id = u.id
     WHERE uf.following_id = ?
@@ -43,7 +43,7 @@ while ($row = $result->fetch_assoc()) {
 // Get following
 $following = [];
 $stmt = $conn->prepare("
-    SELECT u.id, u.username, u.display_name, u.profile_image, u.bio, uf.created_at as followed_at
+    SELECT u.id, u.username, u.display_name, u.profile_picture, u.bio, uf.created_at as followed_at
     FROM user_follows uf
     JOIN users u ON uf.following_id = u.id
     WHERE uf.follower_id = ?
@@ -59,7 +59,7 @@ while ($row = $result->fetch_assoc()) {
 // Get pending connection requests (received)
 $pendingRequests = [];
 $stmt = $conn->prepare("
-    SELECT u.id, u.username, u.display_name, u.profile_image, u.bio, uc.created_at as request_date
+    SELECT u.id, u.username, u.display_name, u.profile_picture, u.bio, uc.created_at as request_date
     FROM user_connections uc
     JOIN users u ON uc.requester_id = u.id
     WHERE uc.receiver_id = ? AND uc.status = 'pending'
@@ -75,7 +75,7 @@ while ($row = $result->fetch_assoc()) {
 // Get sent connection requests
 $sentRequests = [];
 $stmt = $conn->prepare("
-    SELECT u.id, u.username, u.display_name, u.profile_image, u.bio, uc.created_at as request_date
+    SELECT u.id, u.username, u.display_name, u.profile_picture, u.bio, uc.created_at as request_date
     FROM user_connections uc
     JOIN users u ON uc.receiver_id = u.id
     WHERE uc.requester_id = ? AND uc.status = 'pending'
@@ -91,7 +91,7 @@ while ($row = $result->fetch_assoc()) {
 // Get accepted connections
 $connections = [];
 $stmt = $conn->prepare("
-    SELECT u.id, u.username, u.display_name, u.profile_image, u.bio, uc.updated_at as connected_at
+    SELECT u.id, u.username, u.display_name, u.profile_picture, u.bio, uc.updated_at as connected_at
     FROM user_connections uc
     JOIN users u ON (CASE WHEN uc.requester_id = ? THEN uc.receiver_id ELSE uc.requester_id END) = u.id
     WHERE (uc.requester_id = ? OR uc.receiver_id = ?) AND uc.status = 'accepted'
@@ -194,9 +194,9 @@ include '../includes/header.php';
                                         <div class="col-md-6 col-lg-4 mb-3">
                                             <div class="card">
                                                 <div class="card-body text-center">
-                                                    <?php if ($follower['profile_image']): ?>
-                                                        <img src="<?php echo APP_URL . '/' . $follower['profile_image']; ?>" 
-                                                             alt="Profile" class="rounded-circle mb-2" 
+                                                    <?php if ($follower['profile_picture']): ?>
+                                                        <img src="<?php echo APP_URL . '/' . $follower['profile_picture']; ?>"
+                                                             alt="Profile" class="rounded-circle mb-2"
                                                              style="width: 60px; height: 60px; object-fit: cover;">
                                                     <?php else: ?>
                                                         <div class="rounded-circle d-inline-flex align-items-center justify-content-center mb-2" 
@@ -240,9 +240,9 @@ include '../includes/header.php';
                                         <div class="col-md-6 col-lg-4 mb-3">
                                             <div class="card">
                                                 <div class="card-body text-center">
-                                                    <?php if ($followed['profile_image']): ?>
-                                                        <img src="<?php echo APP_URL . '/' . $followed['profile_image']; ?>" 
-                                                             alt="Profile" class="rounded-circle mb-2" 
+                                                    <?php if ($followed['profile_picture']): ?>
+                                                        <img src="<?php echo APP_URL . '/' . $followed['profile_picture']; ?>"
+                                                             alt="Profile" class="rounded-circle mb-2"
                                                              style="width: 60px; height: 60px; object-fit: cover;">
                                                     <?php else: ?>
                                                         <div class="rounded-circle d-inline-flex align-items-center justify-content-center mb-2" 
@@ -288,9 +288,9 @@ include '../includes/header.php';
                                         <div class="col-md-6 col-lg-4 mb-3">
                                             <div class="card">
                                                 <div class="card-body text-center">
-                                                    <?php if ($connection['profile_image']): ?>
-                                                        <img src="<?php echo APP_URL . '/' . $connection['profile_image']; ?>" 
-                                                             alt="Profile" class="rounded-circle mb-2" 
+                                                    <?php if ($connection['profile_picture']): ?>
+                                                        <img src="<?php echo APP_URL . '/' . $connection['profile_picture']; ?>"
+                                                             alt="Profile" class="rounded-circle mb-2"
                                                              style="width: 60px; height: 60px; object-fit: cover;">
                                                     <?php else: ?>
                                                         <div class="rounded-circle d-inline-flex align-items-center justify-content-center mb-2" 
@@ -344,9 +344,9 @@ include '../includes/header.php';
                                             <div class="card mb-3">
                                                 <div class="card-body">
                                                     <div class="d-flex align-items-center">
-                                                        <?php if ($request['profile_image']): ?>
-                                                            <img src="<?php echo APP_URL . '/' . $request['profile_image']; ?>" 
-                                                                 alt="Profile" class="rounded-circle me-3" 
+                                                        <?php if ($request['profile_picture']): ?>
+                                                            <img src="<?php echo APP_URL . '/' . $request['profile_picture']; ?>"
+                                                                 alt="Profile" class="rounded-circle me-3"
                                                                  style="width: 50px; height: 50px; object-fit: cover;">
                                                         <?php else: ?>
                                                             <div class="rounded-circle d-flex align-items-center justify-content-center me-3" 
@@ -399,9 +399,9 @@ include '../includes/header.php';
                                             <div class="card mb-3">
                                                 <div class="card-body">
                                                     <div class="d-flex align-items-center">
-                                                        <?php if ($request['profile_image']): ?>
-                                                            <img src="<?php echo APP_URL . '/' . $request['profile_image']; ?>" 
-                                                                 alt="Profile" class="rounded-circle me-3" 
+                                                        <?php if ($request['profile_picture']): ?>
+                                                            <img src="<?php echo APP_URL . '/' . $request['profile_picture']; ?>"
+                                                                 alt="Profile" class="rounded-circle me-3"
                                                                  style="width: 50px; height: 50px; object-fit: cover;">
                                                         <?php else: ?>
                                                             <div class="rounded-circle d-flex align-items-center justify-content-center me-3" 

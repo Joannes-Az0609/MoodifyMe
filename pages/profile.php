@@ -91,12 +91,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $error = 'New password must be at least 8 characters long.';
         } else {
             // Verify current password
-            if (verifyPassword($currentPassword, $user['password'])) {
+            if (verifyPassword($currentPassword, $user['password_hash'])) {
                 // Hash new password
                 $hashedPassword = hashPassword($newPassword);
-                
+
                 // Update password
-                $stmt = $conn->prepare("UPDATE users SET password = ?, updated_at = NOW() WHERE id = ?");
+                $stmt = $conn->prepare("UPDATE users SET password_hash = ?, updated_at = NOW() WHERE id = ?");
                 $stmt->bind_param("si", $hashedPassword, $userId);
                 
                 if ($stmt->execute()) {
@@ -136,7 +136,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 if (move_uploaded_file($file['tmp_name'], $targetPath)) {
                     // Update user profile image
                     $profileImage = 'assets/images/avatars/' . $filename;
-                    $stmt = $conn->prepare("UPDATE users SET profile_image = ?, updated_at = NOW() WHERE id = ?");
+                    $stmt = $conn->prepare("UPDATE users SET profile_picture = ?, updated_at = NOW() WHERE id = ?");
                     $stmt->bind_param("si", $profileImage, $userId);
                     
                     if ($stmt->execute()) {
@@ -185,8 +185,8 @@ include '../includes/header.php';
         <div class="col-md-4">
             <div class="card mb-4">
                 <div class="card-body text-center">
-                    <?php if (!empty($user['profile_image'])): ?>
-                        <img src="<?php echo APP_URL . '/' . $user['profile_image']; ?>" alt="Profile Image" class="img-fluid rounded-circle mb-3" style="width: 150px; height: 150px; object-fit: cover;">
+                    <?php if (!empty($user['profile_picture'])): ?>
+                        <img src="<?php echo APP_URL . '/' . $user['profile_picture']; ?>" alt="Profile Image" class="img-fluid rounded-circle mb-3" style="width: 150px; height: 150px; object-fit: cover;">
                     <?php else: ?>
                         <div class="profile-placeholder mb-3">
                             <i class="fas fa-user-circle fa-7x text-secondary"></i>

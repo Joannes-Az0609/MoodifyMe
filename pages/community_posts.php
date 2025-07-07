@@ -8,6 +8,7 @@
 require_once '../config.php';
 require_once '../includes/functions.php';
 require_once '../includes/db_connect.php';
+require_once '../includes/notification_functions.php';
 
 // Start session
 session_start();
@@ -29,15 +30,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['create_post'])) {
     
     if (!empty($title) && !empty($content)) {
         $stmt = $conn->prepare("
-            INSERT INTO community_posts (user_id, title, content, post_type, mood_tag, is_anonymous) 
+            INSERT INTO community_posts (user_id, title, content, post_type, mood_tag, is_anonymous)
             VALUES (?, ?, ?, ?, ?, ?)
         ");
-        $stmt->bind_param("issssi", $currentUserId, $title, $content, $postType, $moodTag, $isAnonymous);
-        
-        if ($stmt->execute()) {
-            $successMessage = "Your post has been shared with the community!";
+
+        if (!$stmt) {
+            error_log("Failed to prepare post creation query: " . $conn->error);
+            $errorMessage = "Database error. Please try again.";
         } else {
-            $errorMessage = "Failed to create post. Please try again.";
+            $stmt->bind_param("issssi", $currentUserId, $title, $content, $postType, $moodTag, $isAnonymous);
+
+            if ($stmt->execute()) {
+                $successMessage = "Your post has been shared with the community!";
+            } else {
+                error_log("Failed to execute post creation query: " . $stmt->error);
+                $errorMessage = "Failed to create post. Please try again.";
+            }
         }
     } else {
         $errorMessage = "Please fill in both title and content.";
@@ -63,9 +71,15 @@ if ($filterType !== 'all') {
 
 // Get posts - simplified query to avoid issues with missing tables
 try {
-    // First check if reaction/comment tables exist
+    // First check if required tables exist
+    $postsTableExists = false;
     $reactionsTableExists = false;
     $commentsTableExists = false;
+
+    $result = $conn->query("SHOW TABLES LIKE 'community_posts'");
+    if ($result && $result->num_rows > 0) {
+        $postsTableExists = true;
+    }
 
     $result = $conn->query("SHOW TABLES LIKE 'post_reactions'");
     if ($result && $result->num_rows > 0) {
@@ -77,11 +91,41 @@ try {
         $commentsTableExists = true;
     }
 
+    // If community_posts table doesn't exist, create it
+    if (!$postsTableExists) {
+        $createTableSQL = "
+            CREATE TABLE community_posts (
+                id INT AUTO_INCREMENT PRIMARY KEY,
+                user_id INT NOT NULL,
+                title VARCHAR(255) NOT NULL,
+                content TEXT NOT NULL,
+                post_type VARCHAR(50) DEFAULT 'general',
+                mood_tag VARCHAR(50) DEFAULT NULL,
+                is_anonymous BOOLEAN DEFAULT FALSE,
+                is_active BOOLEAN DEFAULT TRUE,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+                INDEX idx_user_id (user_id),
+                INDEX idx_post_type (post_type),
+                INDEX idx_created_at (created_at),
+                INDEX idx_is_active (is_active)
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
+        ";
+
+        if ($conn->query($createTableSQL)) {
+            error_log("Created community_posts table successfully");
+            $postsTableExists = true;
+        } else {
+            error_log("Failed to create community_posts table: " . $conn->error);
+            throw new Exception("Required database table is missing and could not be created");
+        }
+    }
+
     // Build query based on available tables
     if ($reactionsTableExists && $commentsTableExists) {
         // Full query with reactions and comments
         $stmt = $conn->prepare("
-            SELECT cp.*, u.username, u.profile_image,
+            SELECT cp.*, u.username, u.profile_picture,
                    (SELECT COUNT(*) FROM post_reactions pr WHERE pr.post_id = cp.id) as reaction_count,
                    (SELECT COUNT(*) FROM post_comments pc WHERE pc.post_id = cp.id AND pc.is_active = TRUE) as comment_count,
                    (SELECT COUNT(*) FROM post_reactions pr WHERE pr.post_id = cp.id AND pr.user_id = ?) as user_reacted
@@ -91,12 +135,12 @@ try {
             ORDER BY cp.created_at DESC
             LIMIT ? OFFSET ?
         ");
-        $types = "i" . $types . "ii"; // user_id + filter params + limit + offset
-        $params = array_merge([$currentUserId], $params, [$postsPerPage, $offset]);
+        $finalTypes = "i" . $types . "ii"; // user_id + filter params + limit + offset
+        $finalParams = array_merge([$currentUserId], $params, [$postsPerPage, $offset]);
     } else {
         // Simplified query without reactions/comments
         $stmt = $conn->prepare("
-            SELECT cp.*, u.username, u.profile_image,
+            SELECT cp.*, u.username, u.profile_picture,
                    0 as reaction_count,
                    0 as comment_count,
                    0 as user_reacted
@@ -106,11 +150,20 @@ try {
             ORDER BY cp.created_at DESC
             LIMIT ? OFFSET ?
         ");
-        $types = $types . "ii"; // filter params + limit + offset
-        $params = array_merge($params, [$postsPerPage, $offset]);
+        $finalTypes = $types . "ii"; // filter params + limit + offset
+        $finalParams = array_merge($params, [$postsPerPage, $offset]);
     }
 
-    $stmt->bind_param($types, ...$params);
+    // Check if prepare was successful
+    if (!$stmt) {
+        error_log("Failed to prepare community posts query: " . $conn->error);
+        throw new Exception("Database query preparation failed");
+    }
+
+    // Bind parameters
+    if (!empty($finalParams)) {
+        $stmt->bind_param($finalTypes, ...$finalParams);
+    }
     $stmt->execute();
     $result = $stmt->get_result();
     $posts = $result->fetch_all(MYSQLI_ASSOC);
@@ -158,8 +211,11 @@ include '../includes/header.php';
                         <a href="?filter=support" class="list-group-item list-group-item-action <?php echo $filterType === 'support' ? 'active' : ''; ?>">
                             <i class="fas fa-hands-helping me-2"></i>Support
                         </a>
+                        <a href="?filter=celebration" class="list-group-item list-group-item-action <?php echo $filterType === 'celebration' ? 'active' : ''; ?>">
+                            <i class="fas fa-trophy me-2"></i>Celebrations
+                        </a>
                         <a href="?filter=success" class="list-group-item list-group-item-action <?php echo $filterType === 'success' ? 'active' : ''; ?>">
-                            <i class="fas fa-trophy me-2"></i>Success Stories
+                            <i class="fas fa-star me-2"></i>Success Stories
                         </a>
                         <a href="?filter=question" class="list-group-item list-group-item-action <?php echo $filterType === 'question' ? 'active' : ''; ?>">
                             <i class="fas fa-question-circle me-2"></i>Questions
@@ -555,16 +611,7 @@ function getPostTypeBadgeColor($type) {
     return $colors[$type] ?? 'secondary';
 }
 
-function timeAgo($datetime) {
-    $time = time() - strtotime($datetime);
-
-    if ($time < 60) return 'just now';
-    if ($time < 3600) return floor($time/60) . 'm ago';
-    if ($time < 86400) return floor($time/3600) . 'h ago';
-    if ($time < 2592000) return floor($time/86400) . 'd ago';
-
-    return date('M j, Y', strtotime($datetime));
-}
+// timeAgo function is now defined in includes/notification_functions.php
 
 // Include footer
 include '../includes/footer.php';

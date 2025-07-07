@@ -4,8 +4,31 @@
  * Common header included in all pages
  */
 
+// Include notification functions with error handling
+$notificationFunctionsPath = __DIR__ . '/notification_functions.php';
+if (file_exists($notificationFunctionsPath)) {
+    require_once $notificationFunctionsPath;
+} else {
+    // Fallback for different directory structures
+    $fallbackPath = dirname(__FILE__) . '/notification_functions.php';
+    if (file_exists($fallbackPath)) {
+        require_once $fallbackPath;
+    }
+}
+
 // Check if user is logged in
 $loggedIn = isset($_SESSION['user_id']);
+
+// Get notification count for logged in users
+$notificationCount = 0;
+if ($loggedIn && function_exists('getUnreadNotificationCount')) {
+    try {
+        $notificationCount = getUnreadNotificationCount($_SESSION['user_id']);
+    } catch (Exception $e) {
+        error_log("Header notification count error: " . $e->getMessage());
+        $notificationCount = 0;
+    }
+}
 
 // Get current page for navigation highlighting
 $currentPage = basename($_SERVER['PHP_SELF']);
@@ -16,6 +39,24 @@ $currentPage = basename($_SERVER['PHP_SELF']);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?php echo APP_NAME; ?> - Your Mental Health Assistant</title>
+
+    <!-- PWA Meta Tags -->
+    <meta name="description" content="Track your mood, connect with others, and improve your mental wellness with MoodifyMe">
+    <meta name="theme-color" content="#007bff">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="MoodifyMe">
+    <meta name="msapplication-TileColor" content="#007bff">
+    <meta name="msapplication-config" content="<?php echo APP_URL; ?>/browserconfig.xml">
+
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="<?php echo APP_URL; ?>/manifest.json">
+
+    <!-- PWA Icons -->
+    <link rel="icon" type="image/png" sizes="32x32" href="<?php echo APP_URL; ?>/assets/images/pwa/icon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="<?php echo APP_URL; ?>/assets/images/pwa/icon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="<?php echo APP_URL; ?>/assets/images/pwa/apple-touch-icon.png">
+    <link rel="mask-icon" href="<?php echo APP_URL; ?>/assets/images/pwa/safari-pinned-tab.svg" color="#007bff">
 
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -80,6 +121,20 @@ $currentPage = basename($_SERVER['PHP_SELF']);
             cursor: pointer !important;
             z-index: 15 !important;
             position: relative !important;
+        }
+
+        /* Community dropdown styles removed - using floating icon instead */
+
+        /* Mobile dropdown improvements */
+        @media (max-width: 768px) {
+            .dropdown-menu {
+                min-width: 200px !important;
+                margin-top: 0.25rem !important;
+            }
+
+            .dropdown-item {
+                padding: 0.6rem 1rem !important;
+            }
         }
     </style>
 
@@ -216,6 +271,8 @@ $currentPage = basename($_SERVER['PHP_SELF']);
                             </a>
                         </li>
 
+                        <!-- Community access moved to floating icon -->
+
                     <?php endif; ?>
 
                     <li class="nav-item">
@@ -235,6 +292,19 @@ $currentPage = basename($_SERVER['PHP_SELF']);
                     </li>
 
                     <?php if ($loggedIn): ?>
+
+
+                        <!-- Notification Bell -->
+                        <li class="nav-item position-relative">
+                            <a class="nav-link position-relative" href="<?php echo APP_URL; ?>/pages/notifications.php" title="Notifications">
+                                <i class="fas fa-bell"></i>
+                                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+                                      id="notification-count" style="font-size: 0.7rem; <?php echo $notificationCount > 0 ? '' : 'display: none;'; ?>">
+                                    <?php echo $notificationCount > 99 ? '99+' : $notificationCount; ?>
+                                </span>
+                            </a>
+                        </li>
+
                         <li class="nav-item dropdown position-relative">
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                onclick="toggleUserDropdown(event)"

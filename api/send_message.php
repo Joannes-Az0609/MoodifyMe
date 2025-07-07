@@ -1,7 +1,7 @@
 <?php
 /**
  * MoodifyMe - Send Message API
- * Send a message to a chat room or direct conversation
+ * Handle sending direct messages
  */
 
 // Include configuration and functions
@@ -9,6 +9,7 @@ require_once '../config.php';
 require_once '../includes/functions.php';
 require_once '../includes/db_connect.php';
 require_once '../includes/social_functions.php';
+require_once '../includes/notification_functions.php';
 
 // Start session
 session_start();
@@ -30,160 +31,154 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     exit;
 }
 
-// Get parameters
-$roomId = (int)($_POST['room_id'] ?? 0);
+// Get POST parameters
 $conversationId = (int)($_POST['conversation_id'] ?? 0);
 $content = trim($_POST['content'] ?? '');
 
-// Validate input
+// Debug logging
+error_log("Send message attempt - User: $currentUserId, Conversation: $conversationId, Content length: " . strlen($content));
+
+// Validate inputs
+if ($conversationId <= 0) {
+    echo json_encode(['success' => false, 'message' => 'Invalid conversation ID']);
+    exit;
+}
+
 if (empty($content)) {
-    echo json_encode(['success' => false, 'message' => 'Message content is required']);
+    echo json_encode(['success' => false, 'message' => 'Message content cannot be empty']);
     exit;
 }
 
 if (strlen($content) > 1000) {
-    echo json_encode(['success' => false, 'message' => 'Message is too long (max 1000 characters)']);
+    echo json_encode(['success' => false, 'message' => 'Message too long (max 1000 characters)']);
     exit;
 }
 
-// Determine message type and validate access
-$messageType = '';
-$targetId = 0;
-
-if ($roomId > 0) {
-    // Community chat message
-    $messageType = 'community';
-    $targetId = $roomId;
-    
-    // Check if room exists and is accessible
+try {
+    // Check if conversation exists and user is a participant
     $stmt = $conn->prepare("
-        SELECT cr.* FROM chat_rooms cr
-        WHERE cr.id = ? AND cr.is_active = TRUE
+        SELECT cp.user_id, c.conversation_type 
+        FROM conversation_participants cp
+        JOIN conversations c ON cp.conversation_id = c.id
+        WHERE cp.conversation_id = ? AND cp.user_id = ?
     ");
-    $stmt->bind_param("i", $roomId);
-    $stmt->execute();
-    $result = $stmt->get_result();
     
-    if ($result->num_rows === 0) {
-        echo json_encode(['success' => false, 'message' => 'Room not found or access denied']);
-        exit;
+    if (!$stmt) {
+        throw new Exception("Database prepare failed: " . $conn->error);
     }
     
-    // Check if user is a participant
-    $stmt = $conn->prepare("
-        SELECT 1 FROM chat_room_participants 
-        WHERE chat_room_id = ? AND user_id = ? AND is_active = TRUE
-    ");
-    $stmt->bind_param("ii", $roomId, $currentUserId);
-    $stmt->execute();
-    $result = $stmt->get_result();
-    
-    if ($result->num_rows === 0) {
-        // Auto-join the user to the room
-        $stmt = $conn->prepare("
-            INSERT INTO chat_room_participants (chat_room_id, user_id) 
-            VALUES (?, ?) 
-            ON DUPLICATE KEY UPDATE is_active = TRUE
-        ");
-        $stmt->bind_param("ii", $roomId, $currentUserId);
-        $stmt->execute();
-    }
-    
-} elseif ($conversationId > 0) {
-    // Direct message
-    $messageType = 'direct';
-    $targetId = $conversationId;
-    
-    // Check if conversation exists and user has access
-    $stmt = $conn->prepare("
-        SELECT c.* FROM conversations c
-        JOIN conversation_participants cp ON c.id = cp.conversation_id
-        WHERE c.id = ? AND cp.user_id = ? AND cp.is_active = TRUE
-    ");
     $stmt->bind_param("ii", $conversationId, $currentUserId);
     $stmt->execute();
     $result = $stmt->get_result();
     
     if ($result->num_rows === 0) {
-        echo json_encode(['success' => false, 'message' => 'Conversation not found or access denied']);
+        echo json_encode(['success' => false, 'message' => 'You are not a participant in this conversation']);
         exit;
     }
     
-} else {
-    echo json_encode(['success' => false, 'message' => 'Either room_id or conversation_id is required']);
-    exit;
-}
-
-// Basic content filtering
-$content = filterMessage($content);
-
-// Insert the message
-try {
+    $stmt->close();
+    
+    // Filter message content (basic profanity filter)
+    $filteredContent = filterMessage($content);
+    
+    // Insert the message
     $stmt = $conn->prepare("
-        INSERT INTO messages (sender_id, message_type, chat_room_id, conversation_id, content, created_at) 
-        VALUES (?, ?, ?, ?, ?, NOW())
+        INSERT INTO messages (sender_id, conversation_id, content, message_type, created_at) 
+        VALUES (?, ?, ?, 'direct', NOW())
     ");
     
-    $chatRoomIdParam = $messageType === 'community' ? $roomId : null;
-    $conversationIdParam = $messageType === 'direct' ? $conversationId : null;
+    if (!$stmt) {
+        throw new Exception("Database prepare failed: " . $conn->error);
+    }
     
-    $stmt->bind_param("isiss",
-        $currentUserId,
-        $messageType,
-        $chatRoomIdParam,
-        $conversationIdParam,
-        $content
-    );
+    $stmt->bind_param("iis", $currentUserId, $conversationId, $filteredContent);
     
-    if ($stmt->execute()) {
-        $messageId = $conn->insert_id;
-        
-        // Update conversation last message time if it's a direct message
-        if ($messageType === 'direct') {
-            $stmt = $conn->prepare("
-                UPDATE conversations 
-                SET last_message_at = NOW() 
-                WHERE id = ?
-            ");
-            $stmt->bind_param("i", $conversationId);
-            $stmt->execute();
+    if (!$stmt->execute()) {
+        throw new Exception("Failed to insert message: " . $stmt->error);
+    }
+    
+    $messageId = $conn->insert_id;
+    $stmt->close();
+    
+    // Update conversation's last message timestamp
+    $stmt = $conn->prepare("UPDATE conversations SET last_message_at = NOW() WHERE id = ?");
+    if ($stmt) {
+        $stmt->bind_param("i", $conversationId);
+        $stmt->execute();
+        $stmt->close();
+    }
+
+    // Create notifications for other participants
+    $stmt = $conn->prepare("
+        SELECT cp.user_id
+        FROM conversation_participants cp
+        WHERE cp.conversation_id = ? AND cp.user_id != ?
+    ");
+    if ($stmt) {
+        $stmt->bind_param("ii", $conversationId, $currentUserId);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        while ($participant = $result->fetch_assoc()) {
+            createMessageNotification($participant['user_id'], $currentUserId, $content);
         }
+        $stmt->close();
+    }
+    
+    // Get the inserted message with user details
+    $stmt = $conn->prepare("
+        SELECT m.*, u.username, u.display_name, u.profile_picture as profile_image
+        FROM messages m
+        JOIN users u ON m.sender_id = u.id
+        WHERE m.id = ?
+    ");
+    
+    if ($stmt) {
+        $stmt->bind_param("i", $messageId);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $message = $result->fetch_assoc();
+        $stmt->close();
         
-        // Update user online status
-        updateUserOnlineStatus($currentUserId);
-        
+        echo json_encode([
+            'success' => true,
+            'message' => 'Message sent successfully',
+            'data' => $message
+        ]);
+    } else {
         echo json_encode([
             'success' => true,
             'message' => 'Message sent successfully',
             'message_id' => $messageId
         ]);
-        
-    } else {
-        echo json_encode(['success' => false, 'message' => 'Failed to send message']);
     }
     
 } catch (Exception $e) {
-    error_log("Error sending message: " . $e->getMessage());
-    echo json_encode(['success' => false, 'message' => 'Failed to send message']);
+    error_log("Send message error: " . $e->getMessage());
+    echo json_encode([
+        'success' => false,
+        'message' => 'Failed to send message. Please try again.',
+        'error' => $e->getMessage(),
+        'debug' => [
+            'conversation_id' => $conversationId,
+            'user_id' => $currentUserId,
+            'content_length' => strlen($content)
+        ]
+    ]);
 }
 
 /**
- * Basic message content filtering
+ * Basic message filtering function
  */
 function filterMessage($content) {
-    // Remove excessive whitespace
-    $content = preg_replace('/\s+/', ' ', $content);
+    // Basic profanity filter - you can expand this
+    $profanity = ['spam', 'scam', 'fake'];
+    $filtered = $content;
     
-    // Basic profanity filter (you can expand this)
-    $profanityWords = ['spam', 'scam']; // Add more as needed
-    foreach ($profanityWords as $word) {
-        $content = str_ireplace($word, str_repeat('*', strlen($word)), $content);
+    foreach ($profanity as $word) {
+        $filtered = str_ireplace($word, str_repeat('*', strlen($word)), $filtered);
     }
     
-    // Remove potentially harmful HTML/JS
-    $content = strip_tags($content);
-    $content = htmlspecialchars($content, ENT_QUOTES, 'UTF-8');
-    
-    return trim($content);
+    return $filtered;
 }
 ?>

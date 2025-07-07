@@ -1,0 +1,143 @@
+{
+  "name": "MoodifyMe - Mood Tracking & Community",
+  "short_name": "MoodifyMe",
+  "description": "Track your mood, connect with others, and improve your mental wellness with MoodifyMe",
+  "start_url": "/MoodifyMe/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#007bff",
+  "orientation": "portrait-primary",
+  "scope": "/MoodifyMe/",
+  "lang": "en",
+  "dir": "ltr",
+  "categories": ["health", "lifestyle", "social"],
+  "screenshots": [
+    {
+      "src": "assets/images/pwa/screenshot-wide.png",
+      "sizes": "1280x720",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "MoodifyMe Dashboard"
+    },
+    {
+      "src": "assets/images/pwa/screenshot-narrow.png",
+      "sizes": "640x1136",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "MoodifyMe Mobile View"
+    }
+  ],
+  "icons": [
+    {
+      "src": "assets/images/pwa/icon-72x72.png",
+      "sizes": "72x72",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "assets/images/pwa/icon-96x96.png",
+      "sizes": "96x96",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "assets/images/pwa/icon-128x128.png",
+      "sizes": "128x128",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "assets/images/pwa/icon-144x144.png",
+      "sizes": "144x144",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "assets/images/pwa/icon-152x152.png",
+      "sizes": "152x152",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "assets/images/pwa/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "assets/images/pwa/icon-384x384.png",
+      "sizes": "384x384",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "assets/images/pwa/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable any"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Track Mood",
+      "short_name": "Track",
+      "description": "Quickly track your current mood",
+      "url": "/MoodifyMe/pages/mood_tracker.php",
+      "icons": [
+        {
+          "src": "assets/images/pwa/shortcut-mood.png",
+          "sizes": "96x96",
+          "type": "image/png"
+        }
+      ]
+    },
+    {
+      "name": "Messages",
+      "short_name": "Chat",
+      "description": "View and send messages",
+      "url": "/MoodifyMe/pages/messages.php",
+      "icons": [
+        {
+          "src": "assets/images/pwa/shortcut-messages.png",
+          "sizes": "96x96",
+          "type": "image/png"
+        }
+      ]
+    },
+    {
+      "name": "Community",
+      "short_name": "Community",
+      "description": "Connect with the community",
+      "url": "/MoodifyMe/pages/community_posts.php",
+      "icons": [
+        {
+          "src": "assets/images/pwa/shortcut-community.png",
+          "sizes": "96x96",
+          "type": "image/png"
+        }
+      ]
+    },
+    {
+      "name": "Dashboard",
+      "short_name": "Home",
+      "description": "View your dashboard",
+      "url": "/MoodifyMe/pages/dashboard.php",
+      "icons": [
+        {
+          "src": "assets/images/pwa/shortcut-dashboard.png",
+          "sizes": "96x96",
+          "type": "image/png"
+        }
+      ]
+    }
+  ],
+  "related_applications": [],
+  "prefer_related_applications": false,
+  "edge_side_panel": {
+    "preferred_width": 400
+  },
+  "handle_links": "preferred",
+  "launch_handler": {
+    "client_mode": "navigate-existing"
+  }
+}
