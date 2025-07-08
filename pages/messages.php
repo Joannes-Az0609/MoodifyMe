@@ -299,40 +299,7 @@ include '../includes/header.php';
                     
                     <!-- Message Input -->
                     <div class="card-footer">
-                        <!-- Voice Recording Interface (Hidden by default) -->
-                        <div id="voice-recording-interface" class="voice-recording-panel mb-3" style="display: none;">
-                            <div class="d-flex align-items-center justify-content-between p-3 bg-light rounded">
-                                <div class="d-flex align-items-center gap-3">
-                                    <div class="voice-visualizer">
-                                        <div class="recording-indicator"></div>
-                                    </div>
-                                    <div class="recording-info">
-                                        <div class="recording-status">Starting recording...</div>
-                                        <div class="recording-duration">0:00</div>
-                                    </div>
-                                </div>
-                                <div class="voice-controls d-flex gap-2">
-                                    <button type="button" id="start-recording-btn" class="btn btn-success">
-                                        <i class="fas fa-microphone"></i> Start
-                                    </button>
-                                    <button type="button" id="stop-recording-btn" class="btn btn-danger" style="display: none;">
-                                        <i class="fas fa-stop"></i> Stop
-                                    </button>
-                                    <button type="button" id="pause-recording-btn" class="btn btn-warning" style="display: none;">
-                                        <i class="fas fa-pause"></i> Pause
-                                    </button>
-                                    <button type="button" id="play-recording-btn" class="btn btn-info" style="display: none;">
-                                        <i class="fas fa-play"></i> Play
-                                    </button>
-                                    <button type="button" id="send-voice-btn" class="btn btn-primary" style="display: none;">
-                                        <i class="fas fa-paper-plane"></i> Send
-                                    </button>
-                                    <button type="button" id="cancel-voice-btn" class="btn btn-secondary">
-                                        <i class="fas fa-times"></i> Cancel
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
+
 
                         <!-- Regular Message Form -->
                         <form id="message-form" class="d-flex gap-2">
@@ -349,9 +316,7 @@ include '../includes/header.php';
                                 <button type="button" class="btn btn-outline-secondary btn-sm" onclick="addEmoji('❤️')">
                                     <i class="fas fa-heart"></i>
                                 </button>
-                                <button type="button" id="voice-message-btn" class="btn btn-outline-primary btn-sm" title="Start Recording Voice Message">
-                                    <i class="fas fa-microphone"></i>
-                                </button>
+
                             </div>
                         </form>
                     </div>
@@ -430,127 +395,9 @@ include '../includes/header.php';
     }
 }
 
-/* Voice message styles */
-.voice-recording-panel {
-    border: 2px dashed #007bff;
-    border-radius: 10px;
-    background: rgba(0, 123, 255, 0.05);
-}
 
-/* Voice button enhancement */
-#voice-message-btn {
-    position: relative;
-    transition: all 0.3s ease;
-}
 
-#voice-message-btn:hover {
-    transform: scale(1.05);
-    box-shadow: 0 2px 8px rgba(0, 123, 255, 0.3);
-}
 
-#voice-message-btn:active {
-    transform: scale(0.95);
-}
-
-.voice-visualizer {
-    width: 40px;
-    height: 40px;
-    position: relative;
-}
-
-.recording-indicator {
-    width: 20px;
-    height: 20px;
-    background: #dc3545;
-    border-radius: 50%;
-    margin: 10px auto;
-    animation: pulse 1.5s infinite;
-}
-
-.recording-indicator.recording {
-    animation: pulse 0.8s infinite;
-}
-
-@keyframes pulse {
-    0% { transform: scale(1); opacity: 1; }
-    50% { transform: scale(1.2); opacity: 0.7; }
-    100% { transform: scale(1); opacity: 1; }
-}
-
-.recording-info {
-    text-align: left;
-}
-
-.recording-status {
-    font-weight: 600;
-    color: #007bff;
-}
-
-.recording-duration {
-    font-size: 0.9rem;
-    color: #6c757d;
-    font-family: monospace;
-}
-
-.voice-message-bubble {
-    background: linear-gradient(135deg, #28a745, #20c997);
-    color: white;
-    border-radius: 20px;
-    padding: 15px;
-    max-width: 300px;
-}
-
-.voice-message-bubble.own {
-    background: linear-gradient(135deg, #007bff, #0056b3);
-}
-
-.voice-player {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.voice-play-btn {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    border: none;
-    background: rgba(255, 255, 255, 0.2);
-    color: white;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: all 0.2s ease;
-}
-
-.voice-play-btn:hover {
-    background: rgba(255, 255, 255, 0.3);
-    transform: scale(1.05);
-}
-
-.voice-waveform {
-    flex: 1;
-    height: 30px;
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 15px;
-    position: relative;
-    overflow: hidden;
-}
-
-.voice-progress {
-    height: 100%;
-    background: rgba(255, 255, 255, 0.3);
-    border-radius: 15px;
-    transition: width 0.1s ease;
-}
-
-.voice-duration {
-    font-size: 0.8rem;
-    opacity: 0.9;
-    min-width: 35px;
-    text-align: right;
-}
 
 /* Delete conversation button styles */
 .delete-conversation-btn {
@@ -740,104 +587,20 @@ function appendMessage(message) {
     const messageDiv = document.createElement('div');
     messageDiv.className = `message-bubble ${isOwn ? 'own' : ''}`;
 
-    // Check if this is a voice message
-    if (message.message_content_type === 'voice' && message.voice_file_path) {
-        const voiceId = 'voice_' + message.id;
-        messageDiv.innerHTML = `
-            <div class="message-content voice-message-bubble ${isOwn ? 'own' : ''}">
-                <div class="voice-player">
-                    <button class="voice-play-btn" onclick="toggleVoicePlayback('${voiceId}', '<?php echo APP_URL; ?>/${message.voice_file_path}')">
-                        <i class="fas fa-play" id="${voiceId}_icon"></i>
-                    </button>
-                    <div class="voice-waveform">
-                        <div class="voice-progress" id="${voiceId}_progress" style="width: 0%"></div>
-                    </div>
-                    <div class="voice-duration">${formatVoiceDuration(message.voice_duration)}</div>
-                </div>
-                <div class="message-meta">
-                    ${formatMessageTime(message.created_at)}
-                </div>
+    // Regular text message
+    messageDiv.innerHTML = `
+        <div class="message-content">
+            <div>${escapeHtml(message.content).replace(/\n/g, '<br>')}</div>
+            <div class="message-meta">
+                ${formatMessageTime(message.created_at)}
             </div>
-        `;
-    } else {
-        // Regular text message
-        messageDiv.innerHTML = `
-            <div class="message-content">
-                <div>${escapeHtml(message.content).replace(/\n/g, '<br>')}</div>
-                <div class="message-meta">
-                    ${formatMessageTime(message.created_at)}
-                </div>
-            </div>
-        `;
-    }
+        </div>
+    `;
 
     container.appendChild(messageDiv);
 }
 
-// Voice message playback functionality
-const voicePlaybacks = {};
 
-function toggleVoicePlayback(voiceId, audioUrl) {
-    const icon = document.getElementById(voiceId + '_icon');
-    const progress = document.getElementById(voiceId + '_progress');
-
-    if (!voicePlaybacks[voiceId]) {
-        // Create new audio player
-        voicePlaybacks[voiceId] = new Audio(audioUrl);
-        const audio = voicePlaybacks[voiceId];
-
-        audio.addEventListener('loadedmetadata', () => {
-            // Audio is ready
-        });
-
-        audio.addEventListener('timeupdate', () => {
-            if (audio.duration) {
-                const progressPercent = (audio.currentTime / audio.duration) * 100;
-                progress.style.width = progressPercent + '%';
-            }
-        });
-
-        audio.addEventListener('ended', () => {
-            icon.className = 'fas fa-play';
-            progress.style.width = '0%';
-        });
-
-        audio.addEventListener('error', (e) => {
-            console.error('Audio playback error:', e);
-            icon.className = 'fas fa-play';
-            alert('Could not play voice message');
-        });
-    }
-
-    const audio = voicePlaybacks[voiceId];
-
-    if (audio.paused) {
-        // Stop all other voice messages
-        Object.keys(voicePlaybacks).forEach(id => {
-            if (id !== voiceId && !voicePlaybacks[id].paused) {
-                voicePlaybacks[id].pause();
-                document.getElementById(id + '_icon').className = 'fas fa-play';
-            }
-        });
-
-        audio.play().then(() => {
-            icon.className = 'fas fa-pause';
-        }).catch(error => {
-            console.error('Playback failed:', error);
-            alert('Could not play voice message');
-        });
-    } else {
-        audio.pause();
-        icon.className = 'fas fa-play';
-    }
-}
-
-function formatVoiceDuration(seconds) {
-    if (!seconds) return '0:00';
-    const minutes = Math.floor(seconds / 60);
-    const remainingSeconds = Math.floor(seconds % 60);
-    return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`;
-}
 
 function sendMessage() {
     const input = document.getElementById('message-input');
@@ -1079,240 +842,13 @@ function deleteConversation(conversationId, conversationName) {
     });
 }
 
-// Voice Message Functionality
-let voiceRecorder = null;
-let audioPlayer = null;
-let currentRecordingBlob = null;
 
-// Initialize voice message functionality
-function initializeVoiceMessages() {
-    const voiceBtn = document.getElementById('voice-message-btn');
-    const voiceInterface = document.getElementById('voice-recording-interface');
-    const messageForm = document.getElementById('message-form');
 
-    if (!voiceBtn || !voiceInterface) return;
 
-    // Start recording immediately when voice button is clicked
-    // This provides a seamless user experience - no need for separate "start recording" step
-    voiceBtn.addEventListener('click', async function() {
-        voiceInterface.style.display = 'block';
-        messageForm.style.display = 'none';
 
-        // Initialize recorder if not already done
-        if (!voiceRecorder) {
-            voiceRecorder = new VoiceRecorder({
-                maxDuration: 300, // 5 minutes
-                minDuration: 1,   // 1 second
-                onRecordingStart: () => {
-                    updateRecordingUI('recording');
-                },
-                onRecordingStop: (blob) => {
-                    currentRecordingBlob = blob;
-                    updateRecordingUI('stopped');
-                },
-                onDurationUpdate: (duration) => {
-                    document.querySelector('.recording-duration').textContent = formatDuration(duration);
-                },
-                onError: (error) => {
-                    alert('Voice recording error: ' + error);
-                    cancelVoiceMessage();
-                }
-            });
-        }
 
-        // Start recording immediately
-        updateRecordingUI('initializing');
 
-        try {
-            const started = await voiceRecorder.initializeAndStartRecording();
-            if (!started) {
-                alert('Could not access microphone. Please check permissions.');
-                cancelVoiceMessage();
-                return;
-            }
-        } catch (error) {
-            alert('Failed to start recording: ' + error.message);
-            cancelVoiceMessage();
-        }
-    });
 
-    // Recording controls
-    document.getElementById('start-recording-btn').addEventListener('click', () => {
-        voiceRecorder.startRecording();
-    });
-
-    document.getElementById('stop-recording-btn').addEventListener('click', () => {
-        voiceRecorder.stopRecording();
-    });
-
-    document.getElementById('pause-recording-btn').addEventListener('click', () => {
-        if (voiceRecorder.isPaused) {
-            voiceRecorder.resumeRecording();
-        } else {
-            voiceRecorder.pauseRecording();
-        }
-    });
-
-    document.getElementById('play-recording-btn').addEventListener('click', () => {
-        if (currentRecordingBlob) {
-            if (!audioPlayer) {
-                audioPlayer = new AudioPlayer();
-                audioPlayer.onPlay = () => {
-                    document.querySelector('#play-recording-btn i').className = 'fas fa-pause';
-                };
-                audioPlayer.onPause = () => {
-                    document.querySelector('#play-recording-btn i').className = 'fas fa-play';
-                };
-                audioPlayer.onEnded = () => {
-                    document.querySelector('#play-recording-btn i').className = 'fas fa-play';
-                };
-            }
-
-            if (audioPlayer.isPlaying) {
-                audioPlayer.pause();
-            } else {
-                audioPlayer.loadFromBlob(currentRecordingBlob);
-                audioPlayer.play();
-            }
-        }
-    });
-
-    document.getElementById('send-voice-btn').addEventListener('click', () => {
-        sendVoiceMessage();
-    });
-
-    document.getElementById('cancel-voice-btn').addEventListener('click', () => {
-        cancelVoiceMessage();
-    });
-}
-
-function updateRecordingUI(state) {
-    const startBtn = document.getElementById('start-recording-btn');
-    const stopBtn = document.getElementById('stop-recording-btn');
-    const pauseBtn = document.getElementById('pause-recording-btn');
-    const playBtn = document.getElementById('play-recording-btn');
-    const sendBtn = document.getElementById('send-voice-btn');
-    const status = document.querySelector('.recording-status');
-    const indicator = document.querySelector('.recording-indicator');
-
-    // Hide all buttons first
-    [startBtn, stopBtn, pauseBtn, playBtn, sendBtn].forEach(btn => {
-        btn.style.display = 'none';
-    });
-
-    switch (state) {
-        case 'initializing':
-            status.textContent = 'Starting recording...';
-            indicator.classList.add('recording');
-            break;
-        case 'ready':
-            startBtn.style.display = 'inline-block';
-            status.textContent = 'Ready to record';
-            indicator.classList.remove('recording');
-            break;
-        case 'recording':
-            stopBtn.style.display = 'inline-block';
-            pauseBtn.style.display = 'inline-block';
-            status.textContent = 'Recording...';
-            indicator.classList.add('recording');
-            break;
-        case 'stopped':
-            playBtn.style.display = 'inline-block';
-            sendBtn.style.display = 'inline-block';
-            startBtn.style.display = 'inline-block';
-            status.textContent = 'Recording complete';
-            indicator.classList.remove('recording');
-            break;
-    }
-}
-
-function sendVoiceMessage() {
-    if (!currentRecordingBlob || !voiceRecorder) {
-        alert('No recording to send');
-        return;
-    }
-
-    const conversationId = document.getElementById('conversation-id').value;
-    if (!conversationId) {
-        alert('No conversation selected');
-        return;
-    }
-
-    const formData = new FormData();
-    formData.append('voice_file', currentRecordingBlob, 'voice_message.webm');
-    formData.append('conversation_id', conversationId);
-    formData.append('duration', voiceRecorder.recordingDuration);
-
-    // Show sending indicator
-    document.querySelector('.recording-status').textContent = 'Sending...';
-    document.getElementById('send-voice-btn').disabled = true;
-
-    fetch('<?php echo APP_URL; ?>/api/send_voice_message.php', {
-        method: 'POST',
-        body: formData
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            // Add message to chat
-            if (data.data) {
-                appendMessage(data.data);
-                scrollToBottom();
-            }
-            cancelVoiceMessage();
-
-            // Refresh conversation list to update last message
-            setTimeout(() => {
-                location.reload();
-            }, 500);
-        } else {
-            alert('Failed to send voice message: ' + data.message);
-            document.getElementById('send-voice-btn').disabled = false;
-            updateRecordingUI('stopped');
-        }
-    })
-    .catch(error => {
-        console.error('Error sending voice message:', error);
-        alert('Failed to send voice message. Please try again.');
-        document.getElementById('send-voice-btn').disabled = false;
-        updateRecordingUI('stopped');
-    });
-}
-
-function cancelVoiceMessage() {
-    const voiceInterface = document.getElementById('voice-recording-interface');
-    const messageForm = document.getElementById('message-form');
-
-    voiceInterface.style.display = 'none';
-    messageForm.style.display = 'flex';
-
-    // Stop recording if active
-    if (voiceRecorder && voiceRecorder.isRecording) {
-        voiceRecorder.stopRecording();
-    }
-
-    // Stop playback if active
-    if (audioPlayer && audioPlayer.isPlaying) {
-        audioPlayer.stop();
-    }
-
-    // Reset state
-    currentRecordingBlob = null;
-    document.querySelector('.recording-duration').textContent = '0:00';
-    document.querySelector('.recording-status').textContent = 'Ready to record';
-    document.getElementById('send-voice-btn').disabled = false;
-}
-
-function formatDuration(seconds) {
-    const minutes = Math.floor(seconds / 60);
-    const remainingSeconds = Math.floor(seconds % 60);
-    return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`;
-}
-
-// Initialize voice messages when page loads
-document.addEventListener('DOMContentLoaded', function() {
-    initializeVoiceMessages();
-});
 
 // Cleanup when leaving page
 window.addEventListener('beforeunload', function() {
@@ -1322,18 +858,9 @@ window.addEventListener('beforeunload', function() {
     if (messageNotificationInterval) {
         clearInterval(messageNotificationInterval);
     }
-
-    // Cleanup voice recorder
-    if (voiceRecorder) {
-        voiceRecorder.destroy();
-    }
-    if (audioPlayer) {
-        audioPlayer.destroy();
-    }
 });
 </script>
 
-<!-- Include voice recorder script -->
-<script src="<?php echo APP_URL; ?>/assets/js/voice-recorder.js"></script>
+
 
 <?php include '../includes/footer.php'; ?>

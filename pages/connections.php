@@ -467,7 +467,11 @@ function unfollowUser(userId, button) {
 
 function acceptConnection(userId, button) {
     button.disabled = true;
-    
+
+    // Show loading state
+    const originalContent = button.innerHTML;
+    button.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+
     fetch('<?php echo APP_URL; ?>/api/social_actions.php', {
         method: 'POST',
         headers: {
@@ -475,25 +479,48 @@ function acceptConnection(userId, button) {
         },
         body: `action=accept_connection&user_id=${userId}`
     })
-    .then(response => response.json())
+    .then(response => {
+        console.log('Accept connection response status:', response.status);
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+    })
     .then(data => {
+        console.log('Accept connection response data:', data);
         if (data.success) {
-            location.reload();
+            try {
+                // Real-time UI update instead of page reload
+                updateConnectionUI(userId, 'accepted', button);
+                showSuccessMessage('Connection request accepted!');
+            } catch (uiError) {
+                console.error('UI update error:', uiError);
+                // If UI update fails, just reload the page
+                location.reload();
+            }
         } else {
-            alert(data.message);
+            alert(data.message || 'Failed to accept connection request');
+            button.innerHTML = originalContent;
             button.disabled = false;
         }
     })
     .catch(error => {
-        console.error('Error:', error);
-        alert('An error occurred. Please try again.');
-        button.disabled = false;
+        console.error('Accept connection error:', error);
+        // Check if the request actually succeeded by reloading
+        // This handles cases where the backend succeeds but frontend fails
+        setTimeout(() => {
+            location.reload();
+        }, 1000);
     });
 }
 
 function declineConnection(userId, button) {
     button.disabled = true;
-    
+
+    // Show loading state
+    const originalContent = button.innerHTML;
+    button.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+
     fetch('<?php echo APP_URL; ?>/api/social_actions.php', {
         method: 'POST',
         headers: {
@@ -504,17 +531,202 @@ function declineConnection(userId, button) {
     .then(response => response.json())
     .then(data => {
         if (data.success) {
-            location.reload();
+            // Real-time UI update instead of page reload
+            updateConnectionUI(userId, 'declined', button);
+            showSuccessMessage('Connection request declined.');
         } else {
             alert(data.message);
+            button.innerHTML = originalContent;
             button.disabled = false;
         }
     })
     .catch(error => {
         console.error('Error:', error);
         alert('An error occurred. Please try again.');
+        button.innerHTML = originalContent;
         button.disabled = false;
     });
+}
+
+// Real-time UI update functions
+function updateConnectionUI(userId, action, button) {
+    try {
+        console.log('Updating connection UI for user:', userId, 'action:', action);
+
+        // Find the card containing this request
+        const card = button.closest('.card');
+        if (!card) {
+            console.error('Could not find card element for button');
+            throw new Error('Card element not found');
+        }
+
+        if (action === 'accepted') {
+            // Move to connections section with animation
+            card.style.transition = 'all 0.3s ease';
+            card.style.backgroundColor = '#d4edda';
+            card.style.borderColor = '#c3e6cb';
+
+            // Update button area to show "Connected" status
+            const buttonGroup = card.querySelector('.btn-group');
+            if (buttonGroup) {
+                buttonGroup.innerHTML = `
+                    <span class="badge bg-success">
+                        <i class="fas fa-check"></i> Connected
+                    </span>
+                `;
+            } else {
+                console.warn('Button group not found, updating button directly');
+                button.innerHTML = '<i class="fas fa-check"></i> Connected';
+                button.className = 'btn btn-success btn-sm';
+                button.disabled = true;
+            }
+
+            // Update counters
+            try {
+                updateCounters('accept');
+            } catch (counterError) {
+                console.warn('Counter update failed:', counterError);
+            }
+
+            // Remove card after animation
+            setTimeout(() => {
+                card.style.opacity = '0';
+                setTimeout(() => {
+                    card.remove();
+                    try {
+                        checkEmptyState();
+                    } catch (emptyStateError) {
+                        console.warn('Empty state check failed:', emptyStateError);
+                    }
+                }, 300);
+            }, 1500);
+
+    } else if (action === 'declined') {
+        // Remove with decline animation
+        card.style.transition = 'all 0.3s ease';
+        card.style.backgroundColor = '#f8d7da';
+        card.style.borderColor = '#f5c6cb';
+
+        // Update button area to show "Declined" status
+        const buttonGroup = card.querySelector('.btn-group');
+        buttonGroup.innerHTML = `
+            <span class="badge bg-danger">
+                <i class="fas fa-times"></i> Declined
+            </span>
+        `;
+
+        // Update counters
+        updateCounters('decline');
+
+        // Remove card after animation
+        setTimeout(() => {
+            card.style.opacity = '0';
+            setTimeout(() => {
+                card.remove();
+                checkEmptyState();
+            }, 300);
+        }, 1500);
+        }
+    } catch (error) {
+        console.error('Error in updateConnectionUI:', error);
+        throw error; // Re-throw so the calling function can handle it
+    }
+}
+
+function updateCounters(action) {
+    try {
+        console.log('Updating counters for action:', action);
+
+        // Update pending requests counter
+        const pendingTab = document.querySelector('a[href="#received-requests"]');
+        if (pendingTab) {
+            const pendingBadge = pendingTab.querySelector('.badge');
+            if (pendingBadge) {
+                const currentCount = parseInt(pendingBadge.textContent) || 0;
+                const newCount = Math.max(0, currentCount - 1);
+                pendingBadge.textContent = newCount;
+
+                // Update the tab text
+                const pendingText = pendingTab.querySelector('.d-none.d-sm-inline');
+                if (pendingText) {
+                    pendingText.textContent = `Requests (${newCount})`;
+                }
+            }
+        } else {
+            console.warn('Pending requests tab not found');
+        }
+    } catch (error) {
+        console.error('Error updating pending counter:', error);
+    }
+
+    // Update connections counter if accepted
+    if (action === 'accept') {
+        try {
+            const connectionsTab = document.querySelector('a[href="#connections"]');
+            if (connectionsTab) {
+                const connectionsBadge = connectionsTab.querySelector('.badge');
+                if (connectionsBadge) {
+                    const currentCount = parseInt(connectionsBadge.textContent) || 0;
+                    const newCount = currentCount + 1;
+                    connectionsBadge.textContent = newCount;
+
+                    // Update the tab text
+                    const connectionsText = connectionsTab.querySelector('.d-none.d-sm-inline');
+                    if (connectionsText) {
+                        connectionsText.textContent = `Connections (${newCount})`;
+                    }
+                }
+            } else {
+                console.warn('Connections tab not found');
+            }
+        } catch (error) {
+            console.error('Error updating connections counter:', error);
+        }
+    }
+}
+
+function checkEmptyState() {
+    try {
+        console.log('Checking empty state');
+        const receivedRequestsContainer = document.querySelector('#received-requests .row > div:first-child');
+        if (receivedRequestsContainer) {
+            const cards = receivedRequestsContainer.querySelectorAll('.card');
+
+            if (cards.length === 0) {
+                receivedRequestsContainer.innerHTML = `
+                    <div class="text-center py-4">
+                        <i class="fas fa-inbox fa-2x text-muted mb-2"></i>
+                        <p class="text-muted">No pending requests</p>
+                    </div>
+                `;
+            }
+        } else {
+            console.warn('Received requests container not found');
+        }
+    } catch (error) {
+        console.error('Error in checkEmptyState:', error);
+    }
+}
+
+function showSuccessMessage(message) {
+    // Create and show a toast notification
+    const toast = document.createElement('div');
+    toast.className = 'toast-notification';
+    toast.innerHTML = `
+        <div class="alert alert-success alert-dismissible fade show" role="alert" style="position: fixed; top: 20px; right: 20px; z-index: 1050; min-width: 300px;">
+            <i class="fas fa-check-circle"></i> ${message}
+            <button type="button" class="btn-close" onclick="this.parentElement.remove()"></button>
+        </div>
+    `;
+
+    document.body.appendChild(toast);
+
+    // Auto-remove after 3 seconds
+    setTimeout(() => {
+        if (toast.parentElement) {
+            toast.remove();
+        }
+    }, 3000);
 }
 
 // Set active tab based on URL parameter
@@ -528,5 +740,74 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 </script>
+
+<style>
+/* Real-time update animations */
+.card {
+    transition: all 0.3s ease;
+}
+
+.card.accepting {
+    background-color: #d4edda !important;
+    border-color: #c3e6cb !important;
+}
+
+.card.declining {
+    background-color: #f8d7da !important;
+    border-color: #f5c6cb !important;
+}
+
+/* Toast notifications */
+.toast-notification {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1050;
+}
+
+.toast-notification .alert {
+    min-width: 300px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    animation: slideInRight 0.3s ease;
+}
+
+@keyframes slideInRight {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+/* Loading spinner animation */
+.fa-spinner {
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+/* Button loading states */
+.btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* Success/error states */
+.badge {
+    font-size: 0.8em;
+    padding: 0.5em 0.8em;
+}
+
+/* Smooth transitions for counters */
+.badge {
+    transition: all 0.2s ease;
+}
+</style>
 
 <?php include '../includes/footer.php'; ?>

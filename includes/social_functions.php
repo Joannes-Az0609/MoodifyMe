@@ -56,38 +56,71 @@ function isFollowing($followerId, $followingId) {
  */
 function followUser($followerId, $followingId) {
     global $conn;
-    
+
+    // Log the attempt for debugging
+    error_log("Attempting to follow user: follower=$followerId, following=$followingId");
+
     // Check if already following
     if (isFollowing($followerId, $followingId)) {
+        error_log("User $followerId is already following user $followingId");
         return false;
     }
-    
+
     // Check if trying to follow self
     if ($followerId == $followingId) {
+        error_log("User $followerId tried to follow themselves");
         return false;
     }
-    
+
     $conn->begin_transaction();
-    
+
     try {
+        // Check if user_follows table exists
+        $tableCheck = $conn->query("SHOW TABLES LIKE 'user_follows'");
+        if ($tableCheck->num_rows === 0) {
+            error_log("Error: user_follows table does not exist");
+            $conn->rollback();
+            return false;
+        }
+
         // Add follow relationship
         $stmt = $conn->prepare("INSERT INTO user_follows (follower_id, following_id) VALUES (?, ?)");
+        if (!$stmt) {
+            error_log("Failed to prepare follow insert statement: " . $conn->error);
+            $conn->rollback();
+            return false;
+        }
+
         $stmt->bind_param("ii", $followerId, $followingId);
         $stmt->execute();
-        
-        // Update follower count for the followed user
-        $stmt = $conn->prepare("UPDATE users SET follower_count = follower_count + 1 WHERE id = ?");
-        $stmt->bind_param("i", $followingId);
-        $stmt->execute();
-        
-        // Update following count for the follower
-        $stmt = $conn->prepare("UPDATE users SET following_count = following_count + 1 WHERE id = ?");
-        $stmt->bind_param("i", $followerId);
-        $stmt->execute();
-        
+
+        if ($stmt->affected_rows === 0) {
+            error_log("No rows affected when inserting follow relationship");
+            $conn->rollback();
+            return false;
+        }
+
+        // Check if follower_count and following_count columns exist before updating
+        $columnCheck = $conn->query("SHOW COLUMNS FROM users LIKE 'follower_count'");
+        if ($columnCheck->num_rows > 0) {
+            // Update follower count for the followed user
+            $stmt = $conn->prepare("UPDATE users SET follower_count = follower_count + 1 WHERE id = ?");
+            $stmt->bind_param("i", $followingId);
+            $stmt->execute();
+
+            // Update following count for the follower
+            $stmt = $conn->prepare("UPDATE users SET following_count = following_count + 1 WHERE id = ?");
+            $stmt->bind_param("i", $followerId);
+            $stmt->execute();
+        } else {
+            error_log("Warning: follower_count/following_count columns do not exist in users table");
+        }
+
         $conn->commit();
+        error_log("Successfully followed user: follower=$followerId, following=$followingId");
         return true;
     } catch (Exception $e) {
+        error_log("Error following user: " . $e->getMessage());
         $conn->rollback();
         return false;
     }
@@ -98,33 +131,64 @@ function followUser($followerId, $followingId) {
  */
 function unfollowUser($followerId, $followingId) {
     global $conn;
-    
-    // Check if actually following
-    if (!isFollowing($followerId, $followingId)) {
+
+    // Log the attempt for debugging
+    error_log("Attempting to unfollow user: follower=$followerId, following=$followingId");
+
+    // Check if user_follows table exists
+    $tableCheck = $conn->query("SHOW TABLES LIKE 'user_follows'");
+    if ($tableCheck->num_rows === 0) {
+        error_log("Error: user_follows table does not exist");
         return false;
     }
-    
+
+    // Check if actually following
+    if (!isFollowing($followerId, $followingId)) {
+        error_log("User $followerId is not following user $followingId");
+        return false;
+    }
+
     $conn->begin_transaction();
-    
+
     try {
         // Remove follow relationship
         $stmt = $conn->prepare("DELETE FROM user_follows WHERE follower_id = ? AND following_id = ?");
+        if (!$stmt) {
+            error_log("Failed to prepare unfollow delete statement: " . $conn->error);
+            $conn->rollback();
+            return false;
+        }
+
         $stmt->bind_param("ii", $followerId, $followingId);
         $stmt->execute();
-        
-        // Update follower count for the unfollowed user
-        $stmt = $conn->prepare("UPDATE users SET follower_count = GREATEST(follower_count - 1, 0) WHERE id = ?");
-        $stmt->bind_param("i", $followingId);
-        $stmt->execute();
-        
-        // Update following count for the unfollower
-        $stmt = $conn->prepare("UPDATE users SET following_count = GREATEST(following_count - 1, 0) WHERE id = ?");
-        $stmt->bind_param("i", $followerId);
-        $stmt->execute();
-        
+
+        if ($stmt->affected_rows === 0) {
+            error_log("No rows affected when deleting follow relationship");
+            $conn->rollback();
+            return false;
+        }
+
+        // Check if follower_count and following_count columns exist before updating
+        $columnCheck = $conn->query("SHOW COLUMNS FROM users LIKE 'follower_count'");
+        if ($columnCheck->num_rows > 0) {
+            // Update follower count for the unfollowed user
+            $stmt = $conn->prepare("UPDATE users SET follower_count = GREATEST(follower_count - 1, 0) WHERE id = ?");
+            $stmt->bind_param("i", $followingId);
+            $stmt->execute();
+
+            // Update following count for the unfollower
+            $stmt = $conn->prepare("UPDATE users SET following_count = GREATEST(following_count - 1, 0) WHERE id = ?");
+            $stmt->bind_param("i", $followerId);
+            $stmt->execute();
+        } else {
+            error_log("Warning: follower_count/following_count columns do not exist in users table");
+        }
+
         $conn->commit();
+        error_log("Successfully unfollowed user: follower=$followerId, following=$followingId");
         return true;
     } catch (Exception $e) {
+        error_log("Error unfollowing user: " . $e->getMessage());
         $conn->rollback();
         return false;
     }
@@ -159,29 +223,59 @@ function getConnectionStatus($userId1, $userId2) {
 function sendConnectionRequest($requesterId, $receiverId) {
     global $conn;
 
+    // Log the attempt for debugging
+    error_log("Attempting to send connection request: requester=$requesterId, receiver=$receiverId");
+
     // Include notification functions
     require_once __DIR__ . '/notification_functions.php';
 
+    // Check if user_connections table exists
+    $tableCheck = $conn->query("SHOW TABLES LIKE 'user_connections'");
+    if ($tableCheck->num_rows === 0) {
+        error_log("Error: user_connections table does not exist");
+        return false;
+    }
+
     // Check if connection already exists
-    if (getConnectionStatus($requesterId, $receiverId)) {
+    $existingConnection = getConnectionStatus($requesterId, $receiverId);
+    if ($existingConnection) {
+        error_log("Connection already exists between requester=$requesterId and receiver=$receiverId");
         return false;
     }
 
     // Check if trying to connect to self
     if ($requesterId == $receiverId) {
+        error_log("User $requesterId tried to connect to themselves");
         return false;
     }
 
     $stmt = $conn->prepare("INSERT INTO user_connections (requester_id, receiver_id, status) VALUES (?, ?, 'pending')");
+    if (!$stmt) {
+        error_log("Failed to prepare connection request statement: " . $conn->error);
+        return false;
+    }
+
     $stmt->bind_param("ii", $requesterId, $receiverId);
 
     if ($stmt->execute()) {
-        // Create notification for the receiver
-        createFriendRequestNotification($receiverId, $requesterId);
-        return true;
+        if ($stmt->affected_rows > 0) {
+            error_log("Successfully sent connection request: requester=$requesterId, receiver=$receiverId");
+            // Create notification for the receiver
+            try {
+                createFriendRequestNotification($receiverId, $requesterId);
+            } catch (Exception $e) {
+                error_log("Failed to create notification: " . $e->getMessage());
+                // Don't fail the connection request if notification fails
+            }
+            return true;
+        } else {
+            error_log("No rows affected when inserting connection request");
+            return false;
+        }
+    } else {
+        error_log("Failed to execute connection request statement: " . $stmt->error);
+        return false;
     }
-
-    return false;
 }
 
 /**
@@ -193,9 +287,27 @@ function acceptConnectionRequest($requesterId, $receiverId) {
     // Include notification functions
     require_once __DIR__ . '/notification_functions.php';
 
+    // Log the attempt for debugging
+    error_log("Attempting to accept connection request: requester=$requesterId, receiver=$receiverId");
+
     $conn->begin_transaction();
 
     try {
+        // First, verify the connection request exists
+        $checkStmt = $conn->prepare("
+            SELECT id FROM user_connections
+            WHERE requester_id = ? AND receiver_id = ? AND status = 'pending'
+        ");
+        $checkStmt->bind_param("ii", $requesterId, $receiverId);
+        $checkStmt->execute();
+        $result = $checkStmt->get_result();
+
+        if ($result->num_rows === 0) {
+            error_log("No pending connection request found for requester=$requesterId, receiver=$receiverId");
+            $conn->rollback();
+            return false;
+        }
+
         // Update connection status
         $stmt = $conn->prepare("
             UPDATE user_connections
@@ -206,21 +318,35 @@ function acceptConnectionRequest($requesterId, $receiverId) {
         $stmt->execute();
 
         if ($stmt->affected_rows > 0) {
-            // Update connection counts
-            $stmt = $conn->prepare("UPDATE users SET connection_count = connection_count + 1 WHERE id IN (?, ?)");
-            $stmt->bind_param("ii", $requesterId, $receiverId);
-            $stmt->execute();
+            // Check if connection_count column exists before updating
+            $columnCheck = $conn->query("SHOW COLUMNS FROM users LIKE 'connection_count'");
+            if ($columnCheck->num_rows > 0) {
+                // Update connection counts
+                $stmt = $conn->prepare("UPDATE users SET connection_count = connection_count + 1 WHERE id IN (?, ?)");
+                $stmt->bind_param("ii", $requesterId, $receiverId);
+                $stmt->execute();
+            } else {
+                error_log("Warning: connection_count column does not exist in users table");
+            }
 
-            // Create notification for the requester
-            createFriendAcceptedNotification($requesterId, $receiverId);
+            // Create notification for the requester (with error handling)
+            try {
+                createFriendAcceptedNotification($requesterId, $receiverId);
+            } catch (Exception $notifError) {
+                error_log("Failed to create notification: " . $notifError->getMessage());
+                // Don't fail the whole operation for notification errors
+            }
 
             $conn->commit();
+            error_log("Connection request accepted successfully");
             return true;
         }
 
+        error_log("No rows affected when updating connection status");
         $conn->rollback();
         return false;
     } catch (Exception $e) {
+        error_log("Error accepting connection request: " . $e->getMessage());
         $conn->rollback();
         return false;
     }

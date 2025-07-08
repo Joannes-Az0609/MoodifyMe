@@ -53,18 +53,62 @@ $response = ['success' => false, 'message' => 'Unknown action'];
 
 switch ($action) {
     case 'follow':
-        if (followUser($currentUserId, $targetUserId)) {
-            $response = ['success' => true, 'message' => 'User followed successfully'];
+        // Add detailed debugging for follow action
+        error_log("DEBUG: Attempting to follow user - currentUserId: $currentUserId, targetUserId: $targetUserId");
+
+        // Check if user_follows table exists
+        $tableCheck = $conn->query("SHOW TABLES LIKE 'user_follows'");
+        if ($tableCheck->num_rows === 0) {
+            error_log("DEBUG: user_follows table does not exist");
+            $response = ['success' => false, 'message' => 'Follow functionality not available - missing database table'];
         } else {
-            $response = ['success' => false, 'message' => 'Failed to follow user or already following'];
+            // Check if already following
+            $checkStmt = $conn->prepare("SELECT id FROM user_follows WHERE follower_id = ? AND following_id = ?");
+            $checkStmt->bind_param("ii", $currentUserId, $targetUserId);
+            $checkStmt->execute();
+            $checkResult = $checkStmt->get_result();
+
+            if ($checkResult->num_rows > 0) {
+                error_log("DEBUG: User $currentUserId is already following user $targetUserId");
+                $response = ['success' => false, 'message' => 'You are already following this user'];
+            } else {
+                // Try to follow the user
+                if (followUser($currentUserId, $targetUserId)) {
+                    $response = ['success' => true, 'message' => 'User followed successfully'];
+                } else {
+                    $response = ['success' => false, 'message' => 'Failed to follow user - check error logs for details'];
+                }
+            }
         }
         break;
         
     case 'unfollow':
-        if (unfollowUser($currentUserId, $targetUserId)) {
-            $response = ['success' => true, 'message' => 'User unfollowed successfully'];
+        // Add detailed debugging for unfollow action
+        error_log("DEBUG: Attempting to unfollow user - currentUserId: $currentUserId, targetUserId: $targetUserId");
+
+        // Check if user_follows table exists
+        $tableCheck = $conn->query("SHOW TABLES LIKE 'user_follows'");
+        if ($tableCheck->num_rows === 0) {
+            error_log("DEBUG: user_follows table does not exist");
+            $response = ['success' => false, 'message' => 'Unfollow functionality not available - missing database table'];
         } else {
-            $response = ['success' => false, 'message' => 'Failed to unfollow user or not following'];
+            // Check if currently following
+            $checkStmt = $conn->prepare("SELECT id FROM user_follows WHERE follower_id = ? AND following_id = ?");
+            $checkStmt->bind_param("ii", $currentUserId, $targetUserId);
+            $checkStmt->execute();
+            $checkResult = $checkStmt->get_result();
+
+            if ($checkResult->num_rows === 0) {
+                error_log("DEBUG: User $currentUserId is not following user $targetUserId");
+                $response = ['success' => false, 'message' => 'You are not following this user'];
+            } else {
+                // Try to unfollow the user
+                if (unfollowUser($currentUserId, $targetUserId)) {
+                    $response = ['success' => true, 'message' => 'User unfollowed successfully'];
+                } else {
+                    $response = ['success' => false, 'message' => 'Failed to unfollow user - check error logs for details'];
+                }
+            }
         }
         break;
         
@@ -77,10 +121,35 @@ switch ($action) {
         break;
         
     case 'accept_connection':
-        if (acceptConnectionRequest($targetUserId, $currentUserId)) {
-            $response = ['success' => true, 'message' => 'Connection request accepted'];
+        // Add detailed debugging
+        error_log("DEBUG: Attempting to accept connection - targetUserId: $targetUserId, currentUserId: $currentUserId");
+
+        // Check if the connection request exists
+        $checkStmt = $conn->prepare("
+            SELECT id, status FROM user_connections
+            WHERE requester_id = ? AND receiver_id = ?
+        ");
+        $checkStmt->bind_param("ii", $targetUserId, $currentUserId);
+        $checkStmt->execute();
+        $checkResult = $checkStmt->get_result();
+
+        if ($checkResult->num_rows === 0) {
+            error_log("DEBUG: No connection found between users $targetUserId and $currentUserId");
+            $response = ['success' => false, 'message' => 'No connection request found between these users'];
         } else {
-            $response = ['success' => false, 'message' => 'Failed to accept connection request'];
+            $connectionData = $checkResult->fetch_assoc();
+            error_log("DEBUG: Found connection - ID: " . $connectionData['id'] . ", Status: " . $connectionData['status']);
+
+            if ($connectionData['status'] !== 'pending') {
+                $response = ['success' => false, 'message' => 'Connection request is not pending (current status: ' . $connectionData['status'] . ')'];
+            } else {
+                // Try to accept the connection
+                if (acceptConnectionRequest($targetUserId, $currentUserId)) {
+                    $response = ['success' => true, 'message' => 'Connection request accepted'];
+                } else {
+                    $response = ['success' => false, 'message' => 'Failed to accept connection request - check error logs for details'];
+                }
+            }
         }
         break;
         

@@ -325,9 +325,15 @@ include '../includes/header.php';
 <script>
 // Social action functions
 function toggleFollow() {
-    const isFollowing = document.getElementById('follow-btn').textContent.trim().includes('Unfollow');
+    const followBtn = document.getElementById('follow-btn');
+    const isFollowing = followBtn.textContent.trim().includes('Unfollow');
     const action = isFollowing ? 'unfollow' : 'follow';
-    
+
+    // Show loading state
+    const originalContent = followBtn.innerHTML;
+    followBtn.disabled = true;
+    followBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+
     fetch(window.location.href, {
         method: 'POST',
         headers: {
@@ -338,33 +344,107 @@ function toggleFollow() {
     .then(response => response.json())
     .then(data => {
         if (data.success) {
-            location.reload();
+            // Real-time UI update instead of page reload
+            updateFollowButton(action);
+            showToast(action === 'follow' ? 'Now following this user!' : 'Unfollowed user.');
         } else {
             alert(data.message);
+            followBtn.innerHTML = originalContent;
+            followBtn.disabled = false;
         }
     })
     .catch(error => {
         console.error('Error:', error);
         alert('An error occurred. Please try again.');
+        followBtn.innerHTML = originalContent;
+        followBtn.disabled = false;
     });
 }
 
-function sendConnectionRequest() {
-    fetch(window.location.href, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        body: 'action=connect'
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            location.reload();
-        } else {
-            alert(data.message);
+function updateFollowButton(action) {
+    const followBtn = document.getElementById('follow-btn');
+
+    if (action === 'follow') {
+        // User just followed - change to unfollow button
+        followBtn.className = 'btn btn-outline-primary';
+        followBtn.innerHTML = '<i class="fas fa-user-minus"></i> Unfollow';
+    } else {
+        // User just unfollowed - change to follow button
+        followBtn.className = 'btn btn-primary';
+        followBtn.innerHTML = '<i class="fas fa-user-plus"></i> Follow';
+    }
+
+    followBtn.disabled = false;
+}
+
+function showToast(message) {
+    // Create and show a toast notification
+    const toast = document.createElement('div');
+    toast.innerHTML = `
+        <div class="alert alert-success alert-dismissible fade show" role="alert"
+             style="position: fixed; top: 20px; right: 20px; z-index: 1050; min-width: 300px;">
+            <i class="fas fa-check-circle"></i> ${message}
+            <button type="button" class="btn-close" onclick="this.parentElement.parentElement.remove()"></button>
+        </div>
+    `;
+
+    document.body.appendChild(toast);
+
+    // Auto-remove after 3 seconds
+    setTimeout(() => {
+        if (toast.parentElement) {
+            toast.remove();
         }
-    });
+    }, 3000);
+}
+
+function sendConnectionRequest() {
+    const connectBtn = document.querySelector('button[onclick="sendConnectionRequest()"]');
+
+    if (connectBtn) {
+        // Show loading state
+        const originalContent = connectBtn.innerHTML;
+        connectBtn.disabled = true;
+        connectBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+
+        fetch(window.location.href, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: 'action=connect'
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                // Real-time UI update instead of page reload
+                updateConnectionButton('sent');
+                showToast('Connection request sent successfully!');
+            } else {
+                alert(data.message || 'Failed to send connection request');
+                connectBtn.innerHTML = originalContent;
+                connectBtn.disabled = false;
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('An error occurred. Please try again.');
+            connectBtn.innerHTML = originalContent;
+            connectBtn.disabled = false;
+        });
+    }
+}
+
+function updateConnectionButton(status) {
+    const connectBtn = document.querySelector('button[onclick="sendConnectionRequest()"]');
+
+    if (connectBtn && status === 'sent') {
+        // Update button to show request sent
+        connectBtn.className = 'btn btn-outline-warning';
+        connectBtn.innerHTML = '<i class="fas fa-clock"></i> Request Sent';
+        connectBtn.disabled = true;
+        connectBtn.onclick = null; // Remove click handler
+    }
 }
 
 function acceptConnection() {
