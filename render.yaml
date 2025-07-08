@@ -2,10 +2,8 @@ services:
   # Main PHP Web Application
   - type: web
     name: moodifyme-web
-    env: php
+    runtime: docker
     plan: free
-    buildCommand: composer install --no-dev --optimize-autoloader
-    startCommand: php -S 0.0.0.0:$PORT -t .
 
     envVars:
       - key: RENDER
