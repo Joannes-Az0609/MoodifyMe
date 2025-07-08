@@ -2,6 +2,7 @@
 /**
  * MoodifyMe - Database Connection
  * Establishes connection to the database (MySQL or PostgreSQL)
+ * Updated: Fixed mysqli compatibility issues for Render deployment
  */
 
 // Load appropriate configuration based on environment

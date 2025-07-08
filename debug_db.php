@@ -61,9 +61,10 @@ try {
             $result = $stmt->fetch();
             echo "PostgreSQL Version: " . $result['version'] . "\n";
         } else {
-            $result = $conn->query("SELECT VERSION() as version");
-            $row = $result->fetch_assoc();
-            echo "MySQL Version: " . $row['version'] . "\n";
+            $stmt = $conn->prepare("SELECT VERSION() as version");
+            $stmt->execute();
+            $result = $stmt->fetch();
+            echo "MySQL Version: " . $result['version'] . "\n";
         }
     } else {
         echo "❌ Connection failed - no connection object returned\n";

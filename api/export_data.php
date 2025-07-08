@@ -5,7 +5,7 @@
  */
 
 // Include configuration and functions
-require_once '../config.php';
+// Note: db_connect.php will load the appropriate config file
 require_once '../includes/functions.php';
 require_once '../includes/db_connect.php';
 
@@ -84,11 +84,9 @@ $stmt = $conn->prepare("
     WHERE rf.user_id = ?
     ORDER BY rf.created_at DESC
 ");
-$stmt->bind_param("i", $userId);
-$stmt->execute();
-$result = $stmt->get_result();
+$stmt->execute([$userId]);
 
-while ($row = $result->fetch_assoc()) {
+while ($row = $stmt->fetch()) {
     $userData['recommendation_feedback'][] = $row;
 }
 
