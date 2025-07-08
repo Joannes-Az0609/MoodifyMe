@@ -1,0 +1,52 @@
+services:
+  # Main PHP Web Application
+  - type: web
+    name: moodifyme-web
+    env: php
+    plan: free
+    buildCommand: chmod +x build.sh && ./build.sh
+    startCommand: php -S 0.0.0.0:$PORT -t .
+    healthCheckPath: /health
+    envVars:
+      - key: PHP_VERSION
+        value: "8.1"
+      - key: RENDER
+        value: "true"
+      - key: APP_URL
+        fromService:
+          type: web
+          name: moodifyme-web
+          property: host
+      - key: DB_HOST
+        fromDatabase:
+          name: moodifyme-db
+          property: host
+      - key: DB_USER
+        fromDatabase:
+          name: moodifyme-db
+          property: user
+      - key: DB_PASS
+        fromDatabase:
+          name: moodifyme-db
+          property: password
+      - key: DB_NAME
+        fromDatabase:
+          name: moodifyme-db
+          property: database
+      - key: TMDB_API_KEY
+        sync: false  # Set manually in Render dashboard
+      - key: SPOTIFY_CLIENT_ID
+        sync: false  # Set manually in Render dashboard
+      - key: SPOTIFY_CLIENT_SECRET
+        sync: false  # Set manually in Render dashboard
+      - key: GOOGLE_CLIENT_ID
+        sync: false  # Set manually in Render dashboard
+      - key: GOOGLE_CLIENT_SECRET
+        sync: false  # Set manually in Render dashboard
+
+# Database
+databases:
+  - name: moodifyme-db
+    databaseName: moodifyme
+    user: moodifyme_user
+    plan: free

@@ -1,13 +1,15 @@
 <?php
 /**
  * MoodifyMe - Database Connection
- * Establishes connection to the MySQL database
+ * Establishes connection to the database (MySQL or PostgreSQL)
  */
 
 // Load appropriate configuration based on environment
 $http_host = $_SERVER['HTTP_HOST'] ?? '';
 
-if (isset($_ENV['VERCEL']) || strpos($http_host, '.vercel.app') !== false) {
+if (isset($_ENV['RENDER']) || strpos($http_host, '.onrender.com') !== false) {
+    require_once dirname(__DIR__) . '/config.render.php';
+} elseif (isset($_ENV['VERCEL']) || strpos($http_host, '.vercel.app') !== false) {
     require_once dirname(__DIR__) . '/config.vercel.php';
 } elseif (strpos($http_host, '.epizy.com') !== false ||
           strpos($http_host, '.rf.gd') !== false ||
@@ -21,22 +23,41 @@ if (isset($_ENV['VERCEL']) || strpos($http_host, '.vercel.app') !== false) {
 
 /**
  * Get database connection
- * @return mysqli Database connection object
+ * @return mysqli|PDO Database connection object
  */
 function getDbConnection() {
     static $conn = null;
 
     if ($conn === null) {
-        // Create connection
-        $conn = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
+        // Check if we're using PostgreSQL (Render) or MySQL (local/other)
+        $dbType = defined('DB_TYPE') ? DB_TYPE : 'mysql';
 
-        // Check connection
-        if ($conn->connect_error) {
-            die("Connection failed: " . $conn->connect_error);
+        if ($dbType === 'pgsql') {
+            // PostgreSQL connection for Render
+            try {
+                $port = defined('DB_PORT') ? DB_PORT : 5432;
+                $dsn = "pgsql:host=" . DB_HOST . ";port=" . $port . ";dbname=" . DB_NAME;
+                $conn = new PDO($dsn, DB_USER, DB_PASS, [
+                    PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+                    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+                    PDO::ATTR_EMULATE_PREPARES => false,
+                ]);
+            } catch (PDOException $e) {
+                die("PostgreSQL Connection failed: " . $e->getMessage());
+            }
+        } else {
+            // MySQL connection for local/other environments
+            $port = defined('DB_PORT') ? DB_PORT : 3306;
+            $conn = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME, $port);
+
+            // Check connection
+            if ($conn->connect_error) {
+                die("MySQL Connection failed: " . $conn->connect_error);
+            }
+
+            // Set charset
+            $conn->set_charset("utf8mb4");
         }
-
-        // Set charset
-        $conn->set_charset("utf8mb4");
     }
 
     return $conn;
