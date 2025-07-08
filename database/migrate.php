@@ -19,26 +19,28 @@ function runMigration() {
 
 function runMySQLMigration($conn) {
     $schemaFile = __DIR__ . '/schema.sql';
-    
+
     if (!file_exists($schemaFile)) {
-        echo "Error: MySQL schema file not found!\n";
+        echo "Error: Schema file not found!\n";
         return false;
     }
-    
+
     $sql = file_get_contents($schemaFile);
-    
-    if ($conn->multi_query($sql)) {
-        do {
-            // Store first result set
-            if ($result = $conn->store_result()) {
-                $result->free();
+
+    try {
+        // Split SQL into individual statements
+        $statements = array_filter(array_map('trim', explode(';', $sql)));
+
+        foreach ($statements as $statement) {
+            if (!empty($statement)) {
+                $conn->exec($statement);
             }
-        } while ($conn->next_result());
-        
-        echo "MySQL migration completed successfully!\n";
+        }
+
+        echo "Database migration completed successfully!\n";
         return true;
-    } else {
-        echo "MySQL migration failed: " . $conn->error . "\n";
+    } catch (PDOException $e) {
+        echo "Migration failed: " . $e->getMessage() . "\n";
         return false;
     }
 }
@@ -47,9 +49,9 @@ function checkDatabaseConnection() {
     global $conn;
 
     try {
-        $result = $conn->query("SELECT VERSION()");
-        $version = $result->fetch_row()[0];
-        echo "Connected to MySQL: $version\n";
+        $stmt = $conn->query("SELECT VERSION() as version");
+        $result = $stmt->fetch();
+        echo "Connected to database: " . $result['version'] . "\n";
 
         return true;
     } catch (Exception $e) {

@@ -56,26 +56,21 @@ if (!in_array($emotionType, $validEmotions)) {
 try {
     // Save emotion to database
     $stmt = $conn->prepare("
-        INSERT INTO emotions (user_id, emotion_type, confidence, source, raw_input, created_at) 
+        INSERT INTO emotions (user_id, emotion_type, confidence, source, raw_input, created_at)
         VALUES (?, ?, ?, ?, ?, NOW())
     ");
-    
-    $stmt->bind_param("isdss", $userId, $emotionType, $confidence, $source, $rawInput);
-    
-    if ($stmt->execute()) {
-        $emotionId = $conn->insert_id;
-        
-        echo json_encode([
-            'success' => true,
-            'emotion_id' => $emotionId,
-            'emotion_type' => $emotionType,
-            'confidence' => $confidence,
-            'source' => $source
-        ]);
-    } else {
-        throw new Exception("Failed to save emotion: " . $stmt->error);
-    }
-    
+
+    $stmt->execute([$userId, $emotionType, $confidence, $source, $rawInput]);
+    $emotionId = $conn->lastInsertId();
+
+    echo json_encode([
+        'success' => true,
+        'emotion_id' => $emotionId,
+        'emotion_type' => $emotionType,
+        'confidence' => $confidence,
+        'source' => $source
+    ]);
+
 } catch (Exception $e) {
     error_log("Save emotion error: " . $e->getMessage());
     http_response_code(500);

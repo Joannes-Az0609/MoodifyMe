@@ -93,16 +93,17 @@ function getUserById($userId) {
  */
 function logEmotion($userId, $emotionType, $confidence, $source, $rawInput = '') {
     global $conn;
-    
-    $stmt = $conn->prepare("INSERT INTO emotions (user_id, emotion_type, confidence, source, raw_input, created_at) 
-                           VALUES (?, ?, ?, ?, ?, NOW())");
-    $stmt->bind_param("isdss", $userId, $emotionType, $confidence, $source, $rawInput);
-    
-    if ($stmt->execute()) {
-        return $conn->insert_id;
+
+    try {
+        $stmt = $conn->prepare("INSERT INTO emotions (user_id, emotion_type, confidence, source, raw_input, created_at)
+                               VALUES (?, ?, ?, ?, ?, NOW())");
+        $stmt->execute([$userId, $emotionType, $confidence, $source, $rawInput]);
+
+        return $conn->lastInsertId();
+    } catch (PDOException $e) {
+        error_log("Error logging emotion: " . $e->getMessage());
+        return false;
     }
-    
-    return false;
 }
 
 /**

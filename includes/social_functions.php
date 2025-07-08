@@ -10,25 +10,22 @@
 function getUserProfileWithStats($userId) {
     global $conn;
 
-    $stmt = $conn->prepare("
-        SELECT u.*,
-               COALESCE(u.follower_count, 0) as follower_count,
-               COALESCE(u.following_count, 0) as following_count,
-               COALESCE(u.connection_count, 0) as connection_count
-        FROM users u
-        WHERE u.id = ?
-    ");
+    try {
+        $stmt = $conn->prepare("
+            SELECT u.*,
+                   COALESCE(u.follower_count, 0) as follower_count,
+                   COALESCE(u.following_count, 0) as following_count,
+                   COALESCE(u.connection_count, 0) as connection_count
+            FROM users u
+            WHERE u.id = ?
+        ");
 
-    if (!$stmt) {
-        error_log("Failed to prepare getUserProfileWithStats query: " . $conn->error);
+        $stmt->execute([$userId]);
+        return $stmt->fetch();
+    } catch (PDOException $e) {
+        error_log("Failed to get user profile with stats: " . $e->getMessage());
         return null;
     }
-
-    $stmt->bind_param("i", $userId);
-    $stmt->execute();
-    $result = $stmt->get_result();
-
-    return $result->fetch_assoc();
 }
 
 /**

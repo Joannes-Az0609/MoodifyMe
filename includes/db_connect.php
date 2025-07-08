@@ -23,7 +23,7 @@ if (isset($_ENV['RENDER']) || strpos($http_host, '.onrender.com') !== false) {
 
 /**
  * Get database connection
- * @return mysqli|PDO Database connection object
+ * @return PDO Database connection object
  */
 function getDbConnection() {
     static $conn = null;
@@ -46,17 +46,18 @@ function getDbConnection() {
                 die("PostgreSQL Connection failed: " . $e->getMessage());
             }
         } else {
-            // MySQL connection for local/other environments
-            $port = defined('DB_PORT') ? DB_PORT : 3306;
-            $conn = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME, $port);
-
-            // Check connection
-            if ($conn->connect_error) {
-                die("MySQL Connection failed: " . $conn->connect_error);
+            // MySQL connection for local/other environments using PDO
+            try {
+                $port = defined('DB_PORT') ? DB_PORT : 3306;
+                $dsn = "mysql:host=" . DB_HOST . ";port=" . $port . ";dbname=" . DB_NAME . ";charset=utf8mb4";
+                $conn = new PDO($dsn, DB_USER, DB_PASS, [
+                    PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+                    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+                    PDO::ATTR_EMULATE_PREPARES => false,
+                ]);
+            } catch (PDOException $e) {
+                die("MySQL Connection failed: " . $e->getMessage());
             }
-
-            // Set charset
-            $conn->set_charset("utf8mb4");
         }
     }
 
