@@ -4,7 +4,7 @@
  */
 
 // Include configuration and functions
-require_once '../config.php';
+// Note: db_connect.php will load the appropriate config file
 require_once '../includes/functions.php';
 require_once '../includes/db_connect.php';
 require_once '../includes/google_oauth.php';
@@ -35,29 +35,31 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } elseif (empty($password)) {
         $error = 'Password is required.';
     } else {
-        // Check if user exists
-        $stmt = $conn->prepare("SELECT id, username, email, password_hash FROM users WHERE email = ?");
-        $stmt->bind_param("s", $email);
-        $stmt->execute();
-        $result = $stmt->get_result();
+        try {
+            // Check if user exists
+            $stmt = $conn->prepare("SELECT id, username, email, password_hash FROM users WHERE email = ?");
+            $stmt->execute([$email]);
+            $user = $stmt->fetch();
 
-        if ($result->num_rows === 1) {
-            $user = $result->fetch_assoc();
+            if ($user) {
+                // Verify password
+                if (verifyPassword($password, $user['password_hash'])) {
+                    // Set session variables
+                    $_SESSION['user_id'] = $user['id'];
+                    $_SESSION['username'] = $user['username'];
+                    $_SESSION['email'] = $user['email'];
 
-            // Verify password
-            if (verifyPassword($password, $user['password_hash'])) {
-                // Set session variables
-                $_SESSION['user_id'] = $user['id'];
-                $_SESSION['username'] = $user['username'];
-                $_SESSION['email'] = $user['email'];
-
-                // Redirect to dashboard
-                redirect(APP_URL . '/pages/dashboard.php');
+                    // Redirect to dashboard
+                    redirect(APP_URL . '/pages/dashboard.php');
+                } else {
+                    $error = 'Invalid password.';
+                }
             } else {
-                $error = 'Invalid password.';
+                $error = 'User not found.';
             }
-        } else {
-            $error = 'User not found.';
+        } catch (PDOException $e) {
+            error_log("Login error: " . $e->getMessage());
+            $error = 'Login failed. Please try again.';
         }
     }
 }

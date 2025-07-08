@@ -56,20 +56,14 @@ function getUserNotifications($userId, $limit = 20, $offset = 0, $unreadOnly = f
         LIMIT ? OFFSET ?
     ";
 
-    $stmt = $conn->prepare($sql);
-    if (!$stmt) {
-        error_log("Failed to prepare notification query: " . $conn->error);
+    try {
+        $stmt = $conn->prepare($sql);
+        $stmt->execute([$userId, $limit, $offset]);
+        return $stmt->fetchAll();
+    } catch (PDOException $e) {
+        error_log("Failed to execute notification query: " . $e->getMessage());
         return [];
     }
-
-    $stmt->bind_param("iii", $userId, $limit, $offset);
-    if (!$stmt->execute()) {
-        error_log("Failed to execute notification query: " . $stmt->error);
-        return [];
-    }
-
-    $result = $stmt->get_result();
-    return $result ? $result->fetch_all(MYSQLI_ASSOC) : [];
 }
 
 /**
@@ -79,9 +73,13 @@ function getUnreadNotificationCount($userId) {
     global $conn;
 
     // Check if notifications table exists first
-    $tableCheck = $conn->query("SHOW TABLES LIKE 'notifications'");
-    if (!$tableCheck || $tableCheck->num_rows === 0) {
-        return 0; // Return 0 if table doesn't exist
+    try {
+        $tableCheck = $conn->query("SHOW TABLES LIKE 'notifications'");
+        if (!$tableCheck || $tableCheck->rowCount() === 0) {
+            return 0; // Return 0 if table doesn't exist
+        }
+    } catch (PDOException $e) {
+        return 0; // Return 0 if table check fails
     }
 
     try {

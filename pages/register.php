@@ -4,7 +4,7 @@
  */
 
 // Include configuration and functions
-require_once '../config.php';
+// Note: db_connect.php will load the appropriate config file
 require_once '../includes/functions.php';
 require_once '../includes/db_connect.php';
 require_once '../includes/google_oauth.php';
@@ -44,41 +44,40 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } elseif (strlen($password) < 8) {
         $error = 'Password must be at least 8 characters long.';
     } else {
-        // Check if username already exists
-        $stmt = $conn->prepare("SELECT id FROM users WHERE username = ?");
-        $stmt->bind_param("s", $username);
-        $stmt->execute();
-        $result = $stmt->get_result();
+        try {
+            // Check if username already exists
+            $stmt = $conn->prepare("SELECT id FROM users WHERE username = ?");
+            $stmt->execute([$username]);
+            $existingUser = $stmt->fetch();
 
-        if ($result->num_rows > 0) {
-            $error = 'Username already exists.';
-        } else {
-            // Check if email already exists
-            $stmt = $conn->prepare("SELECT id FROM users WHERE email = ?");
-            $stmt->bind_param("s", $email);
-            $stmt->execute();
-            $result = $stmt->get_result();
-
-            if ($result->num_rows > 0) {
-                $error = 'Email already exists.';
+            if ($existingUser) {
+                $error = 'Username already exists.';
             } else {
-                // Hash password
-                $hashedPassword = hashPassword($password);
+                // Check if email already exists
+                $stmt = $conn->prepare("SELECT id FROM users WHERE email = ?");
+                $stmt->execute([$email]);
+                $existingEmail = $stmt->fetch();
 
-                // Insert user into database
-                $stmt = $conn->prepare("INSERT INTO users (username, email, password_hash, account_type, is_verified, is_active) VALUES (?, ?, ?, 'regular', 0, 1)");
-                $stmt->bind_param("sss", $username, $email, $hashedPassword);
+                if ($existingEmail) {
+                    $error = 'Email already exists.';
+                } else {
+                    // Hash password
+                    $hashedPassword = hashPassword($password);
 
-                if ($stmt->execute()) {
+                    // Insert user into database
+                    $stmt = $conn->prepare("INSERT INTO users (username, email, password_hash, account_type, is_verified, is_active, created_at) VALUES (?, ?, ?, 'regular', 0, 1, NOW())");
+                    $stmt->execute([$username, $email, $hashedPassword]);
+
                     $success = 'Registration successful! You can now login.';
 
                     // Clear form data
                     $username = '';
                     $email = '';
-                } else {
-                    $error = 'Registration failed. Please try again.';
                 }
             }
+        } catch (PDOException $e) {
+            error_log("Registration error: " . $e->getMessage());
+            $error = 'Registration failed. Please try again.';
         }
     }
 }
