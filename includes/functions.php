@@ -68,16 +68,18 @@ function redirect($url) {
  */
 function getUserById($userId) {
     global $conn;
-
-    try {
-        $stmt = $conn->prepare("SELECT * FROM users WHERE id = ?");
-        $stmt->execute([$userId]);
-
-        return $stmt->fetch() ?: null;
-    } catch (PDOException $e) {
-        error_log("Error getting user by ID: " . $e->getMessage());
+    
+    $stmt = $conn->prepare("SELECT * FROM users WHERE id = ?");
+    $stmt->bind_param("i", $userId);
+    $stmt->execute();
+    
+    $result = $stmt->get_result();
+    
+    if ($result->num_rows === 0) {
         return null;
     }
+    
+    return $result->fetch_assoc();
 }
 
 /**
@@ -131,15 +133,14 @@ function getRecommendations($emotionType, $targetEmotion, $types = [], $limit = 
               ORDER BY RAND() 
               LIMIT ?";
     
-    try {
-        $stmt = $conn->prepare($query);
-        $stmt->execute([$emotionType, $targetEmotion, $limit]);
-
-        while ($row = $stmt->fetch()) {
-            $recommendations[] = $row;
-        }
-    } catch (PDOException $e) {
-        error_log("Error getting recommendations: " . $e->getMessage());
+    $stmt = $conn->prepare($query);
+    $stmt->bind_param("ssi", $emotionType, $targetEmotion, $limit);
+    $stmt->execute();
+    
+    $result = $stmt->get_result();
+    
+    while ($row = $result->fetch_assoc()) {
+        $recommendations[] = $row;
     }
     
     return $recommendations;
@@ -154,16 +155,12 @@ function getRecommendations($emotionType, $targetEmotion, $types = [], $limit = 
  */
 function logRecommendationView($userId, $emotionId, $recommendationId) {
     global $conn;
-
-    try {
-        $stmt = $conn->prepare("INSERT INTO recommendation_logs (user_id, emotion_id, recommendation_id, viewed_at)
-                               VALUES (?, ?, ?, NOW())");
-        $stmt->execute([$userId, $emotionId, $recommendationId]);
-        return true;
-    } catch (PDOException $e) {
-        error_log("Error logging recommendation view: " . $e->getMessage());
-        return false;
-    }
+    
+    $stmt = $conn->prepare("INSERT INTO recommendation_logs (user_id, emotion_id, recommendation_id, viewed_at) 
+                           VALUES (?, ?, ?, NOW())");
+    $stmt->bind_param("iii", $userId, $emotionId, $recommendationId);
+    
+    return $stmt->execute();
 }
 
 /**

@@ -33,10 +33,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         } else {
             // Test database connection
             try {
-                $dsn = "mysql:host=$dbHost";
-                $conn = new PDO($dsn, $dbUser, $dbPass, [
-                    PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
-                ]);
+                $conn = new mysqli($dbHost, $dbUser, $dbPass);
+                
+                if ($conn->connect_error) {
+                    throw new Exception("Connection failed: " . $conn->connect_error);
+                }
                 
                 // Update config file
                 if (file_exists(CONFIG_FILE)) {
@@ -76,16 +77,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             
             try {
                 // Connect to database
-                $dsn = "mysql:host=$dbHost";
-                $conn = new PDO($dsn, $dbUser, $dbPass, [
-                    PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
-                ]);
-
+                $conn = new mysqli($dbHost, $dbUser, $dbPass);
+                
+                if ($conn->connect_error) {
+                    throw new Exception("Connection failed: " . $conn->connect_error);
+                }
+                
                 // Create database if it doesn't exist
-                $conn->exec("CREATE DATABASE IF NOT EXISTS `$dbName` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci");
-
+                $conn->query("CREATE DATABASE IF NOT EXISTS `$dbName` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci");
+                
                 // Select database
-                $conn->exec("USE `$dbName`");
+                $conn->select_db($dbName);
                 
                 // Execute schema SQL
                 if (file_exists(SCHEMA_FILE)) {
@@ -96,7 +98,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         $query = trim($query);
                         
                         if (!empty($query)) {
-                            $conn->exec($query);
+                            $conn->query($query);
+                            
+                            if ($conn->error) {
+                                throw new Exception("Error executing query: " . $conn->error);
+                            }
                         }
                     }
                 } else {
@@ -157,21 +163,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             } else {
                 try {
                     // Connect to database
-                    $dsn = "mysql:host=$dbHost;dbname=$dbName;charset=utf8mb4";
-                    $conn = new PDO($dsn, $dbUser, $dbPass, [
-                        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
-                    ]);
+                    $conn = new mysqli($dbHost, $dbUser, $dbPass, $dbName);
+                    
+                    if ($conn->connect_error) {
+                        throw new Exception("Connection failed: " . $conn->connect_error);
+                    }
                     
                     // Hash password
                     $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
                     
                     // Insert admin user
                     $stmt = $conn->prepare("INSERT INTO users (username, email, password, created_at) VALUES (?, ?, ?, NOW())");
-                    $stmt->execute([$username, $email, $hashedPassword]);
-
-                    // Installation complete
-                    header('Location: install.php?step=4');
-                    exit;
+                    $stmt->bind_param("sss", $username, $email, $hashedPassword);
+                    
+                    if ($stmt->execute()) {
+                        // Installation complete
+                        header('Location: install.php?step=4');
+                        exit;
+                    } else {
+                        throw new Exception("Error creating admin user: " . $stmt->error);
+                    }
                 } catch (Exception $e) {
                     $error = 'Error creating admin user: ' . $e->getMessage();
                 }

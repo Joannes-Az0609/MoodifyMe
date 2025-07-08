@@ -85,7 +85,7 @@ $currentPage = basename($_SERVER['PHP_SELF']);
         nav.navbar-dark.bg-primary,
         .navbar.navbar-dark.bg-primary {
             background: linear-gradient(135deg, #E55100 0%, #D32F2F 50%, #FF8F00 100%) !important;
-            background-color: #E55100 !important;
+            background-color:rgb(0, 38, 229) !important;
             box-shadow: 0 4px 15px rgba(229, 81, 0, 0.3) !important;
             padding: 1rem 0 !important;
             min-height: 65px !important;
