@@ -2,9 +2,11 @@ services:
   # Main PHP Web Application
   - type: web
     name: moodifyme-web
-    runtime: docker
+    env: php
     plan: free
-    healthCheckPath: /health
+    buildCommand: composer install --no-dev --optimize-autoloader
+    startCommand: php -S 0.0.0.0:$PORT -t .
+    healthCheckPath: /health.php
     envVars:
       - key: RENDER
         value: "true"

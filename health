@@ -1,0 +1,15 @@
+<?php
+/**
+ * Health Check Endpoint for Render (no .php extension)
+ */
+
+header('Content-Type: application/json');
+
+echo json_encode([
+    'status' => 'healthy',
+    'timestamp' => date('c'),
+    'service' => 'MoodifyMe',
+    'version' => '1.0.0'
+]);
+exit;
+?>

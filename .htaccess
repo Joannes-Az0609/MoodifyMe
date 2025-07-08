@@ -15,6 +15,9 @@
     # RewriteRule ^database/ - [F,L]  # Temporarily commented out
     RewriteRule ^models/ - [F,L]
 
+    # Health check endpoint for Render
+    RewriteRule ^health$ health.php [L]
+
     # Allow direct access to assets, api, and pages
     RewriteRule ^(assets|api|pages)/ - [L]
 
