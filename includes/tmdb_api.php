@@ -342,18 +342,19 @@ function saveTMDBMovieRecommendations($movies) {
         $stmt = $conn->prepare("INSERT INTO recommendations (title, description, type, source_emotion, target_emotion, content, image_url, link, created_at)
                                VALUES (?, ?, ?, ?, ?, ?, ?, ?, NOW())");
 
-        $stmt->bind_param("ssssssss",
-            $movie['title'],
-            $movie['description'],
-            $movie['type'],
-            $movie['source_emotion'],
-            $movie['target_emotion'],
-            $movie['content'],
-            $movie['image_url'],
-            $movie['link']
-        );
-
-        if (!$stmt->execute()) {
+        try {
+            $stmt->execute([
+                $movie['title'],
+                $movie['description'],
+                $movie['type'],
+                $movie['source_emotion'],
+                $movie['target_emotion'],
+                $movie['content'],
+                $movie['image_url'],
+                $movie['link']
+            ]);
+        } catch (PDOException $e) {
+            error_log("Error saving TMDB movie recommendation: " . $e->getMessage());
             $success = false;
         }
     }

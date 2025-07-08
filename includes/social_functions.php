@@ -203,15 +203,13 @@ function getConnectionStatus($userId1, $userId2) {
         WHERE (requester_id = ? AND receiver_id = ?) 
            OR (requester_id = ? AND receiver_id = ?)
     ");
-    $stmt->bind_param("iiii", $userId1, $userId2, $userId2, $userId1);
-    $stmt->execute();
-    $result = $stmt->get_result();
-    
-    if ($result->num_rows > 0) {
-        return $result->fetch_assoc();
+    try {
+        $stmt->execute([$userId1, $userId2, $userId2, $userId1]);
+        return $stmt->fetch() ?: null;
+    } catch (PDOException $e) {
+        error_log("Error getting connection status: " . $e->getMessage());
+        return null;
     }
-    
-    return null;
 }
 
 /**
@@ -544,12 +542,11 @@ function searchUsers($query, $currentUserId, $limit = 20) {
         return [];
     }
 
-    $stmt->bind_param($bindTypes, ...$bindValues);
-    $stmt->execute();
-    $result = $stmt->get_result();
+    try {
+        $stmt->execute($bindValues);
 
-    $users = [];
-    while ($row = $result->fetch_assoc()) {
+        $users = [];
+        while ($row = $stmt->fetch()) {
         // Set default values for missing columns
         if (!isset($row['display_name'])) {
             $row['display_name'] = $row['username'];
@@ -570,10 +567,14 @@ function searchUsers($query, $currentUserId, $limit = 20) {
             $row['following_count'] = 0;
         }
 
-        $users[] = $row;
-    }
+            $users[] = $row;
+        }
 
-    return $users;
+        return $users;
+    } catch (PDOException $e) {
+        error_log("Error searching users: " . $e->getMessage());
+        return [];
+    }
 }
 
 /**
@@ -581,15 +582,19 @@ function searchUsers($query, $currentUserId, $limit = 20) {
  */
 function updateUserOnlineStatus($userId, $status = 'online') {
     global $conn;
-    
-    $stmt = $conn->prepare("
-        INSERT INTO user_online_status (user_id, status, last_seen) 
-        VALUES (?, ?, NOW()) 
-        ON DUPLICATE KEY UPDATE status = VALUES(status), last_seen = NOW()
-    ");
-    $stmt->bind_param("is", $userId, $status);
-    
-    return $stmt->execute();
+
+    try {
+        $stmt = $conn->prepare("
+            INSERT INTO user_online_status (user_id, status, last_seen)
+            VALUES (?, ?, NOW())
+            ON DUPLICATE KEY UPDATE status = VALUES(status), last_seen = NOW()
+        ");
+        $stmt->execute([$userId, $status]);
+        return true;
+    } catch (PDOException $e) {
+        error_log("Error updating user online status: " . $e->getMessage());
+        return false;
+    }
 }
 
 /**
@@ -597,16 +602,16 @@ function updateUserOnlineStatus($userId, $status = 'online') {
  */
 function getUserOnlineStatus($userId) {
     global $conn;
-    
-    $stmt = $conn->prepare("SELECT status, last_seen FROM user_online_status WHERE user_id = ?");
-    $stmt->bind_param("i", $userId);
-    $stmt->execute();
-    $result = $stmt->get_result();
-    
-    if ($result->num_rows > 0) {
-        return $result->fetch_assoc();
+
+    try {
+        $stmt = $conn->prepare("SELECT status, last_seen FROM user_online_status WHERE user_id = ?");
+        $stmt->execute([$userId]);
+        $result = $stmt->fetch();
+
+        return $result ?: ['status' => 'offline', 'last_seen' => null];
+    } catch (PDOException $e) {
+        error_log("Error getting user online status: " . $e->getMessage());
+        return ['status' => 'offline', 'last_seen' => null];
     }
-    
-    return ['status' => 'offline', 'last_seen' => null];
 }
 ?>
