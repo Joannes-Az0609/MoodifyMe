@@ -4,6 +4,12 @@
  * Environment-aware configuration for deployment
  */
 
+// Prevent multiple inclusions
+if (defined('MOODIFYME_CONFIG_LOADED')) {
+    return;
+}
+define('MOODIFYME_CONFIG_LOADED', true);
+
 // Detect environment
 $isProduction = isset($_ENV['RAILWAY_ENVIRONMENT']) ||
                 isset($_ENV['VERCEL_ENV']) ||

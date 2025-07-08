@@ -4,6 +4,12 @@
  * Optimized configuration for Render deployment
  */
 
+// Prevent multiple inclusions
+if (defined('MOODIFYME_CONFIG_LOADED')) {
+    return;
+}
+define('MOODIFYME_CONFIG_LOADED', true);
+
 // Render environment detection
 $isRender = isset($_ENV['RENDER']) || strpos($_SERVER['HTTP_HOST'], '.onrender.com') !== false;
 

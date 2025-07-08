@@ -4,6 +4,12 @@
  * Contains all the configuration settings for the application
  */
 
+// Prevent multiple inclusions
+if (defined('MOODIFYME_CONFIG_LOADED')) {
+    return;
+}
+define('MOODIFYME_CONFIG_LOADED', true);
+
 // Database Configuration
 define('DB_HOST', 'localhost');
 define('DB_USER', 'root');
