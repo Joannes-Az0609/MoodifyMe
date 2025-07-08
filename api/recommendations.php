@@ -5,7 +5,7 @@
  */
 
 // Include configuration and functions
-require_once '../config.php';
+// Note: db_connect.php will load the appropriate config file
 require_once '../includes/functions.php';
 require_once '../includes/db_connect.php';
 

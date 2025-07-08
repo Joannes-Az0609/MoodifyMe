@@ -17,14 +17,8 @@ $health = [
 
 // Check if we can connect to database (optional)
 try {
-    // Load configuration
-    if (isset($_ENV['RENDER']) || strpos($_SERVER['HTTP_HOST'], '.onrender.com') !== false) {
-        require_once 'config.render.php';
-    } else {
-        require_once 'config.php';
-    }
-    
-    // Test database connection
+    // Load configuration and test database connection
+    // Note: db_connect.php will load the appropriate config file
     require_once 'includes/db_connect.php';
     $conn = getDbConnection();
     
